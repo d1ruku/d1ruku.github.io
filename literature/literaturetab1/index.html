@@ -3,812 +3,958 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Преступление и наказание — Карта глав</title>
+<title>Преступление и наказание — Конспект</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --paper: #faf8f0;
+    --paper2: #f5f2e8;
+    --line: #c8d8e8;
+    --line2: #dde8f0;
+    --ink: #1a2535;
+    --ink-mid: #3a4a5a;
+    --ink-light: #6a7a8a;
+    --red-margin: #e8b0b0;
+    --accent-red: #c0392b;
+    --accent-blue: #2471a3;
+    --accent-green: #1e8449;
+    --accent-amber: #d35400;
+    --accent-purple: #7d3c98;
+    --tag-red-bg: #fde8e8; --tag-red-border: #f5b7b1; --tag-red-text: #c0392b;
+    --tag-blue-bg: #e8f4fd; --tag-blue-border: #aed6f1; --tag-blue-text: #1a5276;
+    --tag-green-bg: #e9f7ef; --tag-green-border: #a9dfbf; --tag-green-text: #1e6b35;
+    --tag-amber-bg: #fef5e7; --tag-amber-border: #f9d79e; --tag-amber-text: #b7770d;
+    --tag-purple-bg: #f5eef8; --tag-purple-border: #d7bde2; --tag-purple-text: #6c3483;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #b8c8d8;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #d8cfc0;
+    background-image:
+      radial-gradient(ellipse at 30% 20%, rgba(180,160,120,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, rgba(160,140,110,0.2) 0%, transparent 50%);
+    font-family: 'Nunito', sans-serif;
     min-height: 100vh;
-    overflow: hidden;
-    user-select: none;
+    padding: 32px 16px 64px;
   }
 
-  /* ── CANVAS ── */
-  #canvas {
-    width: 100vw;
-    height: 100vh;
+  /* ── COVER ── */
+  .cover {
+    max-width: 720px;
+    margin: 0 auto 28px;
+    background: var(--paper);
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 3px 4px 0 #b8b0a0, 6px 8px 0 #a8a090, 0 0 0 1px rgba(0,0,0,0.08);
+    overflow: hidden;
     position: relative;
-    cursor: grab;
   }
-  #canvas.dragging { cursor: grabbing; }
-
-  #world {
+  .cover-tape {
     position: absolute;
-    width: 2400px;
-    height: 1600px;
-    top: 0; left: 0;
-    transform-origin: 0 0;
-  }
-
-  /* SVG lines layer */
-  #lines {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-  }
-
-  /* ── NODE ── */
-  .node {
-    position: absolute;
-    cursor: pointer;
-    transform: translate(-50%, -50%);
-    transition: filter 0.15s, transform 0.15s;
-  }
-  .node:hover { filter: brightness(1.12); transform: translate(-50%, -50%) scale(1.04); }
-  .node:active { transform: translate(-50%, -50%) scale(0.97); }
-
-  .node-inner {
-    background: linear-gradient(160deg, #1a3a5c 0%, #0f2540 100%);
-    border: 1.5px solid #3a6090;
-    border-top-color: #5590c8;
-    border-radius: 4px;
-    padding: 0;
-    min-width: 180px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
-    overflow: hidden;
-  }
-
-  .node-inner.active {
-    border-color: #5590c8;
-    border-top-color: #88c0f0;
-    box-shadow: 0 0 0 2px rgba(85,144,200,0.4), 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12);
-  }
-
-  .node-label {
-    background: linear-gradient(90deg, #1e4a7a 0%, #163a60 100%);
-    padding: 7px 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid rgba(85,144,200,0.3);
-  }
-
-  .node-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #5590c8;
-    flex-shrink: 0;
-    box-shadow: 0 0 4px rgba(85,144,200,0.7);
-  }
-
-  .node-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #c8ddf0;
-  }
-
-  .node-body {
-    padding: 7px 14px 9px;
-    font-size: 12px;
-    color: #8ab0d0;
-    font-weight: 400;
-    letter-spacing: 0.2px;
-  }
-
-  /* ── connector dots ── */
-  .conn-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #5590c8;
-    border: 1.5px solid #3a6090;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-
-  /* ── ROOT node ── */
-  .node-root .node-inner {
-    background: linear-gradient(160deg, #3a1a1a 0%, #1e0a0a 100%);
-    border-color: #903030;
-    border-top-color: #c84040;
-    min-width: 220px;
-  }
-  .node-root .node-label {
-    background: linear-gradient(90deg, #6a1a1a 0%, #4a1010 100%);
-    border-bottom-color: rgba(200,64,64,0.3);
-  }
-  .node-root .node-dot { background: #c84040; box-shadow: 0 0 6px rgba(200,64,64,0.7); }
-  .node-root .node-title { color: #f0c0c0; letter-spacing: 2px; font-size: 12px; }
-  .node-root .node-body { color: #c08080; font-size: 11px; }
-
-  /* ── EPILOG node ── */
-  .node-epilog .node-inner {
-    background: linear-gradient(160deg, #0a2a1a 0%, #051510 100%);
-    border-color: #206040;
-    border-top-color: #30a060;
-  }
-  .node-epilog .node-label {
-    background: linear-gradient(90deg, #0e3a20 0%, #082814 100%);
-    border-bottom-color: rgba(48,160,96,0.3);
-  }
-  .node-epilog .node-dot { background: #30a060; box-shadow: 0 0 6px rgba(48,160,96,0.7); }
-  .node-epilog .node-title { color: #90e0b0; }
-  .node-epilog .node-body { color: #60a080; }
-
-  /* ── PANEL ── */
-  #panel {
-    position: fixed;
-    right: 0; top: 0; bottom: 0;
-    width: 420px;
-    background: #0e1520;
-    border-left: 1px solid #2a3a50;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  #panel.open { transform: translateX(0); }
-
-  .panel-header {
-    padding: 18px 20px 14px;
-    border-bottom: 1px solid #2a3a50;
-    flex-shrink: 0;
-    background: linear-gradient(135deg, #12202e, #0e1825);
-  }
-
-  .panel-tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .panel-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #e0ecf8;
-    letter-spacing: 0.5px;
-    line-height: 1.3;
-  }
-
-  .panel-chars {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
-  }
-
-  .char-pill {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 9px;
-    border-radius: 20px;
-    letter-spacing: 0.3px;
-    background: rgba(85,144,200,0.15);
-    border: 1px solid rgba(85,144,200,0.3);
-    color: #80b8e0;
-  }
-
-  .panel-scroll {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px 20px 24px;
-  }
-  .panel-scroll::-webkit-scrollbar { width: 4px; }
-  .panel-scroll::-webkit-scrollbar-track { background: transparent; }
-  .panel-scroll::-webkit-scrollbar-thumb { background: #2a3a50; border-radius: 2px; }
-
-  .section {
-    margin-bottom: 18px;
-  }
-
-  .section-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #5590c8;
-    margin-bottom: 8px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #1e3050;
-  }
-
-  .section p {
-    font-size: 13px;
-    line-height: 1.72;
-    color: #90aac4;
-  }
-
-  .callout {
-    padding: 9px 12px;
-    border-radius: 4px;
-    border-left: 3px solid;
-    font-size: 12.5px;
-    line-height: 1.6;
-    margin: 8px 0;
-  }
-  .callout-red { background: rgba(200,64,64,0.08); border-color: #c84040; color: #d09090; }
-  .callout-blue { background: rgba(85,144,200,0.08); border-color: #5590c8; color: #90b8d8; }
-  .callout-green { background: rgba(48,160,96,0.08); border-color: #30a060; color: #80c8a0; }
-  .callout-amber { background: rgba(200,140,40,0.08); border-color: #c88c28; color: #c8a060; }
-  .callout-purple { background: rgba(140,80,200,0.08); border-color: #8c50c8; color: #b080d8; }
-
-  em { font-style: italic; color: #a8c4e0; }
-  strong { font-weight: 700; color: #c8ddf0; }
-
-  .close-btn {
-    position: absolute;
-    top: 14px; right: 14px;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #2a3a50;
-    color: #5590c8;
-    font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.15s;
+    top: -8px; left: 50%;
+    transform: translateX(-50%) rotate(-1deg);
+    width: 80px; height: 26px;
+    background: rgba(255,230,100,0.75);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     z-index: 10;
   }
-  .close-btn:hover { background: rgba(85,144,200,0.15); }
+  .cover-inner {
+    background: linear-gradient(135deg, #1a2a3a 0%, #0d1825 100%);
+    padding: 36px 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(255,255,255,0.03) 27px,
+      rgba(255,255,255,0.03) 28px
+    );
+  }
+  .cover-subject {
+    font-family: 'Caveat', cursive;
+    font-size: 13px; font-weight: 600;
+    color: rgba(180,200,220,0.7);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cover-title {
+    font-family: 'Caveat', cursive;
+    font-size: 38px; font-weight: 700;
+    color: #e8eef4;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+  .cover-author {
+    font-family: 'Caveat', cursive;
+    font-size: 18px; color: rgba(160,190,210,0.8);
+    margin-top: 8px;
+  }
+  .cover-meta {
+    display: flex; gap: 10px;
+    margin-top: 18px; flex-wrap: wrap;
+  }
+  .cover-badge {
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .cb-red   { background: rgba(192,57,43,0.2); border: 1px solid rgba(192,57,43,0.4); color: #f1948a; }
+  .cb-blue  { background: rgba(36,113,163,0.2); border: 1px solid rgba(36,113,163,0.4); color: #85c1e9; }
+  .cb-green { background: rgba(30,132,73,0.2); border: 1px solid rgba(30,132,73,0.4); color: #7dcea0; }
 
-  /* ── HUD ── */
-  #hud {
-    position: fixed;
-    bottom: 20px; left: 50%;
+  /* ── PAGE ── */
+  .page {
+    max-width: 720px;
+    margin: 0 auto 20px;
+    background: var(--paper);
+    border-radius: 2px;
+    box-shadow: 2px 3px 0 #b8b0a0, 4px 6px 0 #a8a090, 0 0 0 1px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* spiral holes */
+  .page::before {
+    content: '';
+    position: absolute;
+    left: 52px; top: 0; bottom: 0; width: 1px;
+    background: var(--red-margin);
+    z-index: 2;
+  }
+
+  /* lined background */
+  .page-lined {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      var(--line) 31px,
+      var(--line) 32px
+    );
+    background-position: 0 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-content {
+    position: relative;
+    z-index: 1;
+    padding: 16px 28px 28px 70px;
+  }
+
+  /* spiral rings on left */
+  .rings {
+    position: absolute;
+    left: 0; top: 0; bottom: 0; width: 52px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .ring {
+    position: absolute;
+    left: 18px;
+    width: 20px; height: 20px;
+    border: 2px solid #b0a090;
+    border-radius: 50%;
+    background: #d8cfc0;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  /* ── PART HEADER ── */
+  .part-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--line);
+  }
+  .part-num-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 13px; font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .part-title-wrap {}
+  .part-title {
+    font-family: 'Caveat', cursive;
+    font-size: 26px; font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .part-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 15px; color: var(--ink-light);
+    margin-top: 2px;
+  }
+
+  /* ── CHARACTERS ── */
+  .chars-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 18px;
+  }
+  .char-tag {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 4px;
+    letter-spacing: 0.3px;
+    border: 1.5px solid;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 20px;
+  }
+  .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 15px; font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--line2);
+  }
+
+  .body-text {
+    font-size: 14.5px;
+    line-height: 1.82;
+    color: var(--ink-mid);
+  }
+  .body-text p { margin-bottom: 10px; }
+  .body-text p:last-child { margin-bottom: 0; }
+
+  strong { font-weight: 700; color: var(--ink); }
+  em { font-style: italic; color: var(--ink-mid); }
+
+  /* ── CALLOUT (рукописный блок) ── */
+  .callout {
+    margin: 12px 0;
+    padding: 12px 14px 12px 16px;
+    border-radius: 3px;
+    border-left: 3px solid;
+    position: relative;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+  .callout::before {
+    content: attr(data-icon);
+    position: absolute;
+    top: 10px; right: 12px;
+    font-size: 16px; opacity: 0.5;
+  }
+  .callout-red    { background: var(--tag-red-bg);    border-color: #e74c3c; color: #7b241c; }
+  .callout-blue   { background: var(--tag-blue-bg);   border-color: #2980b9; color: #1a4a6a; }
+  .callout-green  { background: var(--tag-green-bg);  border-color: #27ae60; color: #1a5c35; }
+  .callout-amber  { background: var(--tag-amber-bg);  border-color: #e67e22; color: #7d4400; }
+  .callout-purple { background: var(--tag-purple-bg); border-color: #8e44ad; color: #5b2c6f; }
+
+  .callout em { color: inherit; opacity: 0.9; }
+  .callout strong { color: inherit; font-weight: 800; }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    margin: 14px 0;
+    padding: 10px 16px;
+    border-left: 3px solid #c8b090;
+    background: rgba(200,180,140,0.08);
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-mid);
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 18px 0;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--line);
+  }
+  .divider span {
+    font-family: 'Caveat', cursive;
+    font-size: 13px; color: var(--ink-light);
+    letter-spacing: 1px;
+  }
+
+  /* ── STICKY NOTE ── */
+  .sticky {
+    background: #fff9c4;
+    border: 1px solid #f0e070;
+    border-radius: 3px;
+    padding: 10px 14px;
+    margin: 14px 0;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    color: #5a4a00;
+    line-height: 1.6;
+    position: relative;
+    transform: rotate(-0.5deg);
+  }
+  .sticky::before {
+    content: '';
+    position: absolute; top: -6px; left: 50%;
     transform: translateX(-50%);
-    background: rgba(10,20,35,0.9);
-    border: 1px solid #2a3a50;
-    border-radius: 24px;
-    padding: 8px 18px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 12px;
-    color: #5590c8;
-    backdrop-filter: blur(8px);
-    z-index: 50;
-    pointer-events: none;
+    width: 32px; height: 12px;
+    background: rgba(255,220,50,0.8);
+    border-radius: 2px;
   }
-  .hud-sep { width: 1px; height: 14px; background: #2a3a50; }
+  .sticky strong { color: #3a2a00; }
 
-  /* ── ZOOM BTNS ── */
-  .zoom-btns {
-    position: fixed;
-    bottom: 20px; right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 50;
+  /* ── EPILOG special ── */
+  .page-epilog .page::before { background: #a8d8a8; }
+  .page-epilog .part-title { color: var(--accent-green); }
+
+  /* ── NAV ── */
+  .nav {
+    max-width: 720px;
+    margin: 0 auto 24px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 0 4px;
   }
-  .zoom-btn {
-    width: 34px; height: 34px;
-    background: rgba(10,20,35,0.9);
-    border: 1px solid #2a3a50;
-    border-radius: 8px;
-    color: #5590c8;
-    font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
+  .nav-btn {
+    font-family: 'Caveat', cursive;
+    font-size: 13px; font-weight: 600;
+    padding: 5px 14px; border-radius: 20px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.2);
+    color: var(--ink);
     cursor: pointer;
-    transition: background 0.15s;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
+    transition: background 0.15s, border-color 0.15s;
+    text-decoration: none;
   }
-  .zoom-btn:hover { background: rgba(85,144,200,0.15); }
+  .nav-btn:hover { background: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.5); }
 
-  /* ── GRID BG ── */
-  #grid-bg {
+  /* ── PART COLOR THEMES ── */
+  .theme-red    { background: var(--tag-red-bg);    border-color: var(--tag-red-border);    color: var(--tag-red-text); }
+  .theme-amber  { background: var(--tag-amber-bg);  border-color: var(--tag-amber-border);  color: var(--tag-amber-text); }
+  .theme-purple { background: var(--tag-purple-bg); border-color: var(--tag-purple-border); color: var(--tag-purple-text); }
+  .theme-green  { background: var(--tag-green-bg);  border-color: var(--tag-green-border);  color: var(--tag-green-text); }
+  .theme-blue   { background: var(--tag-blue-bg);   border-color: var(--tag-blue-border);   color: var(--tag-blue-text); }
+
+  /* ── UNDERLINE HIGHLIGHT ── */
+  .hl-red    { background: linear-gradient(transparent 65%, rgba(231,76,60,0.25) 65%); }
+  .hl-blue   { background: linear-gradient(transparent 65%, rgba(41,128,185,0.2) 65%); }
+  .hl-green  { background: linear-gradient(transparent 65%, rgba(39,174,96,0.2) 65%); }
+  .hl-amber  { background: linear-gradient(transparent 65%, rgba(230,126,34,0.2) 65%); }
+  .hl-purple { background: linear-gradient(transparent 65%, rgba(142,68,173,0.2) 65%); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    body { padding: 16px 8px 48px; }
+    .page-content { padding: 14px 16px 24px 60px; }
+    .cover-inner { padding: 28px 20px 22px; }
+    .cover-title { font-size: 30px; }
+    .part-title { font-size: 22px; }
+    .body-text { font-size: 13.5px; }
+  }
+
+  /* page-top fold corner */
+  .fold {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 22px 22px 0;
+    border-color: transparent #d8cfc0 transparent transparent;
+    z-index: 3;
   }
-
-  /* ── LOCKED overlay ── */
-  .locked-overlay {
+  .fold::after {
+    content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: none;
+    top: 0; right: -22px;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 22px 22px 0;
+    border-color: transparent rgba(0,0,0,0.06) transparent transparent;
   }
-
-  @keyframes pulse-dot {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-  .conn-dot { animation: pulse-dot 2s ease-in-out infinite; }
 </style>
 </head>
 <body>
 
-<div id="canvas">
-  <!-- Grid pattern via SVG bg -->
-  <svg id="grid-bg" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="smallGrid" width="28" height="28" patternUnits="userSpaceOnUse">
-        <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#9aacba" stroke-width="0.3" opacity="0.35"/>
-      </pattern>
-      <pattern id="grid" width="140" height="140" patternUnits="userSpaceOnUse">
-        <rect width="140" height="140" fill="url(#smallGrid)"/>
-        <path d="M 140 0 L 0 0 0 140" fill="none" stroke="#8aa0b0" stroke-width="0.6" opacity="0.4"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#grid)"/>
-  </svg>
-
-  <div id="world">
-    <svg id="lines" xmlns="http://www.w3.org/2000/svg"></svg>
-  </div>
-</div>
-
-<!-- PANEL -->
-<div id="panel">
-  <div class="close-btn" onclick="closePanel()">✕</div>
-  <div class="panel-header">
-    <div class="panel-tag" id="panel-tag"></div>
-    <div class="panel-title" id="panel-title"></div>
-    <div class="panel-chars" id="panel-chars"></div>
-  </div>
-  <div class="panel-scroll" id="panel-content"></div>
-</div>
-
-<!-- HUD -->
-<div id="hud">
-  <span>📖 Преступление и наказание</span>
-  <div class="hud-sep"></div>
-  <span id="hud-open">Кликни на узел</span>
-</div>
-
-<!-- Zoom buttons -->
-<div class="zoom-btns">
-  <div class="zoom-btn" onclick="zoom(0.15)">+</div>
-  <div class="zoom-btn" onclick="zoom(-0.15)">−</div>
-  <div class="zoom-btn" onclick="resetView()" style="font-size:12px; letter-spacing:-0.5px;">⌂</div>
-</div>
-
-<script>
-// ════════════════════════════════════════════
-//  DATA
-// ════════════════════════════════════════════
-const NODES = [
-  {
-    id: 'root', x: 1200, y: 800,
-    cls: 'node-root',
-    title: 'Ф.М. Достоевский',
-    sub: '1866',
-    chars: [],
-    tag: 'РОМАН',
-    tagColor: '#c84040',
-    heading: 'Преступление и наказание',
-    content: `
-      <div class="section">
-        <div class="section-title">О романе</div>
-        <p>Психологический роман Достоевского, написанный в 1866 году. Исследует природу преступления, вины и нравственного возрождения через историю студента Родиона Раскольникова.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Главная идея</div>
-        <div class="callout callout-red"><em>«Тварь я дрожащая или право имею?»</em> — центральный вопрос всего романа.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Структура</div>
-        <p>6 частей + эпилог. Каждая часть — этап внутреннего пути Раскольникова от преступления к покаянию.</p>
-      </div>
-    `
-  },
-  {
-    id: 'p1', x: 560, y: 430,
-    title: 'Часть 1',
-    sub: 'Рождение идеи',
-    chars: ['Раскольников', 'Мармеладов', 'Соня', 'Алёна Ивановна'],
-    tag: 'ЧАСТЬ 1',
-    tagColor: '#c84040',
-    heading: 'Рождение идеи',
-    content: `
-      <div class="section">
-        <div class="section-title">Обстановка</div>
-        <p>Жаркий, душный июльский Петербург 1860-х. Раскольников — 23-летний бывший студент-юрист — живёт в крошечной каморке <em>«шесть шагов длиной»</em> под самой крышей.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Теория</div>
-        <div class="callout callout-red">Люди делятся на <strong>«тварей дрожащих»</strong> (обычные, подвластные морали) и <strong>«право имеющих»</strong> (как Наполеон) — которые могут переступить через мораль ради великой цели.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Мармеладов</div>
-        <p>В трактире знакомится с пьяным титулярным советником. Тот рассказывает о Соне (18 лет), пошедшей «по жёлтому билету» ради семьи. Раскольников отдаёт им последние деньги.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Письмо матери</div>
-        <p>Дуня согласилась выйти за адвоката Лужина — скупого карьериста. Раскольников в ярости: <em>«Не бывать этому!»</em></p>
-      </div>
-      <div class="section">
-        <div class="section-title">Сон о лошади</div>
-        <div class="callout callout-amber">Детский сон: мужики забивают старую клячу. Символ жалости к слабым и ужаса перед жестокостью.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Убийство</div>
-        <div class="callout callout-red">Раскольников убивает старуху-процентщицу Алёну Ивановну топором. Вдруг приходит её сестра Лизавета — убивает и её. Крадёт вещи, прячет под камень во дворе. Возвращается домой в лихорадке.</div>
-      </div>
-    `
-  },
-  {
-    id: 'p2', x: 760, y: 250,
-    title: 'Часть 2',
-    sub: 'Горячка и страх',
-    chars: ['Разумихин', 'Порфирий', 'Лужин', 'Мармеладов'],
-    tag: 'ЧАСТЬ 2',
-    tagColor: '#c88c28',
-    heading: 'Горячка и страх',
-    content: `
-      <div class="section">
-        <div class="section-title">Горячка</div>
-        <p>Раскольников несколько дней в полубреду — боится, что проговорился во сне. Друг <strong>Разумихин</strong> не отходит от него, покупает лекарства и одежду на последние деньги.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Участок</div>
-        <div class="callout callout-blue">Вызывают за долг хозяйке. В конторе случайно говорят об убийстве старухи — Раскольников падает в глубокий обморок прямо на полу.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Семья</div>
-        <p>Приехавших мать и Дуню почти выгоняет — это защита, чтобы не выдать себя. При первой встрече с Лужиным — взрыв: оскорбляет его и выгоняет.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Смерть Мармеладова</div>
-        <div class="callout callout-amber">Пьяный Мармеладов попадает под лошадей. Раскольников отдаёт семье последние деньги на похороны.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Лужин разоблачён</div>
-        <p>Подбросил Соне деньги и обвинил в краже — опозорить семью и ударить по Раскольникову. Разоблачён, выгнан с позором.</p>
-      </div>
-    `
-  },
-  {
-    id: 'p3', x: 1020, y: 180,
-    title: 'Часть 3',
-    sub: 'Кот и мышь',
-    chars: ['Порфирий', 'Свидригайлов', 'Дуня'],
-    tag: 'ЧАСТЬ 3',
-    tagColor: '#8c50c8',
-    heading: 'Кот и мышь со следователем',
-    content: `
-      <div class="section">
-        <div class="section-title">Порфирий Петрович</div>
-        <div class="callout callout-purple">Хитрый психолог с <em>«кошачьей»</em> улыбкой. Читал статью Раскольникова. Ведёт тонкий разговор-игру: <em>«Вы, может быть, и сами… право имеете?»</em> Улик нет, но ясно: <em>«Я буду ждать»</em>.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Раскольников</div>
-        <p>В панике, но держится — отвечает дерзко, насмешливо. Это только усиливает интерес следователя.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Свидригайлов</div>
-        <div class="callout callout-red">Загадочный, циничный, развратный. Одержим страстью к Дуне. Говорит о призраках и самоубийствах. <em>«Вечность — это тёмная комната с пауками»</em>. Зеркало судьбы Раскольникова без покаяния.</div>
-      </div>
-    `
-  },
-  {
-    id: 'p4', x: 1300, y: 200,
-    title: 'Часть 4',
-    sub: 'Признание Соне',
-    chars: ['Соня', 'Раскольников', 'Лужин', 'Свидригайлов'],
-    tag: 'ЧАСТЬ 4',
-    tagColor: '#30a060',
-    heading: 'Признание Сонечке',
-    content: `
-      <div class="section">
-        <div class="section-title">Лужин разоблачён (ещё раз)</div>
-        <p>На поминках подбрасывает Соне деньги и обвиняет в краже. Дуня окончательно разрывает помолвку: <em>«Между нами всё кончено!»</em></p>
-      </div>
-      <div class="section">
-        <div class="section-title">Евангелие о Лазаре</div>
-        <div class="callout callout-green">Соня читает Раскольникову притчу о воскрешении Лазаря. Голос дрожит, слёзы текут. Символ возможного духовного воскресения.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Признание</div>
-        <div class="callout callout-red"><em>«Я не старуху убил — я себя убил… Но… я старуху убил… и Лизавету… и себя убил!»</em></div>
-        <p style="margin-top:8px">Соня: <em>«Нет несчастнее тебя теперь никого на свете!»</em> — и обнимает его.</p>
-        <p style="margin-top:6px"><em>«Поклонись земле, которую осквернил, и скажи всему народу: я убийца!»</em></p>
-      </div>
-      <div class="section">
-        <div class="section-title">Свидригайлов подслушивает</div>
-        <p>Снимает квартиру через тонкую стенку. Это становится его главным козырем.</p>
-      </div>
-    `
-  },
-  {
-    id: 'p5', x: 1530, y: 350,
-    title: 'Часть 5',
-    sub: 'Поклон земле',
-    chars: ['Порфирий', 'Катерина Ивановна', 'Свидригайлов', 'Дуня'],
-    tag: 'ЧАСТЬ 5',
-    tagColor: '#5590c8',
-    heading: 'Поклон земле',
-    content: `
-      <div class="section">
-        <div class="section-title">Порфирий давит</div>
-        <div class="callout callout-purple">Рассказывает о маляре Миколке, ложно взявшем вину. Говорит почти ласково: <em>«Я вас ещё подожду… вы сами придёте»</em>. Раскольников уходит почти сломлен.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Смерть Катерины Ивановны</div>
-        <div class="callout callout-amber">В чахотке выводит детей на улицу просить милостыню. Умирает прямо на мостовой: <em>«Простите… простите меня, Христа ради!»</em></div>
-      </div>
-      <div class="section">
-        <div class="section-title">Дуня стреляет в Свидригайлова</div>
-        <div class="callout callout-red">Заманивает её в квартиру. Она стреляет — промахивается. Свидригайлов отпускает: <em>«Вы меня не любите… и я никому не нужен»</em>.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Сенная площадь</div>
-        <p>Раскольников падает на землю, целует её: <em>«Я осквернил тебя… поклонюсь всей земле»</em> — символический акт покаяния перед миром.</p>
-      </div>
-    `
-  },
-  {
-    id: 'p6', x: 1600, y: 630,
-    title: 'Часть 6',
-    sub: 'Признание в участке',
-    chars: ['Свидригайлов', 'Раскольников', 'Соня', 'мать'],
-    tag: 'ЧАСТЬ 6',
-    tagColor: '#c84040',
-    heading: 'Признание',
-    content: `
-      <div class="section">
-        <div class="section-title">Ночь Свидригайлова</div>
-        <div class="callout callout-red">Кошмары: является девочка, которую погубил — превращается в мёртвую соблазнительницу. Утром стреляется на улице.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Прощание</div>
-        <p>Прощается с матерью — она уже теряет рассудок. Идёт к Соне, берёт у неё <strong>кипарисовый крестик</strong>.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Признание</div>
-        <div class="callout callout-blue">На Сенной площади публично кланяется земле на глазах у толпы. Затем в участке: <em>«Это я убил старуху-процентщицу и сестру её Лизавету топором и ограбил»</em>.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Приговор</div>
-        <div class="callout callout-amber"><strong>8 лет каторги в Сибири.</strong></div>
-      </div>
-    `
-  },
-  {
-    id: 'epilog', x: 1360, y: 820,
-    cls: 'node-epilog',
-    title: 'Эпилог',
-    sub: 'Воскрешение',
-    chars: ['Соня', 'Раскольников'],
-    tag: 'ЭПИЛОГ',
-    tagColor: '#30a060',
-    heading: 'Воскрешение',
-    content: `
-      <div class="section">
-        <div class="section-title">Каторга</div>
-        <p>Раскольников озлоблен, замкнут, презирает всех. Тяжело болеет. Соня следует за ним в Сибирь — все её любят, называют <em>«матушкой»</em>.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Сон о трихинах</div>
-        <div class="callout callout-purple">Апокалиптический бред: мир заражён микробами <strong>«трихинами»</strong> — символами гордыни и эгоизма. Люди убивают друг друга во имя «нового слова».</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Перелом</div>
-        <div class="callout callout-green"><em>«Их воскресла любовь. Сердце каждого было готово к целой жизни…»</em></div>
-        <p style="margin-top:8px">Просыпается, плачет, бросается к ногам Сони. Берёт Евангелие. Начинается медленное возрождение.</p>
-      </div>
-      <div class="section">
-        <div class="section-title">Финал</div>
-        <div class="callout callout-green"><em>«…впереди их ждал великий, ещё не виданный подвиг»</em>.</div>
-      </div>
-    `
-  }
-];
-
-// Edges: [from, to]
-const EDGES = [
-  ['root','p1'],['root','p2'],['root','p3'],['root','p4'],
-  ['root','p5'],['root','p6'],['root','epilog'],
-  ['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','epilog']
-];
-
-// ════════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════════
-let scale = 1, tx = 0, ty = 0;
-let dragging = false, dragStart = null, dragOrigin = null;
-let activeNode = null;
-
-const world = document.getElementById('world');
-const canvas = document.getElementById('canvas');
-const panel  = document.getElementById('panel');
-const linesEl = document.getElementById('lines');
-
-// ════════════════════════════════════════════
-//  BUILD NODES
-// ════════════════════════════════════════════
-const nodeEls = {};
-NODES.forEach(n => {
-  const el = document.createElement('div');
-  el.className = 'node ' + (n.cls || '');
-  el.id = 'node-' + n.id;
-  el.style.left = n.x + 'px';
-  el.style.top  = n.y + 'px';
-  el.innerHTML = `
-    <div class="node-inner" id="inner-${n.id}">
-      <div class="node-label">
-        <div class="node-dot"></div>
-        <div class="node-title">${n.title}</div>
-      </div>
-      <div class="node-body">${n.sub}</div>
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-tape"></div>
+  <div class="cover-inner">
+    <div class="cover-subject">📚 Литература · 10 класс</div>
+    <div class="cover-title">Преступление<br>и наказание</div>
+    <div class="cover-author">Ф.М. Достоевский, 1866</div>
+    <div class="cover-meta">
+      <span class="cover-badge cb-red">Краткое содержание</span>
+      <span class="cover-badge cb-blue">6 частей + эпилог</span>
+      <span class="cover-badge cb-green">✓ ЕГЭ 2025</span>
     </div>
-  `;
-  el.addEventListener('click', e => { e.stopPropagation(); openPanel(n); });
-  world.appendChild(el);
-  nodeEls[n.id] = el;
-});
+  </div>
+</div>
 
-// ════════════════════════════════════════════
-//  BUILD LINES
-// ════════════════════════════════════════════
-function getNodeCenter(id) {
-  const n = NODES.find(x => x.id === id);
-  const el = nodeEls[id];
-  const w = el.offsetWidth || 190;
-  const h = el.offsetHeight || 62;
-  return { x: n.x, y: n.y };
-}
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-btn" href="#p1">Часть I</a>
+  <a class="nav-btn" href="#p2">Часть II</a>
+  <a class="nav-btn" href="#p3">Часть III</a>
+  <a class="nav-btn" href="#p4">Часть IV</a>
+  <a class="nav-btn" href="#p5">Часть V</a>
+  <a class="nav-btn" href="#p6">Часть VI</a>
+  <a class="nav-btn" href="#epilog">Эпилог</a>
+</nav>
 
-function drawLines() {
-  const NODE_W = 190, NODE_H = 62;
-  let svg = '';
-  EDGES.forEach(([a, b]) => {
-    const na = NODES.find(x => x.id === a);
-    const nb = NODES.find(x => x.id === b);
-    const ax = na.x, ay = na.y;
-    const bx = nb.x, by = nb.y;
+<!-- ═══════════════ ЧАСТЬ I ═══════════════ -->
+<div id="p1" class="page" style="animation-delay:.05s">
+  <div class="page-lined"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px"></div>
+    <div class="ring" style="top:110px"></div>
+    <div class="ring" style="top:180px"></div>
+    <div class="ring" style="top:250px"></div>
+    <div class="ring" style="top:320px"></div>
+    <div class="ring" style="top:390px"></div>
+    <div class="ring" style="top:460px"></div>
+    <div class="ring" style="top:530px"></div>
+    <div class="ring" style="top:600px"></div>
+    <div class="ring" style="top:670px"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-red">Часть I</span>
+      <div class="part-title-wrap">
+        <div class="part-title">Рождение идеи. Убийство.</div>
+        <div class="part-subtitle">Петербург, июль 1860-х</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-red">Раскольников</span>
+      <span class="char-tag theme-amber">Алёна Ивановна</span>
+      <span class="char-tag theme-blue">Мармеладов</span>
+      <span class="char-tag theme-green">Соня</span>
+      <span class="char-tag theme-purple">Лизавета</span>
+    </div>
 
-    // Dashed line style like the reference image
-    const isSeq = ['p1p2','p2p3','p3p4','p4p5','p5p6','p6epilog'].includes(a+b);
-    const stroke = isSeq ? '#5590c8' : '#3a6080';
-    const dash = isSeq ? '' : 'stroke-dasharray="6 4"';
-    const w = isSeq ? '1.5' : '1';
+    <div class="section">
+      <div class="section-label">Обстановка</div>
+      <div class="body-text">
+        <p>Жаркий, душный июльский вечер в Петербурге 1860-х. <strong>Родион Романович Раскольников</strong> — 23-летний бывший студент юридического факультета. Высокий, красивый молодой человек с болезненно гордым, замкнутым взглядом. Живёт в крошечной каморке <span class="hl-amber">«шесть шагов длиной»</span> под самой крышей — без денег, в долгах у хозяйки, почти ничего не ест. Петербург давит жарой, вонью и нищетой — город как клетка.</p>
+      </div>
+    </div>
 
-    // Arrow head for sequential
-    const arrow = isSeq ? 'marker-end="url(#arrowhead)"' : '';
+    <div class="section">
+      <div class="section-label">Теория Раскольникова</div>
+      <div class="body-text">
+        <p>В голове Раскольникова давно зреет идея, которую он изложил в статье «О преступлении». Все люди делятся на два типа.</p>
+      </div>
+      <div class="callout callout-red" data-icon="⚖️">
+        <strong>«Твари дрожащие»</strong> — обыкновенные люди, которые живут по закону и морали, не могут переступить через них.<br><br>
+        <strong>«Право имеющие»</strong> — необыкновенные люди (Наполеон, Магомет, Ньютон), которые ради «нового слова» и великой цели <em>могут</em> переступить через любую мораль — и это не преступление, а необходимость.<br><br>
+        Вопрос, который терзает Раскольникова: к какому типу принадлежит <em>он сам</em>?
+      </div>
+    </div>
 
-    svg += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${stroke}" stroke-width="${w}" ${dash} opacity="0.6" ${arrow}/>`;
+    <div class="section">
+      <div class="section-label">Алёна Ивановна</div>
+      <div class="body-text">
+        <p>Раскольников идёт к <strong>старухе-процентщице Алёне Ивановне</strong> — злобной, жадной женщине лет шестидесяти, которая даёт деньги под залог и наживается на нищете. Закладывает серебряные часы отца, одновременно внимательно осматривая квартиру: где хранит деньги, где ключи от комода.</p>
+        <p>В его голове старуха — <span class="hl-red">«вредная вошь, ничтожная, злая, никому не нужная»</span>. Убийство кажется ему арифметически оправданным: её деньги пошли бы на добро и спасли бы сотни жизней — в том числе его самого, мать Пульхерию Александровну и сестру Дуню.</p>
+      </div>
+    </div>
 
-    // Connector dot at each end
-    svg += `<circle cx="${ax}" cy="${ay}" r="4" fill="${stroke}" opacity="0.7"/>`;
-    svg += `<circle cx="${bx}" cy="${by}" r="3" fill="${stroke}" opacity="0.5"/>`;
-  });
+    <div class="section">
+      <div class="section-label">Мармеладов</div>
+      <div class="body-text">
+        <p>По пути заходит в грязный трактир, где случайно знакомится с <strong>Семёном Захаровичем Мармеладовым</strong> — пьяным, опухшим, слезливым титулярным советником. Тот рассказывает трагедию своей семьи: жена <strong>Катерина Ивановна</strong> — гордая, чахоточная вдова чиновника, в отчаянии бьёт детей; старшая дочь <strong>Сонечка (18 лет)</strong> пошла «по жёлтому билету» — стала проституткой, чтобы спасти семью от голодной смерти; маленькие Полечка, Коля и Лидочка голодают.</p>
+      </div>
+      <div class="quote-block">«За что ж любить меня такому, как я? Ведь если всех жалеть, то всех жалеть надо!» — Мармеладов о самом себе.</div>
+      <div class="body-text">
+        <p>Раскольников, потрясённый этой картиной, отводит Мармеладова домой, видит убогую каморку и отдаёт им последние деньги. Встреча только усиливает его ощущение несправедливости мира.</p>
+      </div>
+    </div>
 
-  linesEl.innerHTML = `
-    <defs>
-      <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-        <path d="M2 2L8 5L2 8" fill="none" stroke="#5590c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </marker>
-    </defs>
-    ${svg}
-  `;
-}
+    <div class="section">
+      <div class="section-label">Письмо матери</div>
+      <div class="body-text">
+        <p>На следующий день — письмо от матери. <strong>Дуня</strong> работала гувернанткой у помещика <strong>Свидригайлова</strong>, который приставал к ней; жена Свидригайлова сначала оклеветала её, потом оправдала и вскоре умерла. Теперь Дуня, чтобы вытащить семью из нищеты, согласилась выйти замуж за 45-летнего адвоката <strong>Петра Петровича Лужина</strong> — скупого, холодного, расчётливого карьериста, который обещает помочь и Родиону. Этот брак — чистая жертва Дуни ради брата и матери.</p>
+      </div>
+      <div class="callout callout-amber" data-icon="✉️">
+        Раскольников приходит в бешенство: <em>«Не бывать этому! Пока я жив — не допущу! Дуня жертвует собой ради меня, а я должен это принять?»</em> Он видит прямую параллель: Соня продала себя ради семьи — теперь Дуня хочет сделать то же самое.
+      </div>
+    </div>
 
-drawLines();
+    <div class="section">
+      <div class="section-label">«Знак» из трактира</div>
+      <div class="body-text">
+        <p>Бродя по городу, он подслушивает разговор студента и офицера в трактире: они рассуждают о том, что старуху-процентщицу можно убить без греха — она злая, никому не нужная, а её деньги пошли бы на добро. Раскольников воспринимает это как <span class="hl-blue">«знак свыше»</span>: та же мысль, что давно живёт в нём, — случайно произнесена чужими людьми.</p>
+      </div>
+    </div>
 
-// ════════════════════════════════════════════
-//  PAN & ZOOM
-// ════════════════════════════════════════════
-function applyTransform() {
-  world.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-}
+    <div class="section">
+      <div class="section-label">Сон о лошади</div>
+      <div class="body-text">
+        <p>Ночью снится страшный детский сон: пьяные мужики забивают до смерти старую, измученную клячу, которая не может тянуть воз. Маленький Родион бежит к ней, обнимает её мёртвую голову и кричит: <span class="hl-purple">«Папа, они лошадку бьют!»</span></p>
+      </div>
+      <div class="callout callout-purple" data-icon="🌙">
+        Сон символизирует жалость к слабым и ужас перед жестокостью — но одновременно подсознательно оправдывает убийство «бесполезной» старухи, как убили «бесполезную» лошадь. Раскольников просыпается в слезах и думает: <em>«Неужели я в самом деле возьму топор?»</em>
+      </div>
+    </div>
 
-function initView() {
-  // Center the map
-  const cw = canvas.offsetWidth;
-  const ch = canvas.offsetHeight;
-  tx = cw/2 - 1200;
-  ty = ch/2 - 800;
-  scale = 0.7;
-  applyTransform();
-}
+    <div class="divider"><span>★ кульминация ★</span></div>
 
-function zoom(delta) {
-  const cw = canvas.offsetWidth;
-  const ch = canvas.offsetHeight;
-  const cx = cw/2, cy = ch/2;
-  const prev = scale;
-  scale = Math.min(2, Math.max(0.3, scale + delta));
-  tx = cx - (cx - tx) * (scale / prev);
-  ty = cy - (cy - ty) * (scale / prev);
-  applyTransform();
-}
+    <div class="section">
+      <div class="section-label">Убийство</div>
+      <div class="body-text">
+        <p>Раскольников решается. Тайком берёт топор у дворника, идёт к старухе под предлогом заложить серебряную папиросницу. Алёна Ивановна открывает дверь — он бьёт её обухом топора по голове. Раз, ещё раз. Она падает без звука.</p>
+        <p>Начинает торопливо искать ключи, открывает комод — видит деньги и заклады. Хватает горсть вещей. И вдруг — стук в дверь, снаружи кто-то ломится. Молчит. Стихает. И тут — другой звук: кто-то отпирает дверь своим ключом.</p>
+      </div>
+      <div class="callout callout-red" data-icon="💀">
+        Входит <strong>Лизавета</strong> — кроткая, тихая, немолодая сестра старухи, которую та эксплуатировала всю жизнь. Невинная, безответная, почти святая женщина. Она видит тело сестры и Раскольникова с топором — и не может даже закричать от ужаса. Раскольников в панике убивает и её.<br><br>
+        <em>Убийство Лизаветы — незапланированное, случайное — станет главной раной его совести. Он убил не «вредную вошь», а беззащитного человека.</em>
+      </div>
+      <div class="body-text">
+        <p>Слышит голоса на лестнице — приходят случайные покупатели Кох и Пётр Петрович. Едва успевает спрятаться и улизнуть. Добычу — горсть вещей и деньги — прячет под камень во дворе и почти к ним не прикасается: они жгут его. Возвращается домой в лихорадке, прячет окровавленные вещи и топор, падает без сил.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-function resetView() { initView(); }
+<!-- ═══════════════ ЧАСТЬ II ═══════════════ -->
+<div id="p2" class="page">
+  <div class="page-lined"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px"></div><div class="ring" style="top:110px"></div>
+    <div class="ring" style="top:180px"></div><div class="ring" style="top:250px"></div>
+    <div class="ring" style="top:320px"></div><div class="ring" style="top:390px"></div>
+    <div class="ring" style="top:460px"></div><div class="ring" style="top:530px"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-amber">Часть II</span>
+      <div class="part-title-wrap">
+        <div class="part-title">Горячка и страх</div>
+        <div class="part-subtitle">Первые дни после убийства</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-red">Раскольников</span>
+      <span class="char-tag theme-blue">Разумихин</span>
+      <span class="char-tag theme-amber">Мармеладов</span>
+      <span class="char-tag theme-purple">Лужин</span>
+      <span class="char-tag theme-green">мать · Дуня</span>
+    </div>
 
-canvas.addEventListener('mousedown', e => {
-  if (e.target.closest('.node')) return;
-  dragging = true;
-  dragStart = { x: e.clientX, y: e.clientY };
-  dragOrigin = { x: tx, y: ty };
-  canvas.classList.add('dragging');
-});
+    <div class="section">
+      <div class="section-label">Горячка</div>
+      <div class="body-text">
+        <p>Несколько дней Раскольников лежит в тяжёлой горячке — то проваливается в беспамятство, то вскакивает от ужаса, что кто-то уже знает. Дрожащими руками ощупывает спрятанные улики, боится, что кровь проступила, что проговорился во сне. Каждый стук в дверь кажется арестом.</p>
+        <p><strong>Дмитрий Прокофьич Разумихин</strong> — его лучший друг, шумный, добрый, полный энергии — почти не отходит. Приводит доктора Зосимова, покупает на свои последние деньги еду, одежду и лекарства, уговаривает поесть: <em>«Ты что ж это, брат, совсем с ума сошёл? Я думал, уже не встанешь!»</em></p>
+      </div>
+    </div>
 
-window.addEventListener('mousemove', e => {
-  if (!dragging) return;
-  tx = dragOrigin.x + (e.clientX - dragStart.x);
-  ty = dragOrigin.y + (e.clientY - dragStart.y);
-  applyTransform();
-});
+    <div class="section">
+      <div class="section-label">Участок</div>
+      <div class="body-text">
+        <p>Когда Раскольников приходит в себя, его вызывают в полицейскую контору. Сердце колотится так, что кажется, сейчас разорвётся: <span class="hl-red">«Всё кончено, сейчас арест»</span>. Но повод оказывается ничтожным — жалоба хозяйки за долг за квартиру.</p>
+      </div>
+      <div class="callout callout-blue" data-icon="👮">
+        В конторе случайно заходит разговор об убийстве старухи и Лизаветы. Раскольников, не выдержав напряжения, <strong>падает в глубокий обморок прямо на полу</strong>. Это, с одной стороны, усиливает подозрения окружающих — с другой, спасает его от дальнейших расспросов.
+      </div>
+    </div>
 
-window.addEventListener('mouseup', () => {
-  dragging = false;
-  canvas.classList.remove('dragging');
-});
+    <div class="section">
+      <div class="section-label">Мать и Дуня приезжают</div>
+      <div class="body-text">
+        <p>Приехавших мать и Дуню Раскольников встречает резко и грубо — они потрясены его измождённым, почти безумным видом. Он почти выгоняет их, кричит: <em>«Уезжайте! Я вас не люблю… не могу любить… уходите!»</em> Это защитная реакция: он боится выдать себя, не хочет заразить их своей мукой.</p>
+        <p>При первой же встрече с женихом Дуни <strong>Лужиным</strong> — взрыв. Тот высокомерен, сух, расчётлив: требует полного послушания, видит в Дуне «спасённую им» женщину, которая обязана быть благодарной. Раскольников оскорбляет его в лицо и выгоняет: <em>«Вон отсюда! И не смей больше являться!»</em> Лужин уходит, кипя злобой, уже строя планы мести.</p>
+      </div>
+    </div>
 
-canvas.addEventListener('wheel', e => {
-  e.preventDefault();
-  const delta = e.deltaY > 0 ? -0.08 : 0.08;
-  const cx = e.clientX, cy = e.clientY;
-  const prev = scale;
-  scale = Math.min(2, Math.max(0.3, scale + delta));
-  tx = cx - (cx - tx) * (scale / prev);
-  ty = cy - (cy - ty) * (scale / prev);
-  applyTransform();
-}, { passive: false });
+    <div class="section">
+      <div class="section-label">Смерть Мармеладова и поминки</div>
+      <div class="body-text">
+        <p>Пьяный Мармеладов бросается под лошадей и погибает прямо на улице — на глазах у Раскольникова. Тот помогает перенести умирающего домой, отдаёт семье почти все свои деньги на похороны.</p>
+        <p>Катерина Ивановна в истерике устраивает поминки в нищей каморке — надрывная сцена: она горделиво изображает «благородную даму», приглашает соседей, хочет как лучше — но всё рушится в скандале и слезах.</p>
+      </div>
+      <div class="callout callout-amber" data-icon="🕯️">
+        <strong>Провокация Лужина:</strong> мстя Раскольникову, он подбрасывает Соне сто рублей прямо на поминках и публично обвиняет её в краже — хочет опозорить семью и ударить по Раскольникову через неё. Соню защищают свидетели. Лужина разоблачают и <em>выгоняют с позором</em>.
+      </div>
+    </div>
 
-// Touch support
-let lastTouch = null;
-canvas.addEventListener('touchstart', e => {
-  if (e.touches.length === 1) {
-    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY, tx, ty };
-  }
-});
-canvas.addEventListener('touchmove', e => {
-  e.preventDefault();
-  if (e.touches.length === 1 && lastTouch) {
-    tx = lastTouch.tx + (e.touches[0].clientX - lastTouch.x);
-    ty = lastTouch.ty + (e.touches[0].clientY - lastTouch.y);
-    applyTransform();
-  }
-}, { passive: false });
+    <div class="section">
+      <div class="section-label">Внутреннее состояние</div>
+      <div class="body-text">
+        <p>Совесть начинает разъедать его изнутри. Раскольников избегает людей, бродит по улицам, думает о самоубийстве — но какая-то сила удерживает его. Украденные вещи и деньги под камнем жгут его как проклятие — он почти не прикасается к ним.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-// ════════════════════════════════════════════
-//  PANEL
-// ════════════════════════════════════════════
-function openPanel(n) {
-  // Deactivate previous
-  if (activeNode) {
-    document.getElementById('inner-' + activeNode)?.classList.remove('active');
-  }
-  activeNode = n.id;
-  document.getElementById('inner-' + n.id)?.classList.add('active');
+<!-- ═══════════════ ЧАСТЬ III ═══════════════ -->
+<div id="p3" class="page">
+  <div class="page-lined"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px"></div><div class="ring" style="top:110px"></div>
+    <div class="ring" style="top:180px"></div><div class="ring" style="top:250px"></div>
+    <div class="ring" style="top:320px"></div><div class="ring" style="top:390px"></div>
+    <div class="ring" style="top:460px"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-purple">Часть III</span>
+      <div class="part-title-wrap">
+        <div class="part-title">Кошки-мышки</div>
+        <div class="part-subtitle">Порфирий и Свидригайлов появляются</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-purple">Порфирий</span>
+      <span class="char-tag theme-red">Свидригайлов</span>
+      <span class="char-tag theme-blue">Разумихин</span>
+      <span class="char-tag theme-green">Дуня</span>
+    </div>
 
-  document.getElementById('panel-tag').textContent = n.tag || '';
-  document.getElementById('panel-tag').style.color = n.tagColor || '#5590c8';
-  document.getElementById('panel-title').textContent = n.heading || n.title;
-  document.getElementById('panel-chars').innerHTML = n.chars.map(c =>
-    `<span class="char-pill">${c}</span>`
-  ).join('');
-  document.getElementById('panel-content').innerHTML = n.content;
-  panel.classList.add('open');
-  document.getElementById('hud-open').textContent = n.title + ' открыта';
-}
+    <div class="section">
+      <div class="section-label">Порфирий Петрович</div>
+      <div class="body-text">
+        <p>Через Разумихина Раскольников знакомится со следователем <strong>Порфирием Петровичем</strong>. На вид — мягкий, добродушный, немного смешной. На деле — опасный психолог с «кошачьей» улыбкой: знает, как давить, когда замолчать, когда задать невинный вопрос, который бьёт точно в цель.</p>
+        <p>Порфирий уже читал статью Раскольникова о «необыкновенных людях» и ведёт тонкий разговор — почти дружеский, но каждая реплика как укол:</p>
+      </div>
+      <div class="callout callout-purple" data-icon="🐱">
+        <em>«А как вы думаете, Родион Романыч, многие ли теперь Наполеоны появляются?»</em><br><br>
+        <em>«Вы, может быть, и сами… право имеете?»</em><br><br>
+        Улик нет. Но следователь ясно даёт понять: <strong>«Я вас подозреваю… и буду ждать»</strong>. Он знает, что преступник сам придёт — совесть сильнее страха и умнее любых улик.
+      </div>
+      <div class="body-text">
+        <p>Раскольников в панике, чувствует, как потеет — но отвечает дерзко и насмешливо, пытается играть в ту же игру. Это только усиливает интерес Порфирия: невиновный человек не стал бы так нервничать.</p>
+      </div>
+    </div>
 
-function closePanel() {
-  panel.classList.remove('open');
-  if (activeNode) {
-    document.getElementById('inner-' + activeNode)?.classList.remove('active');
-    activeNode = null;
-  }
-  document.getElementById('hud-open').textContent = 'Кликни на узел';
-}
+    <div class="section">
+      <div class="section-label">Аркадий Свидригайлов</div>
+      <div class="body-text">
+        <p>В Петербург приезжает <strong>Аркадий Иванович Свидригайлов</strong> — загадочный, циничный человек с тёмным прошлым. Богатый помещик, в своё время вышедший из долговой ямы благодаря покойной жене Марфе Петровне. Утверждает, что приехал по делам — но на самом деле одержим болезненной страстью к Дуне.</p>
+        <p>Он говорит Раскольникову, что слышал от покойной жены о его теории — и теперь видит в нём «родственную душу». Рассказывает о призраках, являющихся ему по ночам, о самоубийствах в его жизни:</p>
+      </div>
+      <div class="quote-block">«Вечность — это какая-то тёмная комната с пауками по углам.»</div>
+      <div class="body-text">
+        <p>Свидригайлов — это <span class="hl-red">зеркало возможной судьбы Раскольникова</span>: человек, который тоже переступил черту — и живёт с этим без покаяния. Его путь — намёк на то, что ждёт героя, если он не раскается.</p>
+      </div>
+    </div>
 
-// ════════════════════════════════════════════
-//  INIT
-// ════════════════════════════════════════════
-window.addEventListener('load', () => {
-  initView();
-});
-</script>
+    <div class="sticky">
+      <strong>Двойники Раскольникова — важно для ЕГЭ:</strong><br>
+      • Свидригайлов — преступник без раскаяния → самоубийство<br>
+      • Лужин — «рациональный эгоизм» в чистом виде → позор<br>
+      • Соня — антипод: смирение, жертвенность → воскрешение
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ЧАСТЬ IV ═══════════════ -->
+<div id="p4" class="page">
+  <div class="page-lined"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px"></div><div class="ring" style="top:110px"></div>
+    <div class="ring" style="top:180px"></div><div class="ring" style="top:250px"></div>
+    <div class="ring" style="top:320px"></div><div class="ring" style="top:390px"></div>
+    <div class="ring" style="top:460px"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-green">Часть IV</span>
+      <div class="part-title-wrap">
+        <div class="part-title">Признание Сонечке</div>
+        <div class="part-subtitle">Самая важная сцена романа</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-green">Соня</span>
+      <span class="char-tag theme-red">Раскольников</span>
+      <span class="char-tag theme-purple">Лужин</span>
+      <span class="char-tag theme-amber">Свидригайлов</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Финал Лужина</div>
+      <div class="body-text">
+        <p>На поминках Катерины Ивановны Лужин делает последнюю попытку отомстить: подбрасывает Соне деньги и публично обвиняет в краже — хочет окончательно разрушить её репутацию. Свидетели разоблачают его. <strong>Дуня окончательно разрывает помолвку:</strong> <em>«Между нами всё кончено навсегда!»</em> Лужин уходит раздавленным.</p>
+      </div>
+    </div>
+
+    <div class="divider"><span>★ ключевая сцена ★</span></div>
+
+    <div class="section">
+      <div class="section-label">Евангелие о Лазаре</div>
+      <div class="body-text">
+        <p>Раскольников приходит к Соне в её нищую каморку за ширмой — там, среди бедности и одиночества, происходит одна из самых мощных сцен романа. Он просит её прочитать из Евангелия — притчу о <strong>воскрешении Лазаря</strong>, который пролежал в могиле четыре дня и воскрес по слову Христа.</p>
+        <p>Соня читает, её голос дрожит, по щекам текут слёзы — она читает так, как будто это о ней самой.</p>
+      </div>
+      <div class="callout callout-green" data-icon="📖">
+        Смысл этой сцены: <em>воскрешение возможно даже из самой глубокой тьмы</em>. Лазарь = Раскольников, мёртвый духовно. Но для воскрешения нужно признание — нужно «отнять камень», как сказал Христос.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Признание</div>
+      <div class="body-text">
+        <p>Вдруг Раскольников падает перед Соней на колени. Она в ужасе:</p>
+      </div>
+      <div class="quote-block">«Я не старуху убил — я себя убил… Но… я старуху убил… и Лизавету… и себя убил!»</div>
+      <div class="body-text">
+        <p>Соня закрывает лицо руками, плачет навзрыд:</p>
+      </div>
+      <div class="quote-block">«Что ты над собой наделал! Нет несчастнее тебя теперь никого на свете!»</div>
+      <div class="body-text">
+        <p>Но тут же обнимает его — не осуждает, не отталкивает. Обещает не бросить, идти за ним хоть на каторгу. И говорит то, что он должен сделать:</p>
+      </div>
+      <div class="callout callout-green" data-icon="🙏">
+        <em>«Поклонись земле, которую осквернил, и скажи всему народу вслух: „Я убийца!"»</em><br><br>
+        Соня видит единственный выход — не наказание, не смерть, а <strong>публичное покаяние</strong>. Только оно может вернуть его к жизни.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Свидригайлов подслушивает</div>
+      <div class="body-text">
+        <p>Свидригайлов снимает квартиру через тонкую стенку с каморкой Сони. Он слышит <em>всё</em> признание. Это становится его главным козырем — оружием против Раскольникова и Дуни.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ЧАСТЬ V ═══════════════ -->
+<div id="p5" class="page">
+  <div class="page-lined"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px"></div><div class="ring" style="top:110px"></div>
+    <div class="ring" style="top:180px"></div><div class="ring" style="top:250px"></div>
+    <div class="ring" style="top:320px"></div><div class="ring" style="top:390px"></div>
+    <div class="ring" style="top:460px"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-blue">Часть V</span>
+      <div class="part-title-wrap">
+        <div class="part-title">Поклон земле</div>
+        <div class="part-subtitle">Катастрофы нарастают</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-purple">Порфирий</span>
+      <span class="char-tag theme-amber">Катерина Ивановна</span>
+      <span class="char-tag theme-red">Свидригайлов</span>
+      <span class="char-tag theme-green">Дуня</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Порфирий давит</div>
+      <div class="body-text">
+        <p>Порфирий вызывает Раскольникова ещё раз. На этот раз давление сильнее. Следователь рассказывает притчу о маляре Миколке — тот из религиозного фанатизма ложно взял на себя чужое преступление. Намёк очевиден: Раскольников пытается нести чужое бремя — «право имеющего» — которое ему не по силам.</p>
+        <p>Потом — почти ласково, с улыбкой:</p>
+      </div>
+      <div class="quote-block">«Я вас ещё подожду… вы сами придёте. Мне даже выгоднее, чтоб вы сами пришли.»</div>
+      <div class="body-text">
+        <p>Раскольников уходит в полном смятении. Он почти сломлен — Порфирий умело снял с него все защитные маски.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Гибель Катерины Ивановны</div>
+      <div class="body-text">
+        <p>Катерина Ивановна окончательно теряет рассудок от горя, нищеты и чахотки. В бреду она выводит маленьких детей на улицу просить милостыню, заставляет петь и танцевать — сама в рваном платье, кашляет кровью. Люди останавливаются, смотрят с жалостью и ужасом.</p>
+      </div>
+      <div class="callout callout-amber" data-icon="🕯️">
+        Падает прямо на мостовую. Её переносят домой. Умирает, в последний момент повторяя: <em>«Простите… простите меня, Христа ради!»</em> Соня остаётся одна с тремя маленькими детьми.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Дуня стреляет в Свидригайлова</div>
+      <div class="body-text">
+        <p>Свидригайлов под предлогом важного разговора заманивает Дуню в свою квартиру, запирает дверь на ключ. Угрожает выдать брата, обещает спасти его в обмен на её любовь. Дуня достаёт из сумочки <strong>маленький заряженный револьвер</strong> и стреляет в него — промахивается. Стреляет ещё раз — рикошет, лёгкая царапина на голове.</p>
+      </div>
+      <div class="callout callout-red" data-icon="🔫">
+        Свидригайлов смотрит на неё — и понимает. Она его не любит. Никогда не полюбит. Он отпирает дверь и говорит: <em>«Вы меня не любите… Ну что ж, уходите»</em>. Отпускает её. Понимает, что он — никому не нужен.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Сенная площадь</div>
+      <div class="body-text">
+        <p>Раскольников, внутренне подготавливаясь к признанию, идёт на Сенную площадь. Там — толпа, шум, обычная городская жизнь. Вдруг он опускается на колени прямо посреди площади и целует грязную мостовую. Толпа смеётся и шутит: <em>«Пьяный, что ли?»</em></p>
+      </div>
+      <div class="callout callout-blue" data-icon="🌍">
+        <em>«Я осквернил тебя… поклонюсь всей земле, которую осквернил»</em> — это символическое публичное покаяние перед миром, перед народом, которому он причинил зло.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ЧАСТЬ VI ═══════════════ -->
+<div id="p6" class="page">
+  <div class="page-lined"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px"></div><div class="ring" style="top:110px"></div>
+    <div class="ring" style="top:180px"></div><div class="ring" style="top:250px"></div>
+    <div class="ring" style="top:320px"></div><div class="ring" style="top:390px"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-red">Часть VI</span>
+      <div class="part-title-wrap">
+        <div class="part-title">Признание в участке</div>
+        <div class="part-subtitle">Конец пути — и начало нового</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-red">Свидригайлов</span>
+      <span class="char-tag theme-red">Раскольников</span>
+      <span class="char-tag theme-green">Соня</span>
+      <span class="char-tag theme-blue">мать</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Последняя ночь Свидригайлова</div>
+      <div class="body-text">
+        <p>После того как Дуня ушла, Свидригайлов проводит кошмарную ночь. Снимает грязный номер в дешёвой гостинице. Снятся кошмары: видит пятилетнюю девочку, которую якобы погубил когда-то, — она лежит в гробу среди цветов, потом вдруг оживает, смотрит на него с порочной усмешкой взрослой женщины. Просыпается в холодном поту.</p>
+        <p>На рассвете встаёт, раздаёт деньги — Соне, маленьким сиротам Катерины Ивановны, другим людям. Выходит на пустую улицу.</p>
+      </div>
+      <div class="callout callout-red" data-icon="💔">
+        На вопрос случайного сторожа «куда?» отвечает: <em>«В Америку»</em> — и тут же достаёт пистолет и <strong>стреляется на глазах у свидетеля</strong>.<br><br>
+        Его смерть — логичный финал человека, который переступал черту без покаяния. Он зашёл туда, куда мог зайти Раскольников — и показал, что этот путь ведёт в никуда.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Прощание с матерью</div>
+      <div class="body-text">
+        <p>Раскольников приходит к матери. Пульхерия Александровна уже почти потеряла рассудок от горя и тревоги — она зовёт его «Родей», гладит по голове, что-то бессвязно рассказывает. Она не понимает, что происходит. Он прощается тихо и бережно — как с человеком, которого больше не увидит.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Кипарисовый крест</div>
+      <div class="body-text">
+        <p>Идёт к Соне. Та без слов протягивает ему <strong>кипарисовый крестик</strong> — символ принятия страдания, смирения и веры. Раскольников надевает его.</p>
+      </div>
+    </div>
+
+    <div class="divider"><span>★ финал ★</span></div>
+
+    <div class="section">
+      <div class="section-label">Признание</div>
+      <div class="body-text">
+        <p>На Сенной площади снова опускается на колени, кланяется земле — на этот раз открыто, на глазах у толпы. Потом встаёт и идёт в полицейскую контору.</p>
+        <p>Видит за конторкой знакомого чиновника. Делает шаг к нему. Пауза.</p>
+      </div>
+      <div class="quote-block">«Это я убил старуху-процентщицу и сестру её Лизавету топором и ограбил.»</div>
+      <div class="callout callout-blue" data-icon="⚖️">
+        Суд приговаривает его к <strong>8 годам каторги в Сибири</strong>. Добровольное признание и «расстроенное состояние» смягчили приговор. Он не пытался бежать, не нанял адвоката, не торговался — просто принял наказание.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ЭПИЛОГ ═══════════════ -->
+<div id="epilog" class="page">
+  <div class="page-lined" style="background-image: repeating-linear-gradient(0deg,transparent,transparent 31px,#b8e0c8 31px,#b8e0c8 32px);"></div>
+  <div class="fold"></div>
+  <div class="rings">
+    <div class="ring" style="top:40px;border-color:#80c080;background:#c8d8c0;"></div>
+    <div class="ring" style="top:110px;border-color:#80c080;background:#c8d8c0;"></div>
+    <div class="ring" style="top:180px;border-color:#80c080;background:#c8d8c0;"></div>
+    <div class="ring" style="top:250px;border-color:#80c080;background:#c8d8c0;"></div>
+    <div class="ring" style="top:320px;border-color:#80c080;background:#c8d8c0;"></div>
+    <div class="ring" style="top:390px;border-color:#80c080;background:#c8d8c0;"></div>
+  </div>
+  <div class="page-content">
+    <div class="part-header">
+      <span class="part-num-badge theme-green">Эпилог</span>
+      <div class="part-title-wrap">
+        <div class="part-title" style="color:var(--accent-green)">Воскрешение</div>
+        <div class="part-subtitle">«Их воскресла любовь»</div>
+      </div>
+    </div>
+    <div class="chars-row">
+      <span class="char-tag theme-red">Раскольников</span>
+      <span class="char-tag theme-green">Соня</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Первые месяцы на каторге</div>
+      <div class="body-text">
+        <p>На каторге в Сибири Раскольников <strong>озлоблен и замкнут</strong>. Презирает всех арестантов, держится особняком, ни с кем не говорит. Тяжело болеет — лежит в тюремном лазарете. При этом он по-прежнему не раскаивается в своей теории — только казнит себя за то, что оказался «слабым»: признался, не выдержал.</p>
+      </div>
+      <div class="callout callout-red" data-icon="😠">
+        Арестанты чувствуют его отчуждённость и <strong>ненавидят</strong> его в ответ: <em>«Ты безбожник! Тебя убить надо!»</em> — говорят ему. Он один, в абсолютном внутреннем одиночестве.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Соня рядом</div>
+      <div class="body-text">
+        <p><strong>Соня Мармеладова</strong> следует за ним в Сибирь — добровольно. Живёт в небольшом городке неподалёку от острога, работает швеёй, помогает арестантам чем может — передаёт еду, ходатайствует перед начальством. Все её любят — арестанты называют её <span class="hl-green">«матушкой Соней»</span>. Когда она проходит мимо, снимают шапки.</p>
+        <p>Те самые арестанты, которые ненавидели Раскольникова, — через Соню начинают относиться к нему мягче. Её любовь медленно, незаметно просачивается к нему.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Сон о трихинах</div>
+      <div class="body-text">
+        <p>В горячке болезни Раскольников видит апокалиптический сон. Мир заражён особыми микробами — <strong>«трихинами»</strong>. Но это не обычная болезнь: заражённые люди становятся абсолютно убеждены, что именно они — и только они — знают правду. Каждый считает себя «право имеющим».</p>
+      </div>
+      <div class="callout callout-purple" data-icon="🦠">
+        Заражённые не могут договориться, потому что каждый убеждён в своей исключительности. Они убивают друг друга во имя «справедливости» и «нового слова». Города горят, армии распадаются, человечество гибнет.<br><br>
+        Это и есть образ мира, в котором теория Раскольникова стала <em>всеобщей</em>. Достоевский показывает: идея «права на убийство» — это не путь к величию, а путь к апокалипсису.
+      </div>
+    </div>
+
+    <div class="divider"><span>★ перелом ★</span></div>
+
+    <div class="section">
+      <div class="section-label">Момент воскрешения</div>
+      <div class="body-text">
+        <p>Раскольников просыпается после болезни — слабый, опустошённый. Видит Соню: она сидит рядом на скамейке, смотрит на него — бледная, измученная, но <em>здесь</em>. И вдруг что-то рвётся внутри него.</p>
+        <p>Он плачет. Сам не понимает почему — просто слёзы текут и не останавливаются. Встаёт, бросается к её ногам, обнимает колени. Она берёт его за руки, смотрит на него.</p>
+      </div>
+      <div class="callout callout-green" data-icon="🌅">
+        Это первые настоящие слёзы за всё время. Что-то оттаивает. Броня, которую он выстраивал годами — гордость, теория, самозащита — рассыпается.<br><br>
+        Он берёт Евангелие, которое Соня дала ему когда-то. Открывает. Читает. Начинается медленное, трудное, настоящее возрождение.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Финальные слова Достоевского</div>
+      <div class="quote-block" style="font-size:15px; line-height:1.8;">
+        «Но тут уж начинается новая история — история постепенного обновления человека, история его постепенного перерождения, постепенного перехода из одного мира в другой…»<br><br>
+        «Их воскресла любовь. Сердце каждого заключало бесконечные источники жизни для сердца другого. Они положили ждать и терпеть. Им оставалось ещё семь лет; а до тех пор столько нестерпимой муки и столько бесконечного счастия! Но он воскрес, и он знал это, чувствовал вполне всем обновившимся существом своим, а она — она ведь и жила только одною его жизнью!»
+      </div>
+    </div>
+
+    <div class="sticky" style="transform:rotate(0.5deg)">
+      <strong>Главная мысль Достоевского:</strong><br>
+      Человек не может присвоить себе право убивать — даже ради «великой цели». Единственный путь — покаяние, смирение и любовь. Соня, которая кажется «падшей», оказывается нравственно выше «необыкновенного» Раскольникова.
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
