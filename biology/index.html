@@ -34,15 +34,13 @@
     padding: 40px 20px;
   }
 
-  /* Lined paper */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background: repeating-linear-gradient(
       0deg,
-      transparent,
-      transparent 31px,
+      transparent, transparent 31px,
       rgba(44,74,124,0.06) 31px,
       rgba(44,74,124,0.06) 32px
     );
@@ -50,7 +48,6 @@
     z-index: 0;
   }
 
-  /* Red margin line */
   body::after {
     content: '';
     position: fixed;
@@ -71,8 +68,8 @@
 
   /* ── HEADER ── */
   header {
-    margin-bottom: 40px;
-    padding-bottom: 28px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
     border-bottom: 2px solid var(--rule);
     animation: fadeDown 0.6s ease both;
   }
@@ -81,7 +78,7 @@
     display: flex;
     justify-content: center;
     gap: 28px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .ring {
@@ -113,16 +110,16 @@
     text-transform: uppercase;
     padding: 4px 14px;
     border-radius: 2px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 6vw, 42px);
+    font-size: clamp(26px, 6vw, 40px);
     font-weight: 900;
     color: var(--blue);
     line-height: 1.15;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .subtitle {
@@ -131,112 +128,189 @@
     letter-spacing: 0.05em;
   }
 
+  /* ── PAGE INDICATOR ── */
+  .page-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid rgba(44,74,124,0.15);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.06em;
+    margin-top: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  .page-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    text-align: center;
+    margin: 20px 0 22px;
+    color: var(--gold);
+    font-size: 15px;
+    letter-spacing: 6px;
+    animation: fadeDown 0.6s 0.05s ease both;
+  }
+
   /* ── BUTTONS ── */
   .menu {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 11px;
   }
 
-  /* ▼ КНОПКА — href меняется здесь, в атрибуте тега <a> */
   .btn {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     text-decoration: none;
     background: white;
     border: 1px solid rgba(44,74,124,0.13);
     border-left: 4px solid var(--green);
     border-radius: 4px;
-    padding: 18px 22px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     color: var(--ink);
     text-align: left;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-left-color 0.18s ease;
-    animation: fadeUp 0.5s ease both;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    animation: fadeUp 0.45s ease both;
   }
 
-  .btn:nth-child(1) { animation-delay: 0.10s; }
-  .btn:nth-child(2) { animation-delay: 0.17s; border-left-color: var(--blue); }
-  .btn:nth-child(3) { animation-delay: 0.24s; border-left-color: var(--gold); }
+  .btn:nth-child(1)  { animation-delay: 0.06s;  border-left-color: #2a6b3a; }
+  .btn:nth-child(2)  { animation-delay: 0.10s;  border-left-color: #2c4a7c; }
+  .btn:nth-child(3)  { animation-delay: 0.14s;  border-left-color: #c9973a; }
+  .btn:nth-child(4)  { animation-delay: 0.18s;  border-left-color: #7a4b9e; }
+  .btn:nth-child(5)  { animation-delay: 0.22s;  border-left-color: #b03030; }
+  .btn:nth-child(6)  { animation-delay: 0.26s;  border-left-color: #1a7b8a; }
+  .btn:nth-child(7)  { animation-delay: 0.30s;  border-left-color: #3d6b2c; }
+  .btn:nth-child(8)  { animation-delay: 0.34s;  border-left-color: #8b3a1a; }
+  .btn:nth-child(9)  { animation-delay: 0.38s;  border-left-color: #4a3a8b; }
+  .btn:nth-child(10) { animation-delay: 0.42s;  border-left-color: #1a6b5a; }
 
   .btn:hover {
     transform: translateY(-3px) translateX(3px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.10);
   }
 
-  .btn:nth-child(1):hover { border-left-color: var(--green); }
-  .btn:nth-child(2):hover { border-left-color: var(--blue); }
-  .btn:nth-child(3):hover { border-left-color: var(--gold); }
-
   .btn-icon {
-    width: 40px; height: 40px;
+    width: 38px; height: 38px;
     border-radius: 4px;
     background: var(--green-light);
     display: grid;
     place-items: center;
-    font-size: 20px;
+    font-size: 18px;
     flex-shrink: 0;
   }
 
-  .btn:nth-child(2) .btn-icon { background: var(--blue-light); }
-  .btn:nth-child(3) .btn-icon { background: #fff4e0; }
+  .btn:nth-child(2)  .btn-icon { background: var(--blue-light); }
+  .btn:nth-child(3)  .btn-icon { background: #fff4e0; }
+  .btn:nth-child(4)  .btn-icon { background: #f0e8fa; }
+  .btn:nth-child(5)  .btn-icon { background: #fde8e8; }
+  .btn:nth-child(6)  .btn-icon { background: #e0f4f7; }
+  .btn:nth-child(7)  .btn-icon { background: var(--green-light); }
+  .btn:nth-child(8)  .btn-icon { background: #faeee8; }
+  .btn:nth-child(9)  .btn-icon { background: #eae8fa; }
+  .btn:nth-child(10) .btn-icon { background: #e0f7f0; }
 
-  .btn-text {
-    flex: 1;
-  }
+  .btn-text { flex: 1; }
 
   .btn-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #999;
-    margin-bottom: 2px;
+    color: #aaa;
+    margin-bottom: 1px;
   }
 
   .btn-title {
     font-family: 'Playfair Display', serif;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--blue);
   }
 
   .btn-arrow {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--gold);
     opacity: 0;
     transform: translateX(-6px);
     transition: opacity 0.18s ease, transform 0.18s ease;
   }
 
-  .btn:hover .btn-arrow {
-    opacity: 1;
-    transform: translateX(0);
+  .btn:hover .btn-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 28px;
+    animation: fadeUp 0.5s 0.45s ease both;
   }
 
-  /* ── DIVIDER ── */
-  .divider {
-    text-align: center;
-    margin: 24px 0 28px;
-    color: var(--gold);
-    font-size: 16px;
-    letter-spacing: 6px;
-    animation: fadeDown 0.6s 0.05s ease both;
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    background: white;
+    border: 1px solid rgba(44,74,124,0.2);
+    border-radius: 4px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .page-btn:hover {
+    background: var(--blue-light);
+    box-shadow: 0 4px 14px rgba(44,74,124,0.15);
+    transform: translateY(-2px);
+  }
+
+  .page-btn.active {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+    cursor: default;
+    transform: none;
+    pointer-events: none;
+  }
+
+  .page-btn.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: default;
   }
 
   /* ── FOOTER ── */
   footer {
-    margin-top: 36px;
-    padding-top: 20px;
+    margin-top: 28px;
+    padding-top: 18px;
     border-top: 1px solid var(--rule);
     font-size: 12px;
     color: #bbb;
     letter-spacing: 0.06em;
-    animation: fadeUp 0.5s 0.35s ease both;
+    animation: fadeUp 0.5s 0.5s ease both;
   }
 
-  /* ── ANIMATIONS ── */
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -255,26 +329,37 @@
 <body>
 <div class="wrapper">
 
-  <!-- HEADER -->
+  <!-- HEADER — не менять структуру, только текст badge/h1/subtitle -->
   <header>
     <div class="notebook-rings">
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="ring"></div><div class="ring"></div>
     </div>
     <div class="badge">🔬 Биология · 10 класс</div>
     <h1>Задания</h1>
     <p class="subtitle">Выберите таблицу или конспект</p>
+    <!-- Индикатор обновляется автоматически через JS -->
+    <div class="page-indicator"><div class="page-dot"></div><span id="indicator-text">Страница 1 из 2</span></div>
   </header>
 
   <div class="divider">✦ ✦ ✦</div>
 
-  <!-- MENU BUTTONS -->
-  <div class="menu">
 
-    <!-- ▼ КНОПКА 1 — вставьте ссылку в href="..." -->
+<!-- ================================================================
+  ||  СТРАНИЦА 1                                                      ||
+  ||  КАК ДОБАВИТЬ СТРАНИЦУ 3:                                        ||
+  ||  1. Скопируй весь блок от строки <div class="menu" id="page-X">  ||
+  ||     до строки <<КОНЕЦ СТРАНИЦЫ X>>                               ||
+  ||  2. Вставь сразу после закрывающего тега конца последней стр.    ||
+  ||  3. Смени id="page-3" (и далее по порядку)                       ||
+  ||  4. В блоке ПАГИНАЦИЯ скопируй одну кнопку страницы              ||
+  ||     и вставь с новым data-page="3"                               ||
+  ||  Остальное JS сделает сам.                                       ||
+  ================================================================ -->
+
+  <div class="menu" id="page-1">
+
+    <!-- ▼ КНОПКА 1 — href: ссылка | btn-label: тип | btn-title: название -->
     <a class="btn" href="/biology/biologytab1/index.html">
       <div class="btn-icon">📊</div>
       <div class="btn-text">
@@ -284,7 +369,7 @@
       <span class="btn-arrow">→</span>
     </a>
 
-    <!-- ▼ КНОПКА 2 — вставьте ссылку в href="..." -->
+    <!-- ▼ КНОПКА 2 — href: ссылка | btn-label: тип | btn-title: название -->
     <a class="btn" href="/biology/biologytab2/index.html">
       <div class="btn-icon">📋</div>
       <div class="btn-text">
@@ -294,7 +379,7 @@
       <span class="btn-arrow">→</span>
     </a>
 
-    <!-- ▼ КНОПКА 3 — вставьте ссылку в href="..." -->
+    <!-- ▼ КНОПКА 3 — href: ссылка | btn-label: тип | btn-title: название -->
     <a class="btn" href="/biology/biologytab3/index.html">
       <div class="btn-icon">📝</div>
       <div class="btn-text">
@@ -304,7 +389,209 @@
       <span class="btn-arrow">→</span>
     </a>
 
+    <!-- ▼ КНОПКА 4 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 5 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 6 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 7 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 8 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 9 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 10 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
   </div>
+  <!-- КОНЕЦ СТРАНИЦЫ 1 -->
+
+
+  <!-- ================================================================
+  ||  СТРАНИЦА 2  (скопируй этот блок целиком для стр. 3, 4 и т.д.) ||
+  ================================================================ -->
+  <div class="menu" id="page-2" style="display:none;">
+
+    <!-- ▼ КНОПКА 11 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 12 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 13 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 14 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 15 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 16 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 17 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 18 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 19 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 20 — href: вставьте ссылку | btn-label: тип | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+  </div>
+  <!-- КОНЕЦ СТРАНИЦЫ 2 -->
+
+
+  <!-- ================================================================
+  ||  ПАГИНАЦИЯ                                                       ||
+  ||  Чтобы добавить страницу 3:                                      ||
+  ||  Скопируй строку ▼ КНОПКА СТРАНИЦЫ и вставь                     ||
+  ||  перед кнопкой «Вперёд», смени data-page="3", текст «3»         ||
+  ================================================================ -->
+  <div class="pagination">
+
+    <span class="page-btn disabled" id="btn-prev">← Назад</span>
+
+    <!-- ▼ КНОПКА СТРАНИЦЫ 1 — data-page должен совпадать с id="page-X" -->
+    <span class="page-btn active" data-page="1">1</span>
+
+    <!-- ▼ КНОПКА СТРАНИЦЫ 2 — скопируй эту строку для стр. 3, 4... -->
+    <span class="page-btn" data-page="2">2</span>
+
+    <span class="page-btn" id="btn-next">Вперёд →</span>
+
+  </div>
+
 
   <!-- FOOTER -->
   <footer>
@@ -312,5 +599,54 @@
   </footer>
 
 </div>
+
+<!-- ================================================================
+||  JS ПАГИНАЦИИ — не трогать, работает автоматически              ||
+================================================================ -->
+<script>
+(function () {
+  let current = 1;
+
+  function allPages()    { return document.querySelectorAll('[id^="page-"]'); }
+  function allPageBtns() { return document.querySelectorAll('[data-page]'); }
+  function total()       { return allPages().length; }
+
+  function goTo(n) {
+    allPages().forEach(p => p.style.display = 'none');
+    const target = document.getElementById('page-' + n);
+    if (target) { target.style.display = 'flex'; target.style.flexDirection = 'column'; }
+
+    allPageBtns().forEach(b => {
+      b.classList.toggle('active',  +b.dataset.page === n);
+    });
+
+    const prev = document.getElementById('btn-prev');
+    const next = document.getElementById('btn-next');
+    prev.classList.toggle('disabled', n === 1);
+    next.classList.toggle('disabled', n === total());
+
+    const ind = document.getElementById('indicator-text');
+    if (ind) ind.textContent = 'Страница ' + n + ' из ' + total();
+
+    current = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  allPageBtns().forEach(b => {
+    b.addEventListener('click', () => goTo(+b.dataset.page));
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    if (current > 1) goTo(current - 1);
+  });
+
+  document.getElementById('btn-next').addEventListener('click', () => {
+    if (current < total()) goTo(current + 1);
+  });
+
+  goTo(1);
+})();
+</script>
+
 </body>
 </html>
