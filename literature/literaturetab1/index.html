@@ -3,915 +3,812 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Литература — Преступление и наказание</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@700;900&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<title>Преступление и наказание — Карта глав</title>
 <style>
-  :root {
-    --bg: #0e1117;
-    --bg2: #161b25;
-    --bg3: #1c2333;
-    --bubble: #1e2b42;
-    --bubble-accent: #17212b;
-    --blue: #5ca6e0;
-    --blue-light: #74b8f5;
-    --green: #4dba87;
-    --orange: #f5a623;
-    --red: #e05c5c;
-    --purple: #9b80e8;
-    --text: #e8ecf0;
-    --text-dim: #8a9ab0;
-    --text-dimmer: #4e5f72;
-    --border: #2a3a50;
-    --reaction-bg: #1a2840;
-    --reaction-border: #2a4060;
-    --shadow: 0 4px 24px rgba(0,0,0,0.5);
-  }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
-    font-family: 'Nunito', sans-serif;
-    color: var(--text);
+    background: #b8c8d8;
+    font-family: 'Segoe UI', Arial, sans-serif;
     min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(92,166,224,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(155,128,232,0.05) 0%, transparent 50%);
-  }
-
-  /* HEADER */
-  .tg-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(14,17,23,0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .tg-header .back-btn {
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    color: var(--blue);
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.15s;
-  }
-  .tg-header .back-btn:hover { background: rgba(92,166,224,0.1); }
-
-  .channel-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #e05c5c, #9b80e8);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .channel-info { flex: 1; }
-  .channel-name {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.3px;
-  }
-  .channel-sub {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 1px;
-  }
-
-  .header-actions { display: flex; gap: 4px; }
-  .header-btn {
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    color: var(--text-dim);
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.15s;
-  }
-  .header-btn:hover { background: var(--bg3); color: var(--blue); }
-
-  /* DATE BADGE */
-  .date-badge {
-    text-align: center;
-    margin: 24px 0 12px;
-    position: relative;
-  }
-  .date-badge span {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 4px 14px;
-    font-size: 12px;
-    color: var(--text-dim);
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.5px;
-  }
-
-  /* PINNED MESSAGE */
-  .pinned-banner {
-    margin: 0 12px 8px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--blue);
-    border-radius: 10px;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .pinned-banner:hover { background: var(--bubble); }
-  .pinned-icon { color: var(--blue); font-size: 14px; }
-  .pinned-text { flex: 1; }
-  .pinned-label { font-size: 11px; color: var(--blue); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-  .pinned-preview { font-size: 13px; color: var(--text-dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  /* MESSAGES FEED */
-  .feed {
-    padding: 8px 12px 80px;
-    max-width: 720px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  /* MESSAGE BUBBLE */
-  .msg {
-    display: flex;
-    flex-direction: column;
-    animation: fadeUp 0.4s ease both;
-    margin-bottom: 10px;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .msg:nth-child(1) { animation-delay: 0.05s; }
-  .msg:nth-child(2) { animation-delay: 0.1s; }
-  .msg:nth-child(3) { animation-delay: 0.15s; }
-  .msg:nth-child(4) { animation-delay: 0.2s; }
-  .msg:nth-child(5) { animation-delay: 0.25s; }
-  .msg:nth-child(6) { animation-delay: 0.3s; }
-  .msg:nth-child(7) { animation-delay: 0.35s; }
-  .msg:nth-child(8) { animation-delay: 0.4s; }
-  .msg:nth-child(9) { animation-delay: 0.45s; }
-
-  .bubble {
-    background: var(--bubble);
-    border-radius: 4px 18px 18px 18px;
-    padding: 14px 16px 10px;
-    max-width: 100%;
-    position: relative;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    transition: border-color 0.2s;
-  }
-  .bubble:hover { border-color: #3a5070; }
-
-  /* Part header inside bubble */
-  .part-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .part-num {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    padding: 3px 10px;
-    border-radius: 6px;
-    text-transform: uppercase;
-  }
-
-  .p1 .part-num { background: rgba(224,92,92,0.15); color: #e05c5c; border: 1px solid rgba(224,92,92,0.3); }
-  .p2 .part-num { background: rgba(245,166,35,0.15); color: #f5a623; border: 1px solid rgba(245,166,35,0.3); }
-  .p3 .part-num { background: rgba(155,128,232,0.15); color: #9b80e8; border: 1px solid rgba(155,128,232,0.3); }
-  .p4 .part-num { background: rgba(77,186,135,0.15); color: #4dba87; border: 1px solid rgba(77,186,135,0.3); }
-  .p5 .part-num { background: rgba(92,166,224,0.15); color: #5ca6e0; border: 1px solid rgba(92,166,224,0.3); }
-  .p6 .part-num { background: rgba(224,92,92,0.12); color: #e8a0a0; border: 1px solid rgba(224,92,92,0.25); }
-  .epilog .part-num { background: rgba(77,186,135,0.15); color: #4dba87; border: 1px solid rgba(77,186,135,0.3); }
-
-  .part-title {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  /* Key characters tag strip */
-  .char-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-  .char-tag {
-    font-size: 11px;
-    padding: 2px 9px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.3px;
-  }
-  .ct-red { background: rgba(224,92,92,0.12); color: #e05c5c; border: 1px solid rgba(224,92,92,0.25); }
-  .ct-blue { background: rgba(92,166,224,0.12); color: #74b8f5; border: 1px solid rgba(92,166,224,0.25); }
-  .ct-green { background: rgba(77,186,135,0.12); color: #4dba87; border: 1px solid rgba(77,186,135,0.25); }
-  .ct-purple { background: rgba(155,128,232,0.12); color: #9b80e8; border: 1px solid rgba(155,128,232,0.25); }
-  .ct-orange { background: rgba(245,166,35,0.12); color: #f5a623; border: 1px solid rgba(245,166,35,0.25); }
-
-  /* Body text */
-  .body-text {
-    font-size: 14.5px;
-    line-height: 1.7;
-    color: #d0dae6;
-  }
-
-  .body-text p { margin-bottom: 10px; }
-  .body-text p:last-child { margin-bottom: 0; }
-
-  /* Highlights */
-  .hl { font-weight: 700; }
-  .hl-red { color: #e88; }
-  .hl-blue { color: #74b8f5; }
-  .hl-green { color: #4dba87; }
-  .hl-orange { color: #f5a623; }
-  .hl-purple { color: #b89ef0; }
-
-  .quote-inline {
-    display: inline;
-    font-style: italic;
-    color: #aac8e8;
-  }
-
-  /* Key moment callout */
-  .callout {
-    margin: 12px 0;
-    padding: 10px 14px;
-    border-radius: 10px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    font-size: 13.5px;
-    line-height: 1.6;
-  }
-  .callout-red { background: rgba(224,92,92,0.08); border-left: 3px solid #e05c5c; color: #e8b0b0; }
-  .callout-blue { background: rgba(92,166,224,0.08); border-left: 3px solid #5ca6e0; color: #a8d0f0; }
-  .callout-green { background: rgba(77,186,135,0.08); border-left: 3px solid #4dba87; color: #a0e0c0; }
-  .callout-purple { background: rgba(155,128,232,0.08); border-left: 3px solid #9b80e8; color: #c0b0f0; }
-  .callout-orange { background: rgba(245,166,35,0.08); border-left: 3px solid #f5a623; color: #f0d090; }
-  .callout-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
-
-  /* Message meta */
-  .msg-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 8px;
-    padding: 0 2px;
-  }
-
-  .msg-time {
-    font-size: 11px;
-    color: var(--text-dimmer);
-    font-family: 'JetBrains Mono', monospace;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .msg-time .views { color: var(--text-dimmer); }
-
-  .msg-views {
-    font-size: 11px;
-    color: var(--text-dimmer);
-    font-family: 'JetBrains Mono', monospace;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  /* REACTIONS */
-  .reactions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  .reaction {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: var(--reaction-bg);
-    border: 1px solid var(--reaction-border);
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
+    overflow: hidden;
     user-select: none;
   }
-  .reaction:hover {
-    background: rgba(92,166,224,0.15);
-    border-color: rgba(92,166,224,0.4);
-    transform: scale(1.05);
-  }
-  .reaction.active {
-    background: rgba(92,166,224,0.2);
-    border-color: rgba(92,166,224,0.5);
-  }
-  .reaction .rcount {
-    font-size: 12px;
-    color: var(--text-dim);
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 600;
-  }
-  .reaction.active .rcount { color: var(--blue-light); }
 
-  /* FORWARD / SHARE BAR */
-  .share-bar {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 6px;
-    padding: 0 2px;
+  /* ── CANVAS ── */
+  #canvas {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    cursor: grab;
+  }
+  #canvas.dragging { cursor: grabbing; }
+
+  #world {
+    position: absolute;
+    width: 2400px;
+    height: 1600px;
+    top: 0; left: 0;
+    transform-origin: 0 0;
   }
 
-  .share-btn {
-    font-size: 12px;
-    color: var(--text-dimmer);
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  /* SVG lines layer */
+  #lines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  /* ── NODE ── */
+  .node {
+    position: absolute;
     cursor: pointer;
-    padding: 3px 8px;
-    border-radius: 8px;
-    transition: all 0.15s;
+    transform: translate(-50%, -50%);
+    transition: filter 0.15s, transform 0.15s;
   }
-  .share-btn:hover { color: var(--blue); background: rgba(92,166,224,0.08); }
+  .node:hover { filter: brightness(1.12); transform: translate(-50%, -50%) scale(1.04); }
+  .node:active { transform: translate(-50%, -50%) scale(0.97); }
 
-  /* CHAPTER DIVIDER */
-  .chapter-sep {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 16px 0 8px;
-    padding: 0 4px;
-  }
-  .chapter-sep::before, .chapter-sep::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-  .chapter-sep span {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dimmer);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  /* BOTTOM BAR */
-  .bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0; right: 0;
-    background: rgba(14,17,23,0.95);
-    backdrop-filter: blur(16px);
-    border-top: 1px solid var(--border);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-
-  .msg-input-wrap {
-    flex: 1;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 9px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: text;
-    transition: border-color 0.2s;
-  }
-  .msg-input-wrap:hover { border-color: #3a5070; }
-  .msg-input-placeholder {
-    color: var(--text-dimmer);
-    font-size: 14px;
-  }
-  .attach-btn {
-    width: 38px; height: 38px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    background: var(--blue);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.15s;
-  }
-  .attach-btn:hover { background: var(--blue-light); transform: scale(1.05); }
-
-  /* SCROLL TOP */
-  .scroll-top {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 38px; height: 38px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text-dim);
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.2s;
-    opacity: 0;
-  }
-  .scroll-top.visible { opacity: 1; }
-  .scroll-top:hover { background: var(--bubble); color: var(--blue); transform: translateY(-2px); }
-
-  /* SPOILER TAG */
-  .spoiler {
-    background: rgba(255,255,255,0.08);
+  .node-inner {
+    background: linear-gradient(160deg, #1a3a5c 0%, #0f2540 100%);
+    border: 1.5px solid #3a6090;
+    border-top-color: #5590c8;
     border-radius: 4px;
-    padding: 0 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .spoiler:hover { background: rgba(255,255,255,0.15); }
-
-  /* MEDIA PREVIEW STUB */
-  .theory-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin: 10px 0;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .theory-icon { font-size: 22px; flex-shrink: 0; }
-  .theory-label {
-    font-size: 11px;
-    color: var(--text-dimmer);
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 3px;
-  }
-  .theory-text {
-    font-size: 13.5px;
-    color: var(--text-dim);
-    line-height: 1.55;
+    padding: 0;
+    min-width: 180px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
   }
 
-  /* CHANNEL TOP STRIP */
-  .channel-strip {
-    background: linear-gradient(135deg, rgba(224,92,92,0.12), rgba(155,128,232,0.08));
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
+  .node-inner.active {
+    border-color: #5590c8;
+    border-top-color: #88c0f0;
+    box-shadow: 0 0 0 2px rgba(85,144,200,0.4), 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  .node-label {
+    background: linear-gradient(90deg, #1e4a7a 0%, #163a60 100%);
+    padding: 7px 14px;
     display: flex;
     align-items: center;
-    gap: 16px;
-  }
-  .strip-icon { font-size: 32px; }
-  .strip-title {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    background: linear-gradient(90deg, #e05c5c, #9b80e8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .strip-sub {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-top: 3px;
-  }
-  .strip-badge {
-    margin-left: auto;
-    background: rgba(77,186,135,0.15);
-    border: 1px solid rgba(77,186,135,0.3);
-    color: #4dba87;
-    font-size: 11px;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 600;
+    gap: 8px;
+    border-bottom: 1px solid rgba(85,144,200,0.3);
   }
 
-  /* ---- responsive ---- */
-  @media (max-width: 600px) {
-    .part-title { display: none; }
-    .bottom-bar { max-width: 100%; }
+  .node-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #5590c8;
+    flex-shrink: 0;
+    box-shadow: 0 0 4px rgba(85,144,200,0.7);
   }
+
+  .node-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #c8ddf0;
+  }
+
+  .node-body {
+    padding: 7px 14px 9px;
+    font-size: 12px;
+    color: #8ab0d0;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+  }
+
+  /* ── connector dots ── */
+  .conn-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #5590c8;
+    border: 1.5px solid #3a6090;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  /* ── ROOT node ── */
+  .node-root .node-inner {
+    background: linear-gradient(160deg, #3a1a1a 0%, #1e0a0a 100%);
+    border-color: #903030;
+    border-top-color: #c84040;
+    min-width: 220px;
+  }
+  .node-root .node-label {
+    background: linear-gradient(90deg, #6a1a1a 0%, #4a1010 100%);
+    border-bottom-color: rgba(200,64,64,0.3);
+  }
+  .node-root .node-dot { background: #c84040; box-shadow: 0 0 6px rgba(200,64,64,0.7); }
+  .node-root .node-title { color: #f0c0c0; letter-spacing: 2px; font-size: 12px; }
+  .node-root .node-body { color: #c08080; font-size: 11px; }
+
+  /* ── EPILOG node ── */
+  .node-epilog .node-inner {
+    background: linear-gradient(160deg, #0a2a1a 0%, #051510 100%);
+    border-color: #206040;
+    border-top-color: #30a060;
+  }
+  .node-epilog .node-label {
+    background: linear-gradient(90deg, #0e3a20 0%, #082814 100%);
+    border-bottom-color: rgba(48,160,96,0.3);
+  }
+  .node-epilog .node-dot { background: #30a060; box-shadow: 0 0 6px rgba(48,160,96,0.7); }
+  .node-epilog .node-title { color: #90e0b0; }
+  .node-epilog .node-body { color: #60a080; }
+
+  /* ── PANEL ── */
+  #panel {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: 420px;
+    background: #0e1520;
+    border-left: 1px solid #2a3a50;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #2a3a50;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #12202e, #0e1825);
+  }
+
+  .panel-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .panel-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e0ecf8;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+
+  .panel-chars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+  }
+
+  .char-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    background: rgba(85,144,200,0.15);
+    border: 1px solid rgba(85,144,200,0.3);
+    color: #80b8e0;
+  }
+
+  .panel-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px 24px;
+  }
+  .panel-scroll::-webkit-scrollbar { width: 4px; }
+  .panel-scroll::-webkit-scrollbar-track { background: transparent; }
+  .panel-scroll::-webkit-scrollbar-thumb { background: #2a3a50; border-radius: 2px; }
+
+  .section {
+    margin-bottom: 18px;
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #5590c8;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #1e3050;
+  }
+
+  .section p {
+    font-size: 13px;
+    line-height: 1.72;
+    color: #90aac4;
+  }
+
+  .callout {
+    padding: 9px 12px;
+    border-radius: 4px;
+    border-left: 3px solid;
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+  .callout-red { background: rgba(200,64,64,0.08); border-color: #c84040; color: #d09090; }
+  .callout-blue { background: rgba(85,144,200,0.08); border-color: #5590c8; color: #90b8d8; }
+  .callout-green { background: rgba(48,160,96,0.08); border-color: #30a060; color: #80c8a0; }
+  .callout-amber { background: rgba(200,140,40,0.08); border-color: #c88c28; color: #c8a060; }
+  .callout-purple { background: rgba(140,80,200,0.08); border-color: #8c50c8; color: #b080d8; }
+
+  em { font-style: italic; color: #a8c4e0; }
+  strong { font-weight: 700; color: #c8ddf0; }
+
+  .close-btn {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #2a3a50;
+    color: #5590c8;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    z-index: 10;
+  }
+  .close-btn:hover { background: rgba(85,144,200,0.15); }
+
+  /* ── HUD ── */
+  #hud {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,20,35,0.9);
+    border: 1px solid #2a3a50;
+    border-radius: 24px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: #5590c8;
+    backdrop-filter: blur(8px);
+    z-index: 50;
+    pointer-events: none;
+  }
+  .hud-sep { width: 1px; height: 14px; background: #2a3a50; }
+
+  /* ── ZOOM BTNS ── */
+  .zoom-btns {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 50;
+  }
+  .zoom-btn {
+    width: 34px; height: 34px;
+    background: rgba(10,20,35,0.9);
+    border: 1px solid #2a3a50;
+    border-radius: 8px;
+    color: #5590c8;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    backdrop-filter: blur(8px);
+  }
+  .zoom-btn:hover { background: rgba(85,144,200,0.15); }
+
+  /* ── GRID BG ── */
+  #grid-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  /* ── LOCKED overlay ── */
+  .locked-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: none;
+  }
+
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .conn-dot { animation: pulse-dot 2s ease-in-out infinite; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="tg-header">
-  <div class="back-btn">←</div>
-  <div class="channel-avatar">📚</div>
-  <div class="channel-info">
-    <div class="channel-name">ГДЗ • Литература 10</div>
-    <div class="channel-sub">Преступление и наказание — онлайн</div>
-  </div>
-  <div class="header-actions">
-    <div class="header-btn">🔍</div>
-    <div class="header-btn">⋮</div>
+<div id="canvas">
+  <!-- Grid pattern via SVG bg -->
+  <svg id="grid-bg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="smallGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+        <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#9aacba" stroke-width="0.3" opacity="0.35"/>
+      </pattern>
+      <pattern id="grid" width="140" height="140" patternUnits="userSpaceOnUse">
+        <rect width="140" height="140" fill="url(#smallGrid)"/>
+        <path d="M 140 0 L 0 0 0 140" fill="none" stroke="#8aa0b0" stroke-width="0.6" opacity="0.4"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid)"/>
+  </svg>
+
+  <div id="world">
+    <svg id="lines" xmlns="http://www.w3.org/2000/svg"></svg>
   </div>
 </div>
 
-<!-- CHANNEL STRIP -->
-<div class="channel-strip">
-  <div class="strip-icon">⚖️</div>
-  <div>
-    <div class="strip-title">Преступление и наказание</div>
-    <div class="strip-sub">Фёдор Михайлович Достоевский · 1866</div>
+<!-- PANEL -->
+<div id="panel">
+  <div class="close-btn" onclick="closePanel()">✕</div>
+  <div class="panel-header">
+    <div class="panel-tag" id="panel-tag"></div>
+    <div class="panel-title" id="panel-title"></div>
+    <div class="panel-chars" id="panel-chars"></div>
   </div>
-  <div class="strip-badge">✓ ЕГЭ 2025</div>
+  <div class="panel-scroll" id="panel-content"></div>
 </div>
 
-<!-- PINNED -->
-<div class="pinned-banner">
-  <div class="pinned-icon">📌</div>
-  <div class="pinned-text">
-    <div class="pinned-label">Закреплено</div>
-    <div class="pinned-preview">Теория Раскольникова: «твари дрожащие» vs «право имеющие» — главная идея романа</div>
-  </div>
-  <div style="color: var(--text-dimmer); font-size: 14px;">›</div>
+<!-- HUD -->
+<div id="hud">
+  <span>📖 Преступление и наказание</span>
+  <div class="hud-sep"></div>
+  <span id="hud-open">Кликни на узел</span>
 </div>
 
-<!-- FEED -->
-<div class="feed">
-
-  <div class="date-badge"><span>Краткое содержание</span></div>
-
-  <!-- ЧАСТЬ 1 -->
-  <div class="msg p1">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Часть 1</div>
-        <div class="part-title">Рождение идеи</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-red">Раскольников</span>
-        <span class="char-tag ct-blue">Мармеладов</span>
-        <span class="char-tag ct-green">Соня</span>
-        <span class="char-tag ct-orange">Алёна Ивановна</span>
-      </div>
-      <div class="body-text">
-        <p>Жаркий июльский вечер в Петербурге. <span class="hl hl-red">Родион Раскольников</span> — худой, бледный бывший студент-юрист — выходит из своей крошечной каморки, <span class="hl">"шкафа в шесть шагов"</span>, избегая хозяйки. Идёт к старухе-процентщице <span class="hl hl-orange">Алёне Ивановне</span>, закладывает часы и подсматривает, где она прячет деньги.</p>
-
-        <div class="callout callout-red">
-          <span class="callout-icon">🧠</span>
-          <span>Теория Раскольникова: <em>«необыкновенные»</em> люди (как Наполеон) имеют право переступить мораль ради «великой цели». Обычные — <em>«твари дрожащие»</em>, он же — <em>«право имеющий»</em>.</span>
-        </div>
-
-        <p>В трактире знакомится с пьяным <span class="hl hl-blue">Мармеладовым</span>. Тот рыдая рассказывает о семье: жена <span class="hl">Катерина Ивановна</span> — гордая, чахоточная; дочь <span class="hl hl-green">Соня (18 лет)</span> пошла по жёлтому билету, чтобы прокормить детей. Раскольников отводит его домой, отдаёт последние деньги. Картина нищеты усиливает его отчаяние.</p>
-        <p>Приходит письмо от матери: <span class="hl hl-purple">Дуня</span> согласилась выйти за богатого адвоката <span class="hl">Лужина</span> — скупого и циничного — ради помощи брату. Раскольников в ярости: <span class="quote-inline">«Не бывать этому!»</span></p>
-
-        <div class="callout callout-purple">
-          <span class="callout-icon">🌙</span>
-          <span>Сон детства: мужики забивают старую лошадь. Маленький Родион кричит <em>«Папа, они лошадку бьют!»</em> — символ жалости к слабым и ужаса перед жестокостью.</span>
-        </div>
-
-        <p><span class="hl hl-red">Убийство:</span> Раскольников приходит к старухе под предлогом заклада. Убивает её топором. Вдруг — сестра <span class="hl">Лизавета</span> (невинная, почти святая). Убивает и её. Крадёт горсть вещей, едва скрывается, прячет добычу под камень. Возвращается домой в лихорадке.</p>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 4 271 · 19:41</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction active">😱 <span class="rcount">847</span></div>
-      <div class="reaction">🔥 <span class="rcount">612</span></div>
-      <div class="reaction">🧠 <span class="rcount">394</span></div>
-      <div class="reaction">💀 <span class="rcount">281</span></div>
-      <div class="reaction">👍 <span class="rcount">156</span></div>
-    </div>
-  </div>
-
-  <!-- ЧАСТЬ 2 -->
-  <div class="msg p2">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Часть 2</div>
-        <div class="part-title">Горячка и страх</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-blue">Разумихин</span>
-        <span class="char-tag ct-red">Раскольников</span>
-        <span class="char-tag ct-orange">Мармеладов</span>
-      </div>
-      <div class="body-text">
-        <p>Раскольников несколько дней в тяжёлой горячке — бредит, боится, что проговорился. Друг <span class="hl hl-blue">Разумихин</span> ухаживает за ним, привозит врача. В участке, куда вызвали за долг, случайно обсуждают убийство старухи — Раскольников падает в обморок.</p>
-
-        <div class="callout callout-orange">
-          <span class="callout-icon">🍷</span>
-          <span><strong>Мармеладов</strong> пьяным попадает под лошадь. Раскольников отдаёт семье почти все деньги на похороны. На поминках скандал — <strong>Лужин</strong> подбросит Соне деньги и обвинит в краже.</span>
-        </div>
-
-        <p>Приехавших мать и Дуню встречает грубо — они в ужасе от его вида. <span class="hl hl-red">Прогоняет Лужина</span> при первой встрече: тот высокомерен и хочет купить Дуню. Прячет украденное под камень — но совесть уже грызёт. Думает о самоубийстве.</p>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 3 918 · 19:42</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction">😰 <span class="rcount">723</span></div>
-      <div class="reaction">🔥 <span class="rcount">441</span></div>
-      <div class="reaction active">😮 <span class="rcount">318</span></div>
-      <div class="reaction">💔 <span class="rcount">209</span></div>
-    </div>
-  </div>
-
-  <!-- ЧАСТЬ 3 -->
-  <div class="msg p3">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Часть 3</div>
-        <div class="part-title">Кошки-мышки со следователем</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-purple">Порфирий</span>
-        <span class="char-tag ct-red">Свидригайлов</span>
-        <span class="char-tag ct-blue">Дуня</span>
-      </div>
-      <div class="body-text">
-        <p>Знакомится со следователем <span class="hl hl-purple">Порфирием Петровичем</span> — хитрым психологом с «кошачьей» манерой. Тот читал статью Раскольникова о «праве имеющих» и тонко намекает на подозрения без улик:</p>
-
-        <div class="callout callout-purple">
-          <span class="callout-icon">🐱</span>
-          <span><em>«Вы, Родион Романыч, может быть, и Наполеон?»</em> — психологическое давление без прямых обвинений. Раскольников в панике, но держится.</span>
-        </div>
-
-        <p>Появляется <span class="hl hl-red">Свидригайлов</span> — приехал якобы за Дуней (болезненная страсть). Говорит, что слышал от покойной жены о теории Раскольникова. Он циничен, развратен, загадочен — рассуждает о «призраках» и самоубийствах.</p>
-
-        <div class="theory-card">
-          <span class="theory-icon">🔍</span>
-          <div>
-            <div class="theory-label">Ключевой момент</div>
-            <div class="theory-text">Порфирий — мастер психологического давления. Он знает, но ждёт добровольного признания. Это важно для ЕГЭ: тема «власть над собой vs власть над другими».</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 3 654 · 19:43</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction">🧠 <span class="rcount">891</span></div>
-      <div class="reaction active">👀 <span class="rcount">634</span></div>
-      <div class="reaction">😏 <span class="rcount">402</span></div>
-      <div class="reaction">🔥 <span class="rcount">299</span></div>
-      <div class="reaction">🤯 <span class="rcount">177</span></div>
-    </div>
-  </div>
-
-  <!-- ЧАСТЬ 4 -->
-  <div class="msg p4">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Часть 4</div>
-        <div class="part-title">Признание Сонечке</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-green">Соня</span>
-        <span class="char-tag ct-red">Раскольников</span>
-        <span class="char-tag ct-orange">Лужин</span>
-      </div>
-      <div class="body-text">
-        <p><span class="hl hl-orange">Лужин</span> пытается поссорить Дуню с братом: подбрасывает Соне деньги и обвиняет в краже — чтобы опозорить семью. Разоблачён. Дуня разрывает помолвку.</p>
-
-        <div class="callout callout-green">
-          <span class="callout-icon">📖</span>
-          <span><strong>Соня читает Раскольникову Евангелие о воскрешении Лазаря</strong> — символ возможности духовного воскресения через веру и покаяние.</span>
-        </div>
-
-        <p>Раскольников идёт к Соне в её нищую каморку. Падает на колени и признаётся:</p>
-
-        <div class="callout callout-red">
-          <span class="callout-icon">💬</span>
-          <span><em>«Я старуху убил… и Лизавету… и себя убил»</em>. Соня в ужасе, плачет, но говорит: <em>«Нет несчастнее тебя теперь никого на свете!»</em> — и обещает идти за ним хоть на каторгу.</span>
-        </div>
-
-        <p>Призывает покаяться: <span class="quote-inline">«Поклонись земле, которую осквернил, и скажи всему свету: я убийца!»</span></p>
-        <p><span class="hl hl-red">Свидригайлов подслушивает</span> всё это признание — снимает квартиру через стенку.</p>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 4 109 · 19:44</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction active">😭 <span class="rcount">1 204</span></div>
-      <div class="reaction">💚 <span class="rcount">876</span></div>
-      <div class="reaction">🙏 <span class="rcount">543</span></div>
-      <div class="reaction">🔥 <span class="rcount">312</span></div>
-      <div class="reaction">😢 <span class="rcount">198</span></div>
-    </div>
-  </div>
-
-  <!-- ЧАСТЬ 5 -->
-  <div class="msg p5">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Часть 5</div>
-        <div class="part-title">Поклон земле</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-orange">Катерина Ивановна</span>
-        <span class="char-tag ct-red">Свидригайлов</span>
-        <span class="char-tag ct-blue">Дуня</span>
-      </div>
-      <div class="body-text">
-        <p><span class="hl hl-orange">Катерина Ивановна</span> окончательно сходит с ума: водит детей по улицам просить милостыню, кашляет кровью и умирает прямо на улице.</p>
-
-        <div class="callout callout-blue">
-          <span class="callout-icon">🔫</span>
-          <span><strong>Свидригайлов</strong> пытается изнасиловать Дуню — она стреляет в него из револьвера, промахивается. Он отпускает её, поняв, что не нужен ей.</span>
-        </div>
-
-        <p>На <span class="hl hl-blue">Сенной площади</span> Раскольников падает на землю, целует её <span class="quote-inline">«поклонюсь всей земле, которую осквернил»</span> — символическое признание вины перед народом.</p>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 3 487 · 19:45</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction">😤 <span class="rcount">567</span></div>
-      <div class="reaction active">🤯 <span class="rcount">441</span></div>
-      <div class="reaction">😰 <span class="rcount">328</span></div>
-      <div class="reaction">💔 <span class="rcount">213</span></div>
-    </div>
-  </div>
-
-  <!-- ЧАСТЬ 6 -->
-  <div class="msg p6">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Часть 6</div>
-        <div class="part-title">Признание</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-red">Свидригайлов</span>
-        <span class="char-tag ct-red">Раскольников</span>
-        <span class="char-tag ct-green">Соня</span>
-      </div>
-      <div class="body-text">
-        <p><span class="hl hl-red">Свидригайлов</span> проводит кошмарную ночь: видит девочку, которую погубил — символ его грехов. Утром <span class="hl hl-red">кончает жизнь самоубийством</span> на улице.</p>
-        <p>Раскольников прощается с матерью (она уже теряет рассудок). Идёт к Соне, берёт у неё <span class="hl">кипарисовый крестик</span>. На площади кланяется земле на глазах у толпы.</p>
-
-        <div class="callout callout-red">
-          <span class="callout-icon">⚖️</span>
-          <span>В участке произносит: <em>«Это я убил старуху-процентщицу и сестру её Лизавету топором и ограбил»</em>. Осуждён на <strong>8 лет каторги в Сибирь</strong>.</span>
-        </div>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 4 832 · 19:46</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction active">😮‍💨 <span class="rcount">1 033</span></div>
-      <div class="reaction">😱 <span class="rcount">712</span></div>
-      <div class="reaction">🙏 <span class="rcount">489</span></div>
-      <div class="reaction">💀 <span class="rcount">334</span></div>
-      <div class="reaction">👏 <span class="rcount">201</span></div>
-    </div>
-  </div>
-
-  <div class="chapter-sep"><span>epilog</span></div>
-
-  <!-- ЭПИЛОГ -->
-  <div class="msg epilog">
-    <div class="bubble">
-      <div class="part-header">
-        <div class="part-num">Эпилог</div>
-        <div class="part-title">Воскрешение</div>
-      </div>
-      <div class="char-strip">
-        <span class="char-tag ct-green">Соня</span>
-        <span class="char-tag ct-red">Раскольников</span>
-      </div>
-      <div class="body-text">
-        <p>На каторге Раскольников сначала озлоблен, презирает всех, держится особняком, болен. <span class="hl hl-green">Соня</span> следует за ним, работает швеёй, помогает арестантам — все её любят, он — один.</p>
-
-        <div class="callout callout-orange">
-          <span class="callout-icon">🦠</span>
-          <span>В бреду видит: мир заражён <strong>«трихинами»</strong> (микробами) эгоизма и гордыни — все убивают друг друга во имя идей. Предупреждение: теория Раскольникова ведёт к гибели мира.</span>
-        </div>
-
-        <p>Просыпается — и вдруг <span class="hl hl-green">плачет у ног Сони</span>, обнимает её. Принимает Евангелие. Начинается возрождение:</p>
-
-        <div class="callout callout-green">
-          <span class="callout-icon">🌅</span>
-          <span><em>«Их воскресла любовь»</em>. Он знает, что новая жизнь потребует «великого подвига» — но впереди <strong>свет</strong>.</span>
-        </div>
-      </div>
-    </div>
-    <div class="msg-meta">
-      <div class="msg-time">👁 6 104 · 19:47</div>
-      <div class="share-bar">
-        <span class="share-btn">↪ Переслать</span>
-        <span class="share-btn">🔗 Копировать</span>
-      </div>
-    </div>
-    <div class="reactions">
-      <div class="reaction active">🌅 <span class="rcount">2 341</span></div>
-      <div class="reaction">💚 <span class="rcount">1 788</span></div>
-      <div class="reaction">😭 <span class="rcount">1 203</span></div>
-      <div class="reaction">🙏 <span class="rcount">934</span></div>
-      <div class="reaction">❤️ <span class="rcount">677</span></div>
-    </div>
-  </div>
-
+<!-- Zoom buttons -->
+<div class="zoom-btns">
+  <div class="zoom-btn" onclick="zoom(0.15)">+</div>
+  <div class="zoom-btn" onclick="zoom(-0.15)">−</div>
+  <div class="zoom-btn" onclick="resetView()" style="font-size:12px; letter-spacing:-0.5px;">⌂</div>
 </div>
-
-<!-- BOTTOM BAR -->
-<div class="bottom-bar">
-  <div class="msg-input-wrap">
-    <span style="font-size:16px;">😊</span>
-    <span class="msg-input-placeholder">Написать комментарий…</span>
-  </div>
-  <div class="attach-btn">↑</div>
-</div>
-
-<!-- SCROLL TOP -->
-<div class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 
 <script>
-  // Reaction toggle
-  document.querySelectorAll('.reaction').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const countEl = btn.querySelector('.rcount');
-      const raw = countEl.textContent.replace(/\s/g, '');
-      let n = parseInt(raw);
-      if (btn.classList.contains('active')) {
-        btn.classList.remove('active');
-        n--;
-      } else {
-        btn.classList.add('active');
-        n++;
-      }
-      // Format with space for thousands
-      countEl.textContent = n >= 1000 ? Math.floor(n/1000) + ' ' + String(n % 1000).padStart(3,'0') : n;
-    });
+// ════════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════════
+const NODES = [
+  {
+    id: 'root', x: 1200, y: 800,
+    cls: 'node-root',
+    title: 'Ф.М. Достоевский',
+    sub: '1866',
+    chars: [],
+    tag: 'РОМАН',
+    tagColor: '#c84040',
+    heading: 'Преступление и наказание',
+    content: `
+      <div class="section">
+        <div class="section-title">О романе</div>
+        <p>Психологический роман Достоевского, написанный в 1866 году. Исследует природу преступления, вины и нравственного возрождения через историю студента Родиона Раскольникова.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Главная идея</div>
+        <div class="callout callout-red"><em>«Тварь я дрожащая или право имею?»</em> — центральный вопрос всего романа.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Структура</div>
+        <p>6 частей + эпилог. Каждая часть — этап внутреннего пути Раскольникова от преступления к покаянию.</p>
+      </div>
+    `
+  },
+  {
+    id: 'p1', x: 560, y: 430,
+    title: 'Часть 1',
+    sub: 'Рождение идеи',
+    chars: ['Раскольников', 'Мармеладов', 'Соня', 'Алёна Ивановна'],
+    tag: 'ЧАСТЬ 1',
+    tagColor: '#c84040',
+    heading: 'Рождение идеи',
+    content: `
+      <div class="section">
+        <div class="section-title">Обстановка</div>
+        <p>Жаркий, душный июльский Петербург 1860-х. Раскольников — 23-летний бывший студент-юрист — живёт в крошечной каморке <em>«шесть шагов длиной»</em> под самой крышей.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Теория</div>
+        <div class="callout callout-red">Люди делятся на <strong>«тварей дрожащих»</strong> (обычные, подвластные морали) и <strong>«право имеющих»</strong> (как Наполеон) — которые могут переступить через мораль ради великой цели.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Мармеладов</div>
+        <p>В трактире знакомится с пьяным титулярным советником. Тот рассказывает о Соне (18 лет), пошедшей «по жёлтому билету» ради семьи. Раскольников отдаёт им последние деньги.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Письмо матери</div>
+        <p>Дуня согласилась выйти за адвоката Лужина — скупого карьериста. Раскольников в ярости: <em>«Не бывать этому!»</em></p>
+      </div>
+      <div class="section">
+        <div class="section-title">Сон о лошади</div>
+        <div class="callout callout-amber">Детский сон: мужики забивают старую клячу. Символ жалости к слабым и ужаса перед жестокостью.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Убийство</div>
+        <div class="callout callout-red">Раскольников убивает старуху-процентщицу Алёну Ивановну топором. Вдруг приходит её сестра Лизавета — убивает и её. Крадёт вещи, прячет под камень во дворе. Возвращается домой в лихорадке.</div>
+      </div>
+    `
+  },
+  {
+    id: 'p2', x: 760, y: 250,
+    title: 'Часть 2',
+    sub: 'Горячка и страх',
+    chars: ['Разумихин', 'Порфирий', 'Лужин', 'Мармеладов'],
+    tag: 'ЧАСТЬ 2',
+    tagColor: '#c88c28',
+    heading: 'Горячка и страх',
+    content: `
+      <div class="section">
+        <div class="section-title">Горячка</div>
+        <p>Раскольников несколько дней в полубреду — боится, что проговорился во сне. Друг <strong>Разумихин</strong> не отходит от него, покупает лекарства и одежду на последние деньги.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Участок</div>
+        <div class="callout callout-blue">Вызывают за долг хозяйке. В конторе случайно говорят об убийстве старухи — Раскольников падает в глубокий обморок прямо на полу.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Семья</div>
+        <p>Приехавших мать и Дуню почти выгоняет — это защита, чтобы не выдать себя. При первой встрече с Лужиным — взрыв: оскорбляет его и выгоняет.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Смерть Мармеладова</div>
+        <div class="callout callout-amber">Пьяный Мармеладов попадает под лошадей. Раскольников отдаёт семье последние деньги на похороны.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Лужин разоблачён</div>
+        <p>Подбросил Соне деньги и обвинил в краже — опозорить семью и ударить по Раскольникову. Разоблачён, выгнан с позором.</p>
+      </div>
+    `
+  },
+  {
+    id: 'p3', x: 1020, y: 180,
+    title: 'Часть 3',
+    sub: 'Кот и мышь',
+    chars: ['Порфирий', 'Свидригайлов', 'Дуня'],
+    tag: 'ЧАСТЬ 3',
+    tagColor: '#8c50c8',
+    heading: 'Кот и мышь со следователем',
+    content: `
+      <div class="section">
+        <div class="section-title">Порфирий Петрович</div>
+        <div class="callout callout-purple">Хитрый психолог с <em>«кошачьей»</em> улыбкой. Читал статью Раскольникова. Ведёт тонкий разговор-игру: <em>«Вы, может быть, и сами… право имеете?»</em> Улик нет, но ясно: <em>«Я буду ждать»</em>.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Раскольников</div>
+        <p>В панике, но держится — отвечает дерзко, насмешливо. Это только усиливает интерес следователя.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Свидригайлов</div>
+        <div class="callout callout-red">Загадочный, циничный, развратный. Одержим страстью к Дуне. Говорит о призраках и самоубийствах. <em>«Вечность — это тёмная комната с пауками»</em>. Зеркало судьбы Раскольникова без покаяния.</div>
+      </div>
+    `
+  },
+  {
+    id: 'p4', x: 1300, y: 200,
+    title: 'Часть 4',
+    sub: 'Признание Соне',
+    chars: ['Соня', 'Раскольников', 'Лужин', 'Свидригайлов'],
+    tag: 'ЧАСТЬ 4',
+    tagColor: '#30a060',
+    heading: 'Признание Сонечке',
+    content: `
+      <div class="section">
+        <div class="section-title">Лужин разоблачён (ещё раз)</div>
+        <p>На поминках подбрасывает Соне деньги и обвиняет в краже. Дуня окончательно разрывает помолвку: <em>«Между нами всё кончено!»</em></p>
+      </div>
+      <div class="section">
+        <div class="section-title">Евангелие о Лазаре</div>
+        <div class="callout callout-green">Соня читает Раскольникову притчу о воскрешении Лазаря. Голос дрожит, слёзы текут. Символ возможного духовного воскресения.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Признание</div>
+        <div class="callout callout-red"><em>«Я не старуху убил — я себя убил… Но… я старуху убил… и Лизавету… и себя убил!»</em></div>
+        <p style="margin-top:8px">Соня: <em>«Нет несчастнее тебя теперь никого на свете!»</em> — и обнимает его.</p>
+        <p style="margin-top:6px"><em>«Поклонись земле, которую осквернил, и скажи всему народу: я убийца!»</em></p>
+      </div>
+      <div class="section">
+        <div class="section-title">Свидригайлов подслушивает</div>
+        <p>Снимает квартиру через тонкую стенку. Это становится его главным козырем.</p>
+      </div>
+    `
+  },
+  {
+    id: 'p5', x: 1530, y: 350,
+    title: 'Часть 5',
+    sub: 'Поклон земле',
+    chars: ['Порфирий', 'Катерина Ивановна', 'Свидригайлов', 'Дуня'],
+    tag: 'ЧАСТЬ 5',
+    tagColor: '#5590c8',
+    heading: 'Поклон земле',
+    content: `
+      <div class="section">
+        <div class="section-title">Порфирий давит</div>
+        <div class="callout callout-purple">Рассказывает о маляре Миколке, ложно взявшем вину. Говорит почти ласково: <em>«Я вас ещё подожду… вы сами придёте»</em>. Раскольников уходит почти сломлен.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Смерть Катерины Ивановны</div>
+        <div class="callout callout-amber">В чахотке выводит детей на улицу просить милостыню. Умирает прямо на мостовой: <em>«Простите… простите меня, Христа ради!»</em></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Дуня стреляет в Свидригайлова</div>
+        <div class="callout callout-red">Заманивает её в квартиру. Она стреляет — промахивается. Свидригайлов отпускает: <em>«Вы меня не любите… и я никому не нужен»</em>.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Сенная площадь</div>
+        <p>Раскольников падает на землю, целует её: <em>«Я осквернил тебя… поклонюсь всей земле»</em> — символический акт покаяния перед миром.</p>
+      </div>
+    `
+  },
+  {
+    id: 'p6', x: 1600, y: 630,
+    title: 'Часть 6',
+    sub: 'Признание в участке',
+    chars: ['Свидригайлов', 'Раскольников', 'Соня', 'мать'],
+    tag: 'ЧАСТЬ 6',
+    tagColor: '#c84040',
+    heading: 'Признание',
+    content: `
+      <div class="section">
+        <div class="section-title">Ночь Свидригайлова</div>
+        <div class="callout callout-red">Кошмары: является девочка, которую погубил — превращается в мёртвую соблазнительницу. Утром стреляется на улице.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Прощание</div>
+        <p>Прощается с матерью — она уже теряет рассудок. Идёт к Соне, берёт у неё <strong>кипарисовый крестик</strong>.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Признание</div>
+        <div class="callout callout-blue">На Сенной площади публично кланяется земле на глазах у толпы. Затем в участке: <em>«Это я убил старуху-процентщицу и сестру её Лизавету топором и ограбил»</em>.</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Приговор</div>
+        <div class="callout callout-amber"><strong>8 лет каторги в Сибири.</strong></div>
+      </div>
+    `
+  },
+  {
+    id: 'epilog', x: 1360, y: 820,
+    cls: 'node-epilog',
+    title: 'Эпилог',
+    sub: 'Воскрешение',
+    chars: ['Соня', 'Раскольников'],
+    tag: 'ЭПИЛОГ',
+    tagColor: '#30a060',
+    heading: 'Воскрешение',
+    content: `
+      <div class="section">
+        <div class="section-title">Каторга</div>
+        <p>Раскольников озлоблен, замкнут, презирает всех. Тяжело болеет. Соня следует за ним в Сибирь — все её любят, называют <em>«матушкой»</em>.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Сон о трихинах</div>
+        <div class="callout callout-purple">Апокалиптический бред: мир заражён микробами <strong>«трихинами»</strong> — символами гордыни и эгоизма. Люди убивают друг друга во имя «нового слова».</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Перелом</div>
+        <div class="callout callout-green"><em>«Их воскресла любовь. Сердце каждого было готово к целой жизни…»</em></div>
+        <p style="margin-top:8px">Просыпается, плачет, бросается к ногам Сони. Берёт Евангелие. Начинается медленное возрождение.</p>
+      </div>
+      <div class="section">
+        <div class="section-title">Финал</div>
+        <div class="callout callout-green"><em>«…впереди их ждал великий, ещё не виданный подвиг»</em>.</div>
+      </div>
+    `
+  }
+];
+
+// Edges: [from, to]
+const EDGES = [
+  ['root','p1'],['root','p2'],['root','p3'],['root','p4'],
+  ['root','p5'],['root','p6'],['root','epilog'],
+  ['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','epilog']
+];
+
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+let scale = 1, tx = 0, ty = 0;
+let dragging = false, dragStart = null, dragOrigin = null;
+let activeNode = null;
+
+const world = document.getElementById('world');
+const canvas = document.getElementById('canvas');
+const panel  = document.getElementById('panel');
+const linesEl = document.getElementById('lines');
+
+// ════════════════════════════════════════════
+//  BUILD NODES
+// ════════════════════════════════════════════
+const nodeEls = {};
+NODES.forEach(n => {
+  const el = document.createElement('div');
+  el.className = 'node ' + (n.cls || '');
+  el.id = 'node-' + n.id;
+  el.style.left = n.x + 'px';
+  el.style.top  = n.y + 'px';
+  el.innerHTML = `
+    <div class="node-inner" id="inner-${n.id}">
+      <div class="node-label">
+        <div class="node-dot"></div>
+        <div class="node-title">${n.title}</div>
+      </div>
+      <div class="node-body">${n.sub}</div>
+    </div>
+  `;
+  el.addEventListener('click', e => { e.stopPropagation(); openPanel(n); });
+  world.appendChild(el);
+  nodeEls[n.id] = el;
+});
+
+// ════════════════════════════════════════════
+//  BUILD LINES
+// ════════════════════════════════════════════
+function getNodeCenter(id) {
+  const n = NODES.find(x => x.id === id);
+  const el = nodeEls[id];
+  const w = el.offsetWidth || 190;
+  const h = el.offsetHeight || 62;
+  return { x: n.x, y: n.y };
+}
+
+function drawLines() {
+  const NODE_W = 190, NODE_H = 62;
+  let svg = '';
+  EDGES.forEach(([a, b]) => {
+    const na = NODES.find(x => x.id === a);
+    const nb = NODES.find(x => x.id === b);
+    const ax = na.x, ay = na.y;
+    const bx = nb.x, by = nb.y;
+
+    // Dashed line style like the reference image
+    const isSeq = ['p1p2','p2p3','p3p4','p4p5','p5p6','p6epilog'].includes(a+b);
+    const stroke = isSeq ? '#5590c8' : '#3a6080';
+    const dash = isSeq ? '' : 'stroke-dasharray="6 4"';
+    const w = isSeq ? '1.5' : '1';
+
+    // Arrow head for sequential
+    const arrow = isSeq ? 'marker-end="url(#arrowhead)"' : '';
+
+    svg += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${stroke}" stroke-width="${w}" ${dash} opacity="0.6" ${arrow}/>`;
+
+    // Connector dot at each end
+    svg += `<circle cx="${ax}" cy="${ay}" r="4" fill="${stroke}" opacity="0.7"/>`;
+    svg += `<circle cx="${bx}" cy="${by}" r="3" fill="${stroke}" opacity="0.5"/>`;
   });
 
-  // Scroll-to-top button
-  const scrollBtn = document.getElementById('scrollTopBtn');
-  window.addEventListener('scroll', () => {
-    scrollBtn.classList.toggle('visible', window.scrollY > 300);
-  });
+  linesEl.innerHTML = `
+    <defs>
+      <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#5590c8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    ${svg}
+  `;
+}
+
+drawLines();
+
+// ════════════════════════════════════════════
+//  PAN & ZOOM
+// ════════════════════════════════════════════
+function applyTransform() {
+  world.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+}
+
+function initView() {
+  // Center the map
+  const cw = canvas.offsetWidth;
+  const ch = canvas.offsetHeight;
+  tx = cw/2 - 1200;
+  ty = ch/2 - 800;
+  scale = 0.7;
+  applyTransform();
+}
+
+function zoom(delta) {
+  const cw = canvas.offsetWidth;
+  const ch = canvas.offsetHeight;
+  const cx = cw/2, cy = ch/2;
+  const prev = scale;
+  scale = Math.min(2, Math.max(0.3, scale + delta));
+  tx = cx - (cx - tx) * (scale / prev);
+  ty = cy - (cy - ty) * (scale / prev);
+  applyTransform();
+}
+
+function resetView() { initView(); }
+
+canvas.addEventListener('mousedown', e => {
+  if (e.target.closest('.node')) return;
+  dragging = true;
+  dragStart = { x: e.clientX, y: e.clientY };
+  dragOrigin = { x: tx, y: ty };
+  canvas.classList.add('dragging');
+});
+
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  tx = dragOrigin.x + (e.clientX - dragStart.x);
+  ty = dragOrigin.y + (e.clientY - dragStart.y);
+  applyTransform();
+});
+
+window.addEventListener('mouseup', () => {
+  dragging = false;
+  canvas.classList.remove('dragging');
+});
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? -0.08 : 0.08;
+  const cx = e.clientX, cy = e.clientY;
+  const prev = scale;
+  scale = Math.min(2, Math.max(0.3, scale + delta));
+  tx = cx - (cx - tx) * (scale / prev);
+  ty = cy - (cy - ty) * (scale / prev);
+  applyTransform();
+}, { passive: false });
+
+// Touch support
+let lastTouch = null;
+canvas.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY, tx, ty };
+  }
+});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (e.touches.length === 1 && lastTouch) {
+    tx = lastTouch.tx + (e.touches[0].clientX - lastTouch.x);
+    ty = lastTouch.ty + (e.touches[0].clientY - lastTouch.y);
+    applyTransform();
+  }
+}, { passive: false });
+
+// ════════════════════════════════════════════
+//  PANEL
+// ════════════════════════════════════════════
+function openPanel(n) {
+  // Deactivate previous
+  if (activeNode) {
+    document.getElementById('inner-' + activeNode)?.classList.remove('active');
+  }
+  activeNode = n.id;
+  document.getElementById('inner-' + n.id)?.classList.add('active');
+
+  document.getElementById('panel-tag').textContent = n.tag || '';
+  document.getElementById('panel-tag').style.color = n.tagColor || '#5590c8';
+  document.getElementById('panel-title').textContent = n.heading || n.title;
+  document.getElementById('panel-chars').innerHTML = n.chars.map(c =>
+    `<span class="char-pill">${c}</span>`
+  ).join('');
+  document.getElementById('panel-content').innerHTML = n.content;
+  panel.classList.add('open');
+  document.getElementById('hud-open').textContent = n.title + ' открыта';
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  if (activeNode) {
+    document.getElementById('inner-' + activeNode)?.classList.remove('active');
+    activeNode = null;
+  }
+  document.getElementById('hud-open').textContent = 'Кликни на узел';
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+window.addEventListener('load', () => {
+  initView();
+});
 </script>
 </body>
 </html>
