@@ -1,57 +1,316 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Главное меню</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1e1e2f, #2c2c54);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задания — Биология</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
+  }
 
-        h1 {
-            margin-bottom: 40px;
-        }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .menu {
-            display: grid;
-            grid-template-columns: repeat(2, 200px);
-            gap: 20px;
-        }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
 
-        .btn {
-            text-decoration: none;
-            background: #4e73df;
-            padding: 20px;
-            text-align: center;
-            border-radius: 10px;
-            color: white;
-            font-size: 18px;
-            transition: 0.3s;
-        }
+  /* Lined paper */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      rgba(44,74,124,0.06) 31px,
+      rgba(44,74,124,0.06) 32px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .btn:hover {
-            background: #2e59d9;
-            transform: scale(1.05);
-        }
-    </style>
+  /* Red margin line */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 72px;
+    width: 2px; height: 100%;
+    background: rgba(176,48,48,0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 560px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  /* ── HEADER ── */
+  header {
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 2px solid var(--rule);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .notebook-rings {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 18px;
+  }
+
+  .ring {
+    width: 20px; height: 20px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(201,151,58,0.25), inset 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+  }
+
+  .ring::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 42px);
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #888;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── BUTTONS ── */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ▼ КНОПКА — href меняется здесь, в атрибуте тега <a> */
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-left: 4px solid var(--green);
+    border-radius: 4px;
+    padding: 18px 22px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    color: var(--ink);
+    text-align: left;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-left-color 0.18s ease;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .btn:nth-child(1) { animation-delay: 0.10s; }
+  .btn:nth-child(2) { animation-delay: 0.17s; border-left-color: var(--blue); }
+  .btn:nth-child(3) { animation-delay: 0.24s; border-left-color: var(--gold); }
+
+  .btn:hover {
+    transform: translateY(-3px) translateX(3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  }
+
+  .btn:nth-child(1):hover { border-left-color: var(--green); }
+  .btn:nth-child(2):hover { border-left-color: var(--blue); }
+  .btn:nth-child(3):hover { border-left-color: var(--gold); }
+
+  .btn-icon {
+    width: 40px; height: 40px;
+    border-radius: 4px;
+    background: var(--green-light);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .btn:nth-child(2) .btn-icon { background: var(--blue-light); }
+  .btn:nth-child(3) .btn-icon { background: #fff4e0; }
+
+  .btn-text {
+    flex: 1;
+  }
+
+  .btn-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 2px;
+  }
+
+  .btn-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .btn-arrow {
+    font-size: 18px;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .btn:hover .btn-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    text-align: center;
+    margin: 24px 0 28px;
+    color: var(--gold);
+    font-size: 16px;
+    letter-spacing: 6px;
+    animation: fadeDown 0.6s 0.05s ease both;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: #bbb;
+    letter-spacing: 0.06em;
+    animation: fadeUp 0.5s 0.35s ease both;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 24px 14px; }
+    body::after { display: none; }
+  }
+</style>
 </head>
 <body>
+<div class="wrapper">
 
-    <h1>🧬Задания🧬</h1>
-
-    <div class="menu">
-        <a class="btn" href="/biology/biologytab1/index.html">Таблица §16-17</a>
-        <a class="btn" href="/biology/biologytab2/index.html">Таблица §18-19</a>
-        <a class="btn" href="/biology/biologytab3/index.html">Конспект §20</a>
+  <!-- HEADER -->
+  <header>
+    <div class="notebook-rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
     </div>
+    <div class="badge">🔬 Биология · 10 класс</div>
+    <h1>Задания</h1>
+    <p class="subtitle">Выберите таблицу или конспект</p>
+  </header>
 
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- MENU BUTTONS -->
+  <div class="menu">
+
+    <!-- ▼ КНОПКА 1 — вставьте ссылку в href="..." -->
+    <a class="btn" href="/biology/biologytab1/index.html">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Таблица</div>
+        <div class="btn-title">§16–17</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 2 — вставьте ссылку в href="..." -->
+    <a class="btn" href="/biology/biologytab2/index.html">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Таблица</div>
+        <div class="btn-title">§18–19</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 3 — вставьте ссылку в href="..." -->
+    <a class="btn" href="/biology/biologytab3/index.html">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Конспект</div>
+        <div class="btn-title">§20</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Биология &nbsp;·&nbsp; Домашние задания и конспекты &nbsp;·&nbsp; 10 класс
+  </footer>
+
+</div>
 </body>
 </html>
