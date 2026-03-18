@@ -1,1 +1,696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задания — Физика</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
 
+    /* =====================================================
+       ▼ ЦВЕТ АКЦЕНТА ПРЕДМЕТА — меняй эти две переменные:
+         --accent      : основной цвет (полоса badge, border-left кнопок)
+         --accent-light: светлый фон иконок в кнопках
+       Примеры готовых пар:
+         Биология  : #2a6b3a / #e4f3e8
+         Русский   : #2c4a7c / #dce8f7  
+         Химия     : #1a7b8a / #e0f4f7
+         История   : #8b3a1a / #faeee8
+         Физика    : #4a3a8b / #eae8fa
+         Литература: #b03030 / #fde8e8
+         Алгебра   : #2a6b3a / #e4f3e8
+         Английский: #1a6b5a / #e0f7f0
+    ===================================================== */
+    --accent:       #4a3a8b;
+    --accent-light: #eae8fa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent, transparent 31px,
+      rgba(44,74,124,0.06) 31px,
+      rgba(44,74,124,0.06) 32px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 72px;
+    width: 2px; height: 100%;
+    background: rgba(176,48,48,0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 560px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  /* ── HEADER ── */
+  header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--rule);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .notebook-rings {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+
+  .ring {
+    width: 20px; height: 20px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(201,151,58,0.25), inset 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+  }
+
+  .ring::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  /* =====================================================
+     ▼ ЦВЕТ BADGE (плашка над заголовком)
+       background: var(--accent) — тянется из переменной выше,
+       менять не нужно если поменял --accent
+  ===================================================== */
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  /* =====================================================
+     ▼ ЦВЕТ ГЛАВНОГО ЗАГОЛОВКА H1
+       Сейчас: var(--blue) = #2c4a7c
+       Чтобы покрасить в цвет предмета — замени на var(--accent)
+       Чтобы оставить синим для всех страниц — не трогай
+  ===================================================== */
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 6vw, 40px);
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: #888;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── PAGE INDICATOR ── */
+  .page-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid rgba(44,74,124,0.15);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.06em;
+    margin-top: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  /* =====================================================
+     ▼ ЦВЕТ ТОЧКИ В ИНДИКАТОРЕ СТРАНИЦЫ
+       background: var(--accent) — тянется автоматически
+  ===================================================== */
+  .page-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    text-align: center;
+    margin: 20px 0 22px;
+    color: var(--gold);
+    font-size: 15px;
+    letter-spacing: 6px;
+    animation: fadeDown 0.6s 0.05s ease both;
+  }
+
+  /* ── BUTTONS ── */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  /* =====================================================
+     ▼ ЦВЕТ ЛЕВОЙ ПОЛОСЫ КНОПОК
+       Все кнопки по умолчанию берут --accent.
+       Ниже через nth-child задан чередующийся оттенок —
+       можно убрать nth-child и оставить только .btn { border-left-color: var(--accent) }
+       если хочешь одинаковый цвет у всех кнопок
+  ===================================================== */
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    color: var(--ink);
+    text-align: left;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    animation: fadeUp 0.45s ease both;
+  }
+
+  /* Чередование цветов полосы — можно удалить все nth-child если не нужно */
+  .btn:nth-child(1)  { animation-delay: 0.06s; border-left-color: #2c4a7c; }
+  .btn:nth-child(2)  { animation-delay: 0.10s; border-left-color: #1a7b8a; }
+  .btn:nth-child(3)  { animation-delay: 0.14s; border-left-color: #c9973a; }
+  .btn:nth-child(4)  { animation-delay: 0.18s; border-left-color: #2c4a7c; }
+  .btn:nth-child(5)  { animation-delay: 0.22s; border-left-color: #1a7b8a; }
+  .btn:nth-child(6)  { animation-delay: 0.26s; border-left-color: #c9973a; }
+  .btn:nth-child(7)  { animation-delay: 0.30s; border-left-color: #2c4a7c; }
+  .btn:nth-child(8)  { animation-delay: 0.34s; border-left-color: #1a7b8a; }
+  .btn:nth-child(9)  { animation-delay: 0.38s; border-left-color: #c9973a; }
+  .btn:nth-child(10) { animation-delay: 0.42s; border-left-color: #2c4a7c; }
+
+  .btn:hover {
+    transform: translateY(-3px) translateX(3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+  }
+
+  /* =====================================================
+     ▼ ЦВЕТ ФОНА ИКОНКИ В КНОПКЕ
+       По умолчанию: var(--accent-light)
+       nth-child ниже чередует фоны — можно убрать
+  ===================================================== */
+  .btn-icon {
+    width: 38px; height: 38px;
+    border-radius: 4px;
+    background: var(--accent-light);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .btn:nth-child(2)  .btn-icon { background: #e0f4f7; }
+  .btn:nth-child(3)  .btn-icon { background: #fff4e0; }
+  .btn:nth-child(4)  .btn-icon { background: var(--accent-light); }
+  .btn:nth-child(5)  .btn-icon { background: #e0f4f7; }
+  .btn:nth-child(6)  .btn-icon { background: #fff4e0; }
+  .btn:nth-child(7)  .btn-icon { background: var(--accent-light); }
+  .btn:nth-child(8)  .btn-icon { background: #e0f4f7; }
+  .btn:nth-child(9)  .btn-icon { background: #fff4e0; }
+  .btn:nth-child(10) .btn-icon { background: var(--accent-light); }
+
+  .btn-text { flex: 1; }
+
+  .btn-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 1px;
+  }
+
+  .btn-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .btn-arrow {
+    font-size: 16px;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .btn:hover .btn-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 28px;
+    animation: fadeUp 0.5s 0.45s ease both;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    background: white;
+    border: 1px solid rgba(44,74,124,0.2);
+    border-radius: 4px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .page-btn:hover {
+    background: var(--accent-light);
+    box-shadow: 0 4px 14px rgba(44,74,124,0.15);
+    transform: translateY(-2px);
+  }
+
+  /* =====================================================
+     ▼ ЦВЕТ АКТИВНОЙ КНОПКИ ПАГИНАЦИИ
+       background и border-color = var(--accent)
+  ===================================================== */
+  .page-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    cursor: default;
+    transform: none;
+    pointer-events: none;
+  }
+
+  .page-btn.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: #bbb;
+    letter-spacing: 0.06em;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 24px 14px; }
+    body::after { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ==================================================
+    HEADER — что менять:
+    1. badge     : эмодзи и название предмета
+    2. h1        : заголовок страницы
+    3. subtitle  : подзаголовок
+    Цвет badge подтягивается из --accent автоматически
+  ================================================== -->
+  <header>
+    <div class="notebook-rings">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="ring"></div><div class="ring"></div>
+    </div>
+
+    <!-- ▼ BADGE — меняй эмодзи и название предмета -->
+    <div class="badge">⚛️ Физика · 10 класс</div>
+
+    <!-- ▼ ЗАГОЛОВОК — меняй текст -->
+    <h1>Задания</h1>
+
+    <!-- ▼ ПОДЗАГОЛОВОК — меняй текст -->
+    <p class="subtitle">Выберите конспект или упражнение</p>
+
+    <!-- Индикатор страницы — обновляется JS автоматически, не трогать -->
+    <div class="page-indicator">
+      <div class="page-dot"></div>
+      <span id="indicator-text">Страница 1 из 2</span>
+    </div>
+  </header>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+
+  <!-- ================================================================
+  ||  СТРАНИЦА 1                                                      ||
+  ||  КАК ДОБАВИТЬ СТРАНИЦУ 3:                                        ||
+  ||  1. Скопируй весь блок от строки <div class="menu" id="page-X"> ||
+  ||     до строки КОНЕЦ СТРАНИЦЫ X                                   ||
+  ||  2. Вставь сразу после закрывающего тега конца последней стр.   ||
+  ||  3. Смени id="page-3" (и далее по порядку)                      ||
+  ||  4. В блоке ПАГИНАЦИЯ скопируй одну кнопку страницы             ||
+  ||     и вставь с новым data-page="3"                               ||
+  ||  Остальное JS сделает сам.                                       ||
+  ================================================================ -->
+  <div class="menu" id="page-1">
+
+    <!-- ▼ КНОПКА 1 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 2 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 3 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 4 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 5 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 6 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 7 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 8 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 9 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 10 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+  </div>
+  <!-- КОНЕЦ СТРАНИЦЫ 1 -->
+
+
+  <!-- ================================================================
+  ||  СТРАНИЦА 2  (скопируй этот блок целиком для стр. 3, 4 и т.д.) ||
+  ================================================================ -->
+  <div class="menu" id="page-2" style="display:none;">
+
+    <!-- ▼ КНОПКА 11 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 12 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 13 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 14 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 15 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 16 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 17 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 18 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📋</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 19 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📝</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <!-- ▼ КНОПКА 20 — href: ссылка | btn-label: тип задания | btn-title: название -->
+    <a class="btn" href="#">
+      <div class="btn-icon">📊</div>
+      <div class="btn-text">
+        <div class="btn-label">Задание</div>
+        <div class="btn-title">НЕ ГОТОВО</div>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+  </div>
+  <!-- КОНЕЦ СТРАНИЦЫ 2 -->
+
+
+  <!-- ================================================================
+  ||  ПАГИНАЦИЯ                                                       ||
+  ||  Чтобы добавить страницу 3:                                      ||
+  ||  Скопируй строку КНОПКА СТРАНИЦЫ и вставь перед «Вперёд»,       ||
+  ||  смени data-page="3" и текст «3»                                 ||
+  ================================================================ -->
+  <div class="pagination">
+
+    <span class="page-btn disabled" id="btn-prev">← Назад</span>
+
+    <!-- ▼ КНОПКА СТРАНИЦЫ 1 -->
+    <span class="page-btn active" data-page="1">1</span>
+
+    <!-- ▼ КНОПКА СТРАНИЦЫ 2 — скопируй эту строку для стр. 3, 4... -->
+    <span class="page-btn" data-page="2">2</span>
+
+    <span class="page-btn" id="btn-next">Вперёд →</span>
+
+  </div>
+
+
+  <!-- ▼ FOOTER — меняй текст подписи внизу страницы -->
+  <footer>
+    Русский язык &nbsp;·&nbsp; Домашние задания и конспекты &nbsp;·&nbsp; 10 класс
+  </footer>
+
+</div>
+
+<!-- JS пагинации — не трогать -->
+<script>
+(function () {
+  let current = 1;
+  function allPages()    { return document.querySelectorAll('[id^="page-"]'); }
+  function allPageBtns() { return document.querySelectorAll('[data-page]'); }
+  function total()       { return allPages().length; }
+
+  function goTo(n) {
+    allPages().forEach(p => p.style.display = 'none');
+    const target = document.getElementById('page-' + n);
+    if (target) { target.style.display = 'flex'; target.style.flexDirection = 'column'; }
+    allPageBtns().forEach(b => b.classList.toggle('active', +b.dataset.page === n));
+    document.getElementById('btn-prev').classList.toggle('disabled', n === 1);
+    document.getElementById('btn-next').classList.toggle('disabled', n === total());
+    const ind = document.getElementById('indicator-text');
+    if (ind) ind.textContent = 'Страница ' + n + ' из ' + total();
+    current = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  allPageBtns().forEach(b => b.addEventListener('click', () => goTo(+b.dataset.page)));
+  document.getElementById('btn-prev').addEventListener('click', () => { if (current > 1) goTo(current - 1); });
+  document.getElementById('btn-next').addEventListener('click', () => { if (current < total()) goTo(current + 1); });
+  goTo(1);
+})();
+</script>
+
+</body>
+</html>
