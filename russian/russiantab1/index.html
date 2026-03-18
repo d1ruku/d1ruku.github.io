@@ -1,1 +1,685 @@
+<!DOCTYPE html>
 
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Склонение числительных — Конспект</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --red: #b03030;
+    --red-light: #fde8e8;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–paper);
+color: var(–ink);
+font-family: ‘Golos Text’, sans-serif;
+font-size: 15px;
+line-height: 1.6;
+padding: 40px 20px 80px;
+}
+
+/* Decorative background */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+repeating-linear-gradient(
+0deg,
+transparent,
+transparent 31px,
+rgba(44,74,124,0.06) 31px,
+rgba(44,74,124,0.06) 32px
+);
+pointer-events: none;
+z-index: 0;
+}
+
+.wrapper {
+max-width: 980px;
+margin: 0 auto;
+position: relative;
+z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+text-align: center;
+margin-bottom: 48px;
+padding-bottom: 32px;
+border-bottom: 2px solid var(–rule);
+animation: fadeDown 0.6s ease both;
+}
+
+.badge {
+display: inline-block;
+background: var(–gold);
+color: white;
+font-size: 11px;
+font-weight: 600;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+padding: 4px 14px;
+border-radius: 2px;
+margin-bottom: 16px;
+}
+
+h1 {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(28px, 5vw, 46px);
+font-weight: 900;
+color: var(–blue);
+line-height: 1.15;
+margin-bottom: 10px;
+}
+
+.subtitle {
+color: #777;
+font-size: 14px;
+letter-spacing: 0.04em;
+}
+
+/* ── SECTION TITLES ── */
+.section {
+margin-bottom: 48px;
+animation: fadeUp 0.5s ease both;
+}
+.section:nth-child(2) { animation-delay: 0.1s; }
+.section:nth-child(3) { animation-delay: 0.15s; }
+.section:nth-child(4) { animation-delay: 0.2s; }
+.section:nth-child(5) { animation-delay: 0.25s; }
+.section:nth-child(6) { animation-delay: 0.3s; }
+.section:nth-child(7) { animation-delay: 0.35s; }
+
+.section-header {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 16px;
+}
+
+.section-num {
+width: 32px;
+height: 32px;
+background: var(–blue);
+color: white;
+font-family: ‘Playfair Display’, serif;
+font-size: 15px;
+font-weight: 700;
+border-radius: 50%;
+display: grid;
+place-items: center;
+flex-shrink: 0;
+}
+
+h2 {
+font-family: ‘Playfair Display’, serif;
+font-size: 20px;
+color: var(–blue);
+font-weight: 700;
+}
+
+/* ── THEORY CARDS ── */
+.cards {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 14px;
+margin-bottom: 16px;
+}
+
+.card {
+background: white;
+border: 1px solid rgba(44,74,124,0.15);
+border-top: 3px solid var(–gold);
+padding: 16px 18px;
+border-radius: 4px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-title {
+font-weight: 600;
+color: var(–blue);
+font-size: 13px;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+margin-bottom: 8px;
+}
+
+.card ul {
+list-style: none;
+padding: 0;
+}
+
+.card li {
+padding: 3px 0;
+font-size: 14px;
+border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card li:last-child { border-bottom: none; }
+
+.card li::before {
+content: ‘—’;
+color: var(–gold);
+margin-right: 7px;
+font-weight: 700;
+}
+
+/* ── TABLES ── */
+.table-wrap {
+overflow-x: auto;
+border-radius: 6px;
+box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+margin-bottom: 10px;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 14px;
+background: white;
+}
+
+thead tr {
+background: var(–blue);
+color: white;
+}
+
+thead th {
+padding: 10px 12px;
+text-align: left;
+font-weight: 600;
+font-size: 13px;
+letter-spacing: 0.04em;
+white-space: nowrap;
+}
+
+thead th:first-child {
+background: #1a3260;
+width: 80px;
+}
+
+tbody tr:nth-child(even) { background: #f7f9fd; }
+tbody tr:nth-child(odd)  { background: white; }
+
+tbody tr:hover { background: var(–blue-light); transition: background 0.15s; }
+
+td {
+padding: 9px 12px;
+border-bottom: 1px solid rgba(0,0,0,0.06);
+vertical-align: middle;
+}
+
+td:first-child {
+font-weight: 700;
+color: var(–blue);
+background: var(–blue-light) !important;
+white-space: nowrap;
+font-size: 13px;
+letter-spacing: 0.04em;
+}
+
+.accent { color: var(–red); font-weight: 600; }
+
+/* ── RULES BOX ── */
+.rules {
+background: white;
+border: 1px solid rgba(44,74,124,0.15);
+border-left: 4px solid var(–gold);
+border-radius: 4px;
+padding: 18px 22px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.rules ol {
+padding-left: 0;
+list-style: none;
+counter-reset: rule;
+}
+
+.rules ol li {
+counter-increment: rule;
+padding: 7px 0 7px 36px;
+position: relative;
+border-bottom: 1px dashed rgba(0,0,0,0.08);
+font-size: 14px;
+}
+
+.rules ol li:last-child { border-bottom: none; }
+
+.rules ol li::before {
+content: counter(rule);
+position: absolute;
+left: 0;
+top: 7px;
+width: 22px;
+height: 22px;
+background: var(–gold);
+color: white;
+font-size: 12px;
+font-weight: 700;
+border-radius: 50%;
+display: grid;
+place-items: center;
+}
+
+em.rule { font-style: italic; color: #555; font-size: 13px; }
+
+/* ── ERRORS TABLE ── */
+.err-wrong { color: var(–red); }
+.err-right { color: var(–green); font-weight: 600; }
+
+td.label-wrong { background: var(–red-light) !important; color: var(–red); font-weight: 600; text-decoration: line-through; text-decoration-color: #b0303088; }
+td.label-right { background: var(–green-light) !important; color: var(–green); font-weight: 600; }
+
+/* ── TIPS ── */
+.tips {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+gap: 14px;
+}
+
+.tip {
+background: white;
+border: 1px solid rgba(44,74,124,0.12);
+border-radius: 4px;
+padding: 16px 18px;
+display: flex;
+gap: 12px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.tip-icon {
+font-size: 22px;
+flex-shrink: 0;
+line-height: 1;
+margin-top: 2px;
+}
+
+.tip-text { font-size: 14px; line-height: 1.55; }
+.tip-text strong { color: var(–blue); display: block; margin-bottom: 4px; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* ── FOOTER ── */
+footer {
+text-align: center;
+margin-top: 60px;
+padding-top: 24px;
+border-top: 1px solid var(–rule);
+font-size: 12px;
+color: #aaa;
+letter-spacing: 0.06em;
+}
+
+/* ── DIVIDER ── */
+.divider {
+text-align: center;
+margin: 10px 0 20px;
+color: var(–gold);
+font-size: 18px;
+letter-spacing: 6px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeDown {
+from { opacity: 0; transform: translateY(-18px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(14px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+@media(max-width:600px) {
+body { padding: 20px 12px 60px; }
+thead th, td { padding: 7px 8px; font-size: 13px; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+
+  <header>
+    <div class="badge">Опорный конспект</div>
+    <h1>Склонение числительных<br>и морфологические нормы</h1>
+    <p class="subtitle">Подготовка к проверочной работе &nbsp;·&nbsp; Русский язык</p>
+  </header>
+
+  <!-- 1. ВИДЫ ЧИСЛИТЕЛЬНЫХ -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Виды числительных</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Количественные</div>
+        <ul>
+          <li>Целые: один, пять, сто</li>
+          <li>Дробные: одна пятая, полтора</li>
+          <li>Собирательные: двое, трое</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Порядковые</div>
+        <ul>
+          <li>Первый, второй, третий</li>
+          <li>Склоняются как прилагательные</li>
+          <li>В составных — только последнее</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Простые / Составные</div>
+        <ul>
+          <li>Простые: одно слово (семь)</li>
+          <li>Сложные: одна основа (семьдесят)</li>
+          <li>Составные: несколько слов</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Собирательные</div>
+        <ul>
+          <li>Двое, трое … десятеро</li>
+          <li>Только с лицами м.р. и детьми</li>
+          <li>Нельзя: двое подруг ✗</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. КОЛИЧЕСТВЕННЫЕ: 1–4 -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Склонение количественных числительных 1–4</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Падеж</th>
+            <th>Один (м.)</th>
+            <th>Одна (ж.)</th>
+            <th>Два (м./с.)</th>
+            <th>Две (ж.)</th>
+            <th>Три</th>
+            <th>Четыре</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>И.п.</td><td>один</td><td>одна</td><td>два</td><td>две</td><td>три</td><td>четыре</td></tr>
+          <tr><td>Р.п.</td><td>одного</td><td>одной</td><td>двух</td><td>двух</td><td><span class="accent">трёх</span></td><td><span class="accent">четырёх</span></td></tr>
+          <tr><td>Д.п.</td><td>одному</td><td>одной</td><td>двум</td><td>двум</td><td><span class="accent">трём</span></td><td><span class="accent">четырём</span></td></tr>
+          <tr><td>В.п.</td><td>одного/один</td><td>одну</td><td>двух/два</td><td>двух/две</td><td>трёх/три</td><td>четырёх/четыре</td></tr>
+          <tr><td>Т.п.</td><td>одним</td><td>одной</td><td><span class="accent">двумя</span></td><td><span class="accent">двумя</span></td><td><span class="accent">тремя</span></td><td><span class="accent">четырьмя</span></td></tr>
+          <tr><td>П.п.</td><td>об одном</td><td>об одной</td><td>о двух</td><td>о двух</td><td>о трёх</td><td>о четырёх</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="divider">✦ ✦ ✦</div>
+  </div>
+
+  <!-- 3. КОЛИЧЕСТВЕННЫЕ: 5–20, 30 -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Склонение числительных 5–20 и 30</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Падеж</th>
+            <th>5–20, 30</th>
+            <th>Пример (восемь)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>И.п.</td><td>пять … двадцать, тридцать</td><td>восемь</td></tr>
+          <tr><td>Р.п.</td><td>пяти … двадцати, тридцати</td><td>восьми</td></tr>
+          <tr><td>Д.п.</td><td>пяти … двадцати, тридцати</td><td>восьми</td></tr>
+          <tr><td>В.п.</td><td>= И.п.</td><td>восемь</td></tr>
+          <tr><td>Т.п.</td><td>пятью … двадцатью, тридцатью</td><td><span class="accent">восемью</span></td></tr>
+          <tr><td>П.п.</td><td>о пяти … двадцати, тридцати</td><td>о восьми</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. СЛОЖНЫЕ -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Сложные числительные 50–80, 200–900</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Падеж</th>
+            <th>50–80</th>
+            <th>200</th>
+            <th>300–400</th>
+            <th>500–900</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>И.п.</td><td>пятьдесят</td><td>двести</td><td>триста</td><td>пятьсот</td></tr>
+          <tr><td>Р.п.</td><td>пятидесяти</td><td><span class="accent">двухсот</span></td><td>трёхсот</td><td><span class="accent">пятисот</span></td></tr>
+          <tr><td>Д.п.</td><td>пятидесяти</td><td><span class="accent">двумстам</span></td><td>трёмстам</td><td>пятистам</td></tr>
+          <tr><td>В.п.</td><td>пятьдесят</td><td>двести</td><td>триста</td><td>пятьсот</td></tr>
+          <tr><td>Т.п.</td><td><span class="accent">пятьюдесятью</span></td><td><span class="accent">двумястами</span></td><td>тремястами</td><td><span class="accent">пятьюстами</span></td></tr>
+          <tr><td>П.п.</td><td>о пятидесяти</td><td>о двухстах</td><td>о трёхстах</td><td>о пятистах</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px;color:#777;margin-top:8px;">* В сложных числительных склоняются <strong>обе части</strong>.</p>
+  </div>
+
+  <!-- 5. ПОРЯДКОВЫЕ -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Порядковые числительные</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Падеж</th>
+            <th>М.р.</th>
+            <th>Ж.р.</th>
+            <th>Ср.р.</th>
+            <th>Мн.ч.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>И.п.</td><td>пятый</td><td>пятая</td><td>пятое</td><td>пятые</td></tr>
+          <tr><td>Р.п.</td><td>пятого</td><td>пятой</td><td>пятого</td><td>пятых</td></tr>
+          <tr><td>Д.п.</td><td>пятому</td><td>пятой</td><td>пятому</td><td>пятым</td></tr>
+          <tr><td>В.п.</td><td>пятого/пятый</td><td>пятую</td><td>пятое</td><td>пятых/пятые</td></tr>
+          <tr><td>Т.п.</td><td>пятым</td><td>пятой</td><td>пятым</td><td>пятыми</td></tr>
+          <tr><td>П.п.</td><td>о пятом</td><td>о пятой</td><td>о пятом</td><td>о пятых</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="rules" style="margin-top:14px;">
+      <ol>
+        <li>В составных порядковых изменяется <strong>только последнее слово</strong>: в <em>две тысячи двадцать пятом</em> году.</li>
+        <li><strong>Третий</strong> склоняется особо: третьего, третьему, о третьем (с мягким знаком в основе).</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 6. КЛЮЧЕВЫЕ ПРАВИЛА -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>Ключевые морфологические правила</h2>
+    </div>
+    <div class="rules">
+      <ol>
+        <li><strong>Оба / обе:</strong> <em>оба</em> — с существительными м. и ср. рода; <em>обе</em> — с существительными ж. рода. Р.п.: <em>обоих / обеих</em>.</li>
+        <li><strong>Полтора / полторы:</strong> с существительными м. и ср. рода — <em>полтора</em> (полтора часа), с ж. рода — <em>полторы</em> (полторы минуты). Все косвенные падежи: <em>полутора</em>.</li>
+        <li><strong>Дробные числительные</strong> управляют Р.п. ед.ч.: <em>одна пятая метра</em>; но <em>полтора метра</em>, <em>полтора часа</em>.</li>
+        <li><strong>Собирательные</strong> (двое, трое…) не употребляются с существительными ж.р.: <em>двое друзей ✓</em> — <em>двое подруг ✗</em>.</li>
+        <li><strong>Тысяча, миллион, миллиард</strong> — существительные, поэтому управляют падежом: <em>пяти тысячам, о миллионе</em>.</li>
+        <li><strong>40, 90, 100</strong> имеют только две формы: И./В.п. — <em>сорок, девяносто, сто</em>; все остальные падежи — <em>сорока, девяноста, ста</em>.</li>
+        <li><strong>В составных числительных</strong> склоняется каждое слово: <em>пятьюстами сорока пятью рублями</em>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 7. ТИПИЧНЫЕ ОШИБКИ -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Типичные ошибки и нормы</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Падеж</th>
+            <th>✗ Неверно</th>
+            <th>✓ Верно</th>
+            <th>Комментарий</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Р.п.</td>
+            <td class="label-wrong">около трёхста рублей</td>
+            <td class="label-right">около трёхсот рублей</td>
+            <td>Р.п. мн.: -сот</td>
+          </tr>
+          <tr>
+            <td>Т.п.</td>
+            <td class="label-wrong">с пятьюдесяти рублями</td>
+            <td class="label-right">с пятьюдесятью рублями</td>
+            <td>Т.п.: -ью / -ю</td>
+          </tr>
+          <tr>
+            <td>Р.п. ж.р.</td>
+            <td class="label-wrong">у обоих подруг</td>
+            <td class="label-right">у обеих подруг</td>
+            <td>обе → обеих (ж.р.)</td>
+          </tr>
+          <tr>
+            <td>Собират.</td>
+            <td class="label-wrong">двое подруг пришло</td>
+            <td class="label-right">две подруги пришли</td>
+            <td>Собират. + ж.р. ✗</td>
+          </tr>
+          <tr>
+            <td>Порядк.</td>
+            <td class="label-wrong">в двух тысячи шестом году</td>
+            <td class="label-right">в две тысячи шестом году</td>
+            <td>Склон. последнее</td>
+          </tr>
+          <tr>
+            <td>Т.п.</td>
+            <td class="label-wrong">восьмидесятью процентами</td>
+            <td class="label-right">восьмьюдесятью процентами</td>
+            <td>обе части в Т.п.</td>
+          </tr>
+          <tr>
+            <td>Р.п.</td>
+            <td class="label-wrong">нет полтора часа</td>
+            <td class="label-right">нет полутора часа</td>
+            <td>Косв. пад.: полутора</td>
+          </tr>
+          <tr>
+            <td>И.п./В.п.</td>
+            <td class="label-wrong">сто рублями</td>
+            <td class="label-right">ста рублями (Т.п.)</td>
+            <td>40/90/100 → -а</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Советы для запоминания</h2>
+    </div>
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon">🔑</div>
+        <div class="tip-text">
+          <strong>40 · 90 · 100</strong>
+          Только две формы: И./В. — сорок/девяносто/сто. Все остальные — сорока/девяноста/ста.
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">✂️</div>
+        <div class="tip-text">
+          <strong>Сложные: склоняй обе части</strong>
+          Пятьюстами (не пятьсот-ами). Тренируй по схеме: 1-я часть + 2-я часть.
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">♀</div>
+        <div class="tip-text">
+          <strong>Женский род — особый</strong>
+          Обе (не оба), полторы (не полтора), две подруги (не двое подруг).
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📅</div>
+        <div class="tip-text">
+          <strong>Год: склоняй последнее</strong>
+          «В две тысячи двадцать пятом году» — только «пятом» меняется, остальное остаётся в И.п.
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🧮</div>
+        <div class="tip-text">
+          <strong>Полтора → полутора</strong>
+          В любом косвенном падеже кроме В.п. говорим «полутора»: нет полутора метра.
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">👥</div>
+        <div class="tip-text">
+          <strong>Собирательные — только м.р.</strong>
+          Двое/трое друзей ✓, двое детей ✓ — но только не с существительными ж.р.!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Опорный конспект &nbsp;·&nbsp; Склонение числительных &nbsp;·&nbsp; Русский язык
+  </footer>
+
+</div>
+</body>
+</html>
