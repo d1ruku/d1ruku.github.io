@@ -1,1 +1,322 @@
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Golos+Text:wght@400;500;600&display=swap');
+:root{
+  --gold:#c9973a;--blue:#2c4a7c;--ink:#1a1a2e;
+  --paper:#faf8f3;--line:#e8e2d4;--red-margin:#e05a4a;
+  --card-bg:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Golos Text',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  padding:2rem 1.5rem 3rem;
+  background-image:repeating-linear-gradient(
+    transparent,transparent 27px,var(--line) 27px,var(--line) 28px
+  );
+  background-attachment:local;
+}
+.notebook{max-width:780px;margin:0 auto;position:relative;padding-left:52px;}
+.notebook::before{
+  content:'';position:absolute;left:44px;top:0;bottom:0;
+  width:2px;background:var(--red-margin);opacity:.55;
+}
+.rings{
+  position:absolute;left:-18px;top:28px;
+  display:flex;flex-direction:column;gap:52px;
+}
+.ring{
+  width:20px;height:20px;border-radius:50%;
+  border:2.5px solid #b0a090;background:var(--paper);
+}
+
+/* Header */
+.konspekt-header{
+  margin-bottom:1.8rem;
+  padding-bottom:.6rem;
+  border-bottom:2.5px solid var(--blue);
+}
+.para-label{
+  display:inline-block;
+  background:var(--blue);color:#fff;
+  font-family:'Playfair Display',serif;
+  font-size:.75rem;letter-spacing:.12em;
+  padding:.2rem .75rem;border-radius:2px;
+  margin-bottom:.5rem;
+}
+.konspekt-header h1{
+  font-family:'Playfair Display',serif;
+  font-size:1.55rem;color:var(--blue);
+  line-height:1.28;font-weight:700;
+}
+.meta{font-size:.8rem;color:#888;margin-top:.25rem;}
+
+/* Section */
+.section{margin-bottom:1.5rem;}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;color:var(--blue);
+  font-weight:700;margin-bottom:.7rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.section-title .num{
+  background:var(--gold);color:#fff;
+  font-size:.78rem;font-family:'Golos Text',sans-serif;
+  font-weight:600;width:20px;height:20px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+
+/* Definition card */
+.def-card{
+  border-top:3px solid var(--gold);
+  background:var(--card-bg);
+  border-left:.5px solid #d8d0c0;
+  border-right:.5px solid #d8d0c0;
+  border-bottom:.5px solid #d8d0c0;
+  border-radius:0 0 4px 4px;
+  padding:.8rem 1rem;
+  margin-bottom:.9rem;
+  font-size:.9rem;
+  line-height:1.65;
+}
+.def-card b{color:var(--blue);}
+
+/* Note */
+.note{
+  border-left:3px solid var(--red-margin);
+  background:#fff7f6;
+  padding:.55rem .9rem;
+  margin:.7rem 0;
+  font-size:.87rem;
+  border-radius:0 3px 3px 0;
+  color:#5a1a10;
+}
+
+/* Bullet list */
+ul.nblist{list-style:none;padding:0;display:grid;gap:.35rem;margin-bottom:.6rem;}
+ul.nblist li{
+  font-size:.9rem;line-height:1.6;
+  padding-left:1.1rem;position:relative;
+}
+ul.nblist li::before{
+  content:'—';position:absolute;left:0;
+  color:var(--gold);font-weight:600;
+}
+.term{font-weight:600;color:var(--blue);}
+em{font-style:italic;color:#5a7a5a;}
+
+/* Divider */
+.divider{
+  text-align:center;color:var(--gold);
+  font-size:.85rem;letter-spacing:.2em;
+  margin:1.4rem 0;user-select:none;
+}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;margin-top:.8rem;}
+table.cmp{
+  width:100%;border-collapse:collapse;
+  font-size:.82rem;
+  background:var(--card-bg);
+}
+table.cmp thead tr{background:var(--blue);}
+table.cmp thead th{
+  color:#fff;padding:.55rem .85rem;
+  text-align:left;font-weight:600;
+  font-size:.8rem;letter-spacing:.04em;
+}
+table.cmp thead th:first-child{width:30%;}
+table.cmp td{
+  padding:.5rem .85rem;
+  border-bottom:.5px solid #ddd8cc;
+  vertical-align:top;line-height:1.5;
+}
+table.cmp tbody tr:nth-child(even){background:#f5f0e6;}
+.yes{color:#2a6a30;font-weight:600;}
+.no{color:#8a2020;font-weight:600;}
+
+/* Keywords */
+.kw-block{
+  margin-top:1.8rem;padding-top:1rem;
+  border-top:1px dashed #c8c0b0;
+  display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;
+}
+.kw-label{font-size:.75rem;letter-spacing:.1em;color:#999;text-transform:uppercase;margin-right:.3rem;}
+.kw{
+  background:#eee8d8;border:.5px solid #ccc4b0;
+  color:var(--blue);padding:.18rem .65rem;
+  border-radius:20px;font-size:.78rem;
+}
+
+/* Think */
+.think{
+  background:#f0f4fa;border:.5px solid #b5c4da;
+  border-radius:4px;padding:.8rem 1rem;
+  margin-top:1.3rem;font-size:.88rem;line-height:1.6;
+}
+.think strong{color:var(--blue);font-family:'Playfair Display',serif;}
+</style>
+
+<div class="notebook">
+  <div class="rings">
+    <div class="ring"></div><div class="ring"></div>
+    <div class="ring"></div><div class="ring"></div>
+    <div class="ring"></div><div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <div class="konspekt-header">
+    <div class="para-label">§ 20 · Биология · 10 класс</div>
+    <h1>Особенности строения клеток<br>прокариотов и эукариотов</h1>
+    <div class="meta">Ключевые понятия: прокариоты · эукариоты · споры · муреин</div>
+  </div>
+
+  <!-- 1 -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span>Прокариоты</div>
+    <div class="def-card">
+      <b>Прокариоты</b> — одноклеточные живые существа, <b>не имеющие ядра</b> и органоидов, построенных из мембран. Домены: <em>археи</em> и <em>бактерии</em> (настоящие бактерии и цианобактерии).
+    </div>
+    <ul class="nblist">
+      <li>ДНК — <span class="term">кольцевая</span>, расположена прямо в цитоплазме (нуклеоид).</li>
+      <li>Снаружи — <span class="term">плазматическая мембрана</span> (строение схоже с мембраной эукариотов).</li>
+      <li>Ферменты на <span class="term">внутренней стороне мембраны</span> — как на внутренних мембранах пластид и митохондрий.</li>
+      <li><span class="term">Рибосомы мелкие</span>, расположены свободно в цитоплазме.</li>
+      <li><span class="term">Цитоскелет отсутствует.</span></li>
+      <li>Клеточная стенка из <span class="term">муреина</span> (гетерополимер: углеводы + аминокислоты).</li>
+      <li>Жгутики есть, но <span class="term">отличаются по строению</span> от эукариотических.</li>
+    </ul>
+    <div class="meta" style="font-size:.8rem;color:#777;">Компоненты (рис. 77): клеточная стенка · бактериальная хромосома · запасные вещества · плазматическая мембрана · плазмида · жгутики</div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- 2 -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span>Споры бактерий</div>
+    <ul class="nblist">
+      <li>При неблагоприятных условиях бактерии формируют плотные оболочки вокруг кольцевой хромосомы — <span class="term">споры</span>.</li>
+      <li>Остальное содержимое клетки <b>частично отмирает</b>, частично высыхает и компактизируется.</li>
+      <li>Спора неактивна <b>многие годы, возможно тысячелетия</b>; при благоприятных условиях быстро превращается в бактерию.</li>
+      <li>Споры найдены во льдах Антарктиды (глубина 30 м) и в атмосфере (высота 40 км).</li>
+    </ul>
+    <div class="note">
+      ⚠ Вскрытие скотомогильников опасно — споры возбудителей <em>сибирской язвы</em> и <em>сапа</em> могут активироваться и вызвать вспышку болезни.
+    </div>
+    <p style="font-size:.88rem;line-height:1.6;">Археи — единственные организмы, способные жить у «чёрных курильщиков» (выбросы метана, сероводорода и ядовитых газов со дна океана).</p>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- 3 -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span>Эукариоты</div>
+    <ul class="nblist">
+      <li><span class="term">Ядро</span> — оболочка из двух мембран, содержит ядрышки.</li>
+      <li>ДНК <span class="term">линейная</span>, организована в хромосомы.</li>
+      <li>Рибосомы крупные (цитоплазма), мелкие (митохондрии, пластиды).</li>
+      <li>Клеточная стенка: растения — <em>целлюлоза</em>, грибы — <em>хитин</em>, животные — <span class="no">отсутствует</span>.</li>
+      <li>Есть: цитоскелет · пищеварительные вакуоли · митоз и мейоз · гаметы.</li>
+      <li>Диаметр клеток — до 40 мкм и более.</li>
+    </ul>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- 4 Table -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span>Сравнительная таблица</div>
+    <div class="tbl-wrap">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th>Признак</th>
+            <th>Прокариоты</th>
+            <th>Эукариоты</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ядро</td>
+            <td><span class="no">Нет.</span> ДНК в цитоплазме</td>
+            <td><span class="yes">Есть.</span> Оболочка из 2 мембран, ядрышко</td>
+          </tr>
+          <tr>
+            <td>Генетический материал</td>
+            <td>Кольцевая молекула ДНК (бактериальная хромосома)</td>
+            <td>Линейные молекулы ДНК, организованные в хромосомы</td>
+          </tr>
+          <tr>
+            <td>Клеточная стенка</td>
+            <td><span class="yes">Есть.</span> Полисахариды + муреин</td>
+            <td>Животные — <span class="no">нет</span>; растения — целлюлоза; грибы — хитин</td>
+          </tr>
+          <tr>
+            <td>Мембранные органоиды</td>
+            <td><span class="no">Нет</span></td>
+            <td><span class="yes">Есть</span></td>
+          </tr>
+          <tr>
+            <td>Рибосомы</td>
+            <td><span class="yes">Есть.</span> Мелкие</td>
+            <td><span class="yes">Есть.</span> Крупные в цитоплазме, мелкие в митохондриях и пластидах</td>
+          </tr>
+          <tr>
+            <td>Цитоскелет</td>
+            <td><span class="no">Нет</span></td>
+            <td><span class="yes">Есть</span></td>
+          </tr>
+          <tr>
+            <td>Пищеварительные вакуоли</td>
+            <td><span class="no">Нет</span></td>
+            <td><span class="yes">Есть</span></td>
+          </tr>
+          <tr>
+            <td>Митоз и мейоз</td>
+            <td><span class="no">Нет</span></td>
+            <td><span class="yes">Есть</span></td>
+          </tr>
+          <tr>
+            <td>Гаметы</td>
+            <td><span class="no">Нет</span></td>
+            <td><span class="yes">Есть</span></td>
+          </tr>
+          <tr>
+            <td>Жгутики</td>
+            <td><span class="yes">Есть</span>, но отличаются по строению</td>
+            <td><span class="yes">Есть</span></td>
+          </tr>
+          <tr>
+            <td>Размеры</td>
+            <td>Диаметр 0,3–5,0 мкм</td>
+            <td>Диаметр до 40 мкм и более</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Think -->
+  <div class="think">
+    <strong>Подумайте:</strong> Как бактерий используют в хозяйственной деятельности человека?
+    <br><span style="color:#6a7a9a;font-size:.83rem;">Молочнокислое и уксуснокислое брожение · производство антибиотиков · биоремедиация · генная инженерия</span>
+  </div>
+
+  <!-- Keywords -->
+  <div class="kw-block">
+    <span class="kw-label">Термины</span>
+    <span class="kw">прокариоты</span>
+    <span class="kw">эукариоты</span>
+    <span class="kw">археи</span>
+    <span class="kw">бактерии</span>
+    <span class="kw">муреин</span>
+    <span class="kw">споры</span>
+    <span class="kw">нуклеоид</span>
+    <span class="kw">плазмида</span>
+    <span class="kw">рибосомы</span>
+    <span class="kw">цитоскелет</span>
+  </div>
+
+</div>
