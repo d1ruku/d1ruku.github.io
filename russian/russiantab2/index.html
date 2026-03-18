@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Русский язык — Памятка и Упражнение 171</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9973a;
+    --blue: #2c4a7c;
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --line: #d9d0b8;
+    --red-margin: #e8a0a0;
+    --shadow: rgba(44,74,124,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      var(--line) 31px,
+      var(--line) 32px
+    );
+    font-family: 'Golos Text', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 60px 0;
+  }
+
+  /* Notebook rings top */
+  .rings {
+    display: flex;
+    justify-content: center;
+    gap: 52px;
+    padding: 0;
+    margin-bottom: -10px;
+    position: relative;
+    z-index: 10;
+  }
+  .ring {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b0b8c8 0%, #e8eaf0 50%, #8090a8 100%);
+    border: 2.5px solid #7a8aaa;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18), inset 0 1px 2px rgba(255,255,255,0.5);
+    position: relative;
+    top: 4px;
+  }
+
+  .page-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Red margin line */
+  .margin-line {
+    position: fixed;
+    left: calc(50% - 410px + 56px);
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--red-margin);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Page header */
+  .page-title {
+    text-align: center;
+    padding: 36px 0 20px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .page-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.03em;
+  }
+  .page-title .subject {
+    font-size: 0.85rem;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* ПАМЯТКА card */
+  .pamyatka-card {
+    background: white;
+    border-radius: 16px;
+    border-top: 5px solid var(--gold);
+    box-shadow: 0 6px 32px var(--shadow);
+    overflow: hidden;
+    margin-bottom: 36px;
+    animation: fadeDown 0.7s ease 0.1s both;
+    position: relative;
+    z-index: 2;
+  }
+
+  .pamyatka-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(90deg, #f5f0e8 0%, #faf8f3 100%);
+    padding: 18px 28px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .pamyatka-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  }
+  .pamyatka-header-text {
+    flex: 1;
+  }
+  .pamyatka-header-text .label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .pamyatka-header-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.08rem;
+    color: var(--blue);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 2px;
+  }
+
+  /* Two-column table */
+  .grammar-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .grammar-table th {
+    background: var(--blue);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 14px 24px;
+    text-align: left;
+    width: 50%;
+  }
+  .grammar-table th:first-child {
+    border-right: 1px solid rgba(255,255,255,0.2);
+  }
+  .grammar-table td {
+    padding: 18px 24px;
+    vertical-align: top;
+    font-size: 0.92rem;
+    line-height: 1.85;
+    color: var(--ink);
+    width: 50%;
+  }
+  .grammar-table td:first-child {
+    border-right: 2px solid var(--line);
+  }
+  .grammar-table tr td {
+    background: white;
+  }
+
+  /* Divider */
+  .divider {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.4em;
+    margin: 8px 0 28px;
+    opacity: 0.7;
+  }
+
+  /* Exercise card */
+  .exercise-card {
+    background: white;
+    border-radius: 16px;
+    border-top: 5px solid var(--blue);
+    box-shadow: 0 6px 32px var(--shadow);
+    overflow: hidden;
+    animation: fadeUp 0.7s ease 0.2s both;
+    position: relative;
+    z-index: 2;
+  }
+
+  .exercise-header {
+    background: linear-gradient(90deg, #eef2f8 0%, #faf8f3 100%);
+    padding: 16px 28px 12px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .ex-number {
+    background: var(--blue);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(44,74,124,0.3);
+  }
+  .ex-instruction {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  .ex-instruction strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .exercise-body {
+    padding: 24px 28px 28px;
+  }
+
+  /* Answer pairs */
+  .pairs-grid {
+    display: grid;
+    gap: 14px;
+  }
+  .pair-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+    animation: fadeUp 0.5s ease both;
+  }
+  .pair-row:nth-child(1) { animation-delay: 0.3s; }
+  .pair-row:nth-child(2) { animation-delay: 0.4s; }
+  .pair-row:nth-child(3) { animation-delay: 0.5s; }
+  .pair-row:nth-child(4) { animation-delay: 0.6s; }
+  .pair-row:nth-child(5) { animation-delay: 0.7s; }
+  .pair-row:nth-child(6) { animation-delay: 0.75s; }
+  .pair-row:nth-child(7) { animation-delay: 0.8s; }
+  .pair-row:nth-child(8) { animation-delay: 0.85s; }
+  .pair-row:nth-child(9) { animation-delay: 0.9s; }
+
+  .word-chip {
+    background: #f5f0e8;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .word-chip .word {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .word-chip .word .ending {
+    color: var(--gold);
+    font-weight: 900;
+    border-bottom: 2px solid var(--gold);
+  }
+  .word-chip .meaning {
+    font-size: 0.78rem;
+    color: #888;
+    font-style: italic;
+  }
+  .word-chip .rule-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .badge-zero {
+    background: #eef2ff;
+    color: #4455aa;
+  }
+  .badge-ov {
+    background: #fff4e0;
+    color: #a06010;
+  }
+
+  /* Footnote */
+  .footnote {
+    margin-top: 22px;
+    padding: 14px 18px;
+    background: #f5f0e8;
+    border-radius: 10px;
+    border-left: 4px solid var(--gold);
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  .footnote strong {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .pair-row { grid-template-columns: 1fr; }
+    .grammar-table th, .grammar-table td { padding: 12px 14px; font-size: 0.83rem; }
+    .margin-line { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="margin-line"></div>
+
+<div class="page-wrapper">
+
+  <div class="rings">
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  </div>
+
+  <div class="page-title">
+    <div class="subject">Русский язык · Морфология</div>
+    <h1>Имена существительные в форме Род. п. мн. ч.</h1>
+  </div>
+
+  <!-- ПАМЯТКА -->
+  <div class="pamyatka-card">
+    <div class="pamyatka-header">
+      <div class="pamyatka-icon">💾</div>
+      <div class="pamyatka-header-text">
+        <div class="label">Памятка</div>
+        <h2>Имена существительные в форме множественного числа родительного падежа</h2>
+      </div>
+    </div>
+    <table class="grammar-table">
+      <thead>
+        <tr>
+          <th>Форма с нулевым окончанием</th>
+          <th>Форма на -ов (-ев)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ампер, башен, блюдец, ботинок, брызг, бутс, ватт, гусар, дел, кочерёг, кушаний, макарон, манжет, нянь, оладий, партизан, полотенец, раздумий, сапог, серёг, сидений, тапок, тапочек, туфель, чулок, шорт, галош, валенок, яблок</td>
+          <td>Абрикосов, апельсинов, баклажанов, бананов, джинсов, гектаров, граммов, каратов, килограммов, кореньев, мандаринов, носков, платьев, помидоров, рельсов, томатов, устьев, хлопьев</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- УПРАЖНЕНИЕ 171 -->
+  <div class="exercise-card">
+    <div class="exercise-header">
+      <div class="ex-number">171</div>
+      <div class="ex-instruction">
+        <strong>Заполните места пропусков окончаний в словах.</strong><br>
+        Помните, что форма слова отражает его значение.
+      </div>
+    </div>
+    <div class="exercise-body">
+      <div class="pairs-grid">
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Мех<span class="ending">и</span></div>
+            <div class="meaning">кузнечные</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Мех<span class="ending">а</span></div>
+            <div class="meaning">выделанные шкуры</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Образ<span class="ending">ы</span></div>
+            <div class="meaning">литературно-художественные</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Образ<span class="ending">а</span></div>
+            <div class="meaning">иконы</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Орден<span class="ending">а</span></div>
+            <div class="meaning">рыцарские и монашеские общества</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Орден<span class="ending">ы</span></div>
+            <div class="meaning">знаки отличия</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Пояс<span class="ending">а</span></div>
+            <div class="meaning">географические</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Пояс<span class="ending">ы</span></div>
+            <div class="meaning">части одежды</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Пропуск<span class="ending">и</span></div>
+            <div class="meaning">букв в слове</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Пропуск<span class="ending">а</span></div>
+            <div class="meaning">документы</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Собол<span class="ending">и</span></div>
+            <div class="meaning">животные</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Собол<span class="ending">я</span></div>
+            <div class="meaning">меха</div>
+            <div class="rule-badge badge-ov">оконч. -я</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Тормоз<span class="ending">а</span></div>
+            <div class="meaning">приборы</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Тормоз<span class="ending">ы</span></div>
+            <div class="meaning">препятствия</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <div class="word-chip">
+            <div class="word">Цвет<span class="ending">ы</span></div>
+            <div class="meaning">растения</div>
+            <div class="rule-badge badge-zero">нул. оконч.</div>
+          </div>
+          <div class="word-chip">
+            <div class="word">Цвет<span class="ending">а</span></div>
+            <div class="meaning">окраска</div>
+            <div class="rule-badge badge-ov">оконч. -а</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footnote">
+        <strong>Вывод:</strong> форма множественного числа зависит от значения слова. Одно и то же слово может иметь разные окончания при разных лексических значениях (меха́ — меховые изделия, ме́хи — устройство для раздувания огня).
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
