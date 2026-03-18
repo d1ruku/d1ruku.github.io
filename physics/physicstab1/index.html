@@ -1,1 +1,866 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Физика — §82–83 Фазовые переходы. Уравнение теплового баланса</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --red: #b03030;
+    --red-light: #fde8e8;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 40px 20px 80px;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 31px,
+        rgba(44,74,124,0.06) 31px,
+        rgba(44,74,124,0.06) 32px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 72px;
+    width: 2px;
+    height: 100%;
+    background: rgba(176,48,48,0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--rule);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .notebook-rings {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 20px;
+  }
+
+  .ring {
+    width: 22px; height: 22px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(201,151,58,0.25), inset 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+  }
+
+  .ring::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #777;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  .breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 18px;
+    text-decoration: none;
+  }
+  .breadcrumb a { color: var(--blue); text-decoration: none; font-weight: 500; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .divider {
+    text-align: center;
+    margin: 8px 0 32px;
+    color: var(--gold);
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    margin-top: 44px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 6px;
+    flex: 1;
+  }
+
+  /* ── DEFINITION BLOCK ── */
+  .def-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .def-grid { grid-template-columns: 1fr; }
+    body::after { display: none; }
+    body { padding: 20px 12px 60px; }
+  }
+
+  .def-card {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-top: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: 18px 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .def-card.blue  { border-top-color: var(--blue); }
+  .def-card.red   { border-top-color: var(--red); }
+  .def-card.green { border-top-color: var(--green); }
+
+  .def-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .def-body {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.55;
+  }
+
+  /* ── ZAPOMNI / VAZHNO ── */
+  .zapomni {
+    background: #fffbef;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #5a4010;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .zapomni strong { color: var(--ink); }
+
+  .zapomni-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .vazhno {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #1a2f50;
+  }
+
+  .vazhno-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+
+  /* ── FORMULA TABLE ── */
+  .formula-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .formula-table th {
+    background: var(--blue);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .formula-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(44,74,124,0.1);
+    vertical-align: top;
+    color: #333;
+  }
+
+  .formula-table tr:nth-child(even) td { background: rgba(220,232,247,0.3); }
+  .formula-table tr:hover td { background: rgba(201,151,58,0.07); }
+
+  .formula {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+
+  /* ── PHASE DIAGRAM ── */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 540px) { .phase-grid { grid-template-columns: 1fr; } }
+
+  .phase-card {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    padding: 14px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .phase-arrow {
+    font-size: 22px;
+    margin: 4px 0;
+  }
+
+  .phase-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 2px;
+  }
+
+  .phase-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .phase-q {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+  }
+
+  /* ── TASK BLOCK ── */
+  .task {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .task-header {
+    background: var(--blue);
+    color: white;
+    padding: 11px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .task-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gold-light);
+    flex-shrink: 0;
+  }
+
+  .task-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .task-body {
+    padding: 18px 20px;
+  }
+
+  .task-condition {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 14px;
+    line-height: 1.6;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+
+  .task-given {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 18px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    color: #555;
+  }
+
+  .task-given dt {
+    font-family: 'Playfair Display', serif;
+    color: var(--blue);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .solution-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .solution-step {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 13.5px;
+    color: #333;
+  }
+
+  .step-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-math {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--blue);
+    font-weight: 700;
+  }
+
+  .answer-box {
+    background: var(--green-light);
+    border: 1px solid rgba(42,107,58,0.2);
+    border-left: 4px solid var(--green);
+    border-radius: 0 4px 4px 0;
+    padding: 10px 16px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #1d4a28;
+  }
+
+  .answer-box strong { font-family: 'Playfair Display', serif; font-size: 16px; }
+
+  /* ── STICKER ── */
+  .sticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff9e6;
+    border: 1px solid rgba(201,151,58,0.35);
+    border-radius: 3px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: #9a6e10;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    box-shadow: 2px 3px 0 rgba(201,151,58,0.2);
+    transform: rotate(-1.2deg);
+    margin-top: 10px;
+  }
+
+  /* ── BACK LINK ── */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue);
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    transition: background 0.15s;
+    margin-bottom: 30px;
+  }
+  .back-btn:hover { background: #1e3560; }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 0.06em;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="notebook-rings">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    </div>
+    <div class="badge">Физика · Соц-эк · 10 класс</div>
+    <h1>Фазовые переходы.<br>Уравнение теплового баланса</h1>
+    <p class="subtitle">§ 82–83 &nbsp;·&nbsp; Молекулярная физика. Тепловые явления</p>
+    <div><span class="sticker">📌 §82–83 конспект + разобранные задачи</span></div>
+  </header>
+
+  <a href="/physics/index.html" class="back-btn">← Назад к физике</a>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 1: ОПРЕДЕЛЕНИЯ -->
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">Основные определения</div>
+  </div>
+
+  <div class="def-grid">
+    <div class="def-card blue" style="animation-delay:0.05s">
+      <div class="def-term">🌡️ Агрегатные состояния</div>
+      <div class="def-body">Вещество может находиться в трёх состояниях: <strong>твёрдом, жидком и газообразном</strong>. В термодинамике их называют <em>фазами</em>.</div>
+    </div>
+    <div class="def-card" style="animation-delay:0.1s">
+      <div class="def-term">🔄 Фазовый переход</div>
+      <div class="def-body">Переход системы из одного состояния (фазы) в другое. При переходах <em>первого рода</em> (плавление, испарение) происходит поглощение или выделение теплоты.</div>
+    </div>
+    <div class="def-card red" style="animation-delay:0.15s">
+      <div class="def-term">🔥 Теплообмен</div>
+      <div class="def-body">Процесс передачи энергии от одного тела к другому <strong>без совершения работы</strong>. Количественная мера изменения внутренней энергии — <em>количество теплоты Q</em>.</div>
+    </div>
+    <div class="def-card green" style="animation-delay:0.2s">
+      <div class="def-term">⚖️ Уравнение теплового баланса</div>
+      <div class="def-body">В изолированной системе суммарное количество теплоты равно нулю: <strong>Q₁ + Q₂ + Q₃ + … = 0</strong>. Отданная теплота — отрицательна, полученная — положительна.</div>
+    </div>
+  </div>
+
+  <!-- ZAPOMNI BLOCKS -->
+  <div class="zapomni" style="animation-delay:0.25s">
+    <div class="zapomni-label">⭐ Запомни</div>
+    <strong>Удельная теплоёмкость c</strong> — количество теплоты, которую получает или отдаёт вещество массой 1 кг при изменении температуры на 1 К. Единица: Дж/(кг·К).
+  </div>
+
+  <div class="zapomni" style="animation-delay:0.3s">
+    <div class="zapomni-label">⭐ Запомни</div>
+    <strong>Удельная теплота парообразования r</strong> — теплота, необходимая для превращения жидкости массой 1 кг в пар при постоянной температуре. Единица: Дж/кг.
+  </div>
+
+  <div class="zapomni" style="animation-delay:0.35s">
+    <div class="zapomni-label">⭐ Запомни</div>
+    <strong>Удельная теплота плавления λ</strong> — теплота для превращения кристаллического тела массой 1 кг в жидкость при температуре плавления. Единица: Дж/кг.
+  </div>
+
+  <!-- SECTION 2: ФОРМУЛЫ -->
+  <div class="section-header" style="animation-delay:0.1s">
+    <div class="section-num">02</div>
+    <div class="section-title">Формулы</div>
+  </div>
+
+  <table class="formula-table">
+    <thead>
+      <tr>
+        <th>Процесс</th>
+        <th>Формула</th>
+        <th>Обозначения</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Нагревание / охлаждение</td>
+        <td><span class="formula">Q = cm(t₂ − t₁)</span></td>
+        <td>c — уд. теплоёмкость, m — масса, Δt — изм. температуры</td>
+      </tr>
+      <tr>
+        <td>Парообразование (кипение)</td>
+        <td><span class="formula">Q<sub>п</sub> = rm</span></td>
+        <td>r — уд. теплота парообразования</td>
+      </tr>
+      <tr>
+        <td>Конденсация</td>
+        <td><span class="formula">Q<sub>к</sub> = −rm</span></td>
+        <td>Теплота выделяется → знак минус</td>
+      </tr>
+      <tr>
+        <td>Плавление</td>
+        <td><span class="formula">Q<sub>пл</sub> = λm</span></td>
+        <td>λ — уд. теплота плавления</td>
+      </tr>
+      <tr>
+        <td>Кристаллизация</td>
+        <td><span class="formula">Q<sub>кр</sub> = −λm</span></td>
+        <td>Теплота выделяется → знак минус</td>
+      </tr>
+      <tr>
+        <td>Тепловой баланс системы</td>
+        <td><span class="formula">Q₁ + Q₂ + … = 0</span></td>
+        <td>Для изолированной системы</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 3: ФАЗОВЫЕ ПЕРЕХОДЫ СХЕМА -->
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title">Фазовые переходы — схема</div>
+  </div>
+
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-name">Твёрдое → Жидкое</div>
+      <div class="phase-arrow">🧊 → 💧</div>
+      <div class="phase-label">Плавление</div>
+      <div class="phase-q">Q = λm &nbsp;(+поглощение)</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-name">Жидкое → Газ</div>
+      <div class="phase-arrow">💧 → ♨️</div>
+      <div class="phase-label">Парообразование</div>
+      <div class="phase-q">Q = rm &nbsp;(+поглощение)</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-name">Газ → Жидкое</div>
+      <div class="phase-arrow">♨️ → 💧</div>
+      <div class="phase-label">Конденсация</div>
+      <div class="phase-q">Q = −rm &nbsp;(−выделение)</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-name">Жидкое → Твёрдое</div>
+      <div class="phase-arrow">💧 → 🧊</div>
+      <div class="phase-label">Кристаллизация</div>
+      <div class="phase-q">Q = −λm &nbsp;(−выделение)</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-name">Твёрдое → Газ</div>
+      <div class="phase-arrow">🧊 → ♨️</div>
+      <div class="phase-label">Сублимация</div>
+      <div class="phase-q">поглощение теплоты</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-name">Газ → Твёрдое</div>
+      <div class="phase-arrow">♨️ → 🧊</div>
+      <div class="phase-label">Десублимация</div>
+      <div class="phase-q">выделение теплоты</div>
+    </div>
+  </div>
+
+  <div class="vazhno">
+    <div class="vazhno-label">📌 Важно</div>
+    К фазовым переходам <strong>первого рода</strong> относятся плавление и кристаллизация, испарение и конденсация. Температура вещества при этих переходах <strong>не меняется</strong>, хотя теплота поглощается или выделяется.
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 4: ЗАДАЧА 1 -->
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title">Разобранные задачи</div>
+  </div>
+
+  <!-- ЗАДАЧА 1 -->
+  <div class="task" style="animation-delay:0.1s">
+    <div class="task-header">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Лёд + пар в калориметре (§83, Задача 1)</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        В калориметре находится лёд массой <strong>1 кг</strong> при температуре <strong>t₁ = −40 °С</strong>.
+        В калориметр пускают пар массой <strong>1 кг</strong> при температуре <strong>t₂ = 120 °С</strong>.
+        Определите установившуюся температуру и фазовое состояние системы.<br>
+        <em>c<sub>л</sub> = 2,1·10³, c<sub>в</sub> = 4,2·10³, c<sub>п</sub> = 2,2·10³ Дж/(кг·К); λ<sub>л</sub> = 3,3·10⁵ Дж/кг; r<sub>п</sub> = 2,26·10⁶ Дж/кг.</em>
+      </div>
+
+      <dl class="task-given">
+        <dt>m<sub>л</sub> = m<sub>п</sub></dt><dd>1 кг каждый</dd>
+        <dt>t<sub>л</sub></dt><dd>−40 °С</dd>
+        <dt>t<sub>п</sub></dt><dd>120 °С</dd>
+      </dl>
+
+      <div class="solution-label">✏️ Решение</div>
+
+      <div class="solution-step">
+        <div class="step-dot">1</div>
+        <div>
+          Теплота, которую может отдать пар: охладиться до 100°С + конденсироваться:<br>
+          <span class="step-math">|Q<sub>отд</sub>| = c<sub>п</sub>·m·(120−100) + r·m = 2,2·10³·1·20 + 2,26·10⁶·1 ≈ 23,0·10⁵ Дж</span>
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">2</div>
+        <div>
+          Теплота, необходимая льду: нагреться до 0°С + растаять:<br>
+          <span class="step-math">Q<sub>пол</sub> = c<sub>л</sub>·m·(0−(−40)) + λ·m = 2,1·10³·1·40 + 3,3·10⁵·1 ≈ 4,14·10⁵ Дж</span>
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">3</div>
+        <div>
+          Поскольку <span class="step-math">|Q<sub>отд</sub>| &gt; Q<sub>пол</sub></span>, лёд полностью тает. Вода из льда может нагреться до 100°С:<br>
+          <span class="step-math">Q'<sub>пол</sub> = c<sub>в</sub>·m·100 = 4,2·10³·1·100 = 4,2·10⁵ Дж</span><br>
+          Суммарно вода из льда получает до 100°С: Q<sub>полΣ</sub> = 8,34·10⁵ Дж.
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">4</div>
+        <div>
+          Т.к. <span class="step-math">Q<sub>полΣ</sub> &lt; |Q<sub>отд</sub>|</span> — не весь пар конденсируется. Масса оставшегося пара:<br>
+          <span class="step-math">m'<sub>п</sub> = (|Q<sub>отд</sub>| − Q<sub>полΣ</sub>) / r = (23,0 − 8,34)·10⁵ / 2,26·10⁶ ≈ 0,65 кг</span>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <strong>Ответ:</strong> В калориметре установится <strong>t = 100 °С</strong>. Пара останется 0,65 кг, воды — 1,35 кг.
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАДАЧА 2 -->
+  <div class="task" style="animation-delay:0.15s">
+    <div class="task-header">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Нагрев воды у основания водопада (§83, Задача 2)</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        На сколько температура воды у основания водопада высотой <strong>h = 1200 м</strong> больше, чем у его вершины? На нагрев воды затрачивается <strong>η = 70%</strong> выделившейся энергии. Удельная теплоёмкость воды <strong>c<sub>в</sub> = 4200 Дж/(кг·К)</strong>.
+      </div>
+
+      <dl class="task-given">
+        <dt>h</dt><dd>1200 м</dd>
+        <dt>η</dt><dd>0,70</dd>
+        <dt>c<sub>в</sub></dt><dd>4200 Дж/(кг·К)</dd>
+        <dt>g</dt><dd>10 м/с²</dd>
+      </dl>
+
+      <div class="solution-label">✏️ Решение</div>
+
+      <div class="solution-step">
+        <div class="step-dot">1</div>
+        <div>
+          При ударе воды у основания часть потенциальной энергии идёт на нагрев:<br>
+          <span class="step-math">η·m·g·h = m·c<sub>в</sub>·Δt</span>
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">2</div>
+        <div>
+          Масса сокращается, выражаем Δt:<br>
+          <span class="step-math">Δt = η·g·h / c<sub>в</sub> = 0,70 × 10 × 1200 / 4200 = 2,0 °С</span>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <strong>Ответ:</strong> Вода у основания водопада теплее на <strong>Δt ≈ 2,0 °С</strong>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАДАЧА 3 -->
+  <div class="task" style="animation-delay:0.2s">
+    <div class="task-header">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">Вода и лёд в калориметре — равновесие</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        В калориметре находится вода массой <strong>0,4 кг</strong> при температуре <strong>10 °С</strong>. В воду положили лёд массой <strong>0,6 кг</strong> при температуре <strong>−40 °С</strong>. Какая температура установится, если теплоёмкость калориметра ничтожно мала?
+        <br><em>c<sub>л</sub> = 2100 Дж/(кг·К); c<sub>в</sub> = 4200 Дж/(кг·К); λ = 3,3·10⁵ Дж/кг.</em>
+      </div>
+
+      <dl class="task-given">
+        <dt>m<sub>в</sub></dt><dd>0,4 кг, t = 10 °С</dd>
+        <dt>m<sub>л</sub></dt><dd>0,6 кг, t = −40 °С</dd>
+      </dl>
+
+      <div class="solution-label">✏️ Решение</div>
+
+      <div class="solution-step">
+        <div class="step-dot">1</div>
+        <div>
+          Теплота, которую может отдать вода (охладившись до 0°С):<br>
+          <span class="step-math">Q<sub>в</sub> = c<sub>в</sub>·m<sub>в</sub>·10 = 4200·0,4·10 = 16 800 Дж</span>
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">2</div>
+        <div>
+          Теплота, необходимая льду только для нагрева до 0°С:<br>
+          <span class="step-math">Q<sub>нагр</sub> = c<sub>л</sub>·m<sub>л</sub>·40 = 2100·0,6·40 = 50 400 Дж</span>
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">3</div>
+        <div>
+          Вода отдаёт меньше, чем нужно льду даже на нагрев: <span class="step-math">16 800 &lt; 50 400</span>.<br>
+          Значит, лёд <strong>не дотает</strong> — система остановится, когда вся вода замёрзнет и лёд нагреется до одной температуры t &lt; 0 °С. Пишем тепловой баланс:<br>
+          <span class="step-math">c<sub>в</sub>·m<sub>в</sub>·(t − 10) + c<sub>л</sub>·m<sub>л</sub>·(t − (−40)) = 0</span>
+        </div>
+      </div>
+
+      <div class="solution-step">
+        <div class="step-dot">4</div>
+        <div>
+          Раскрываем: 4200·0,4·(t−10) + 2100·0,6·(t+40) = 0<br>
+          1680t − 16800 + 1260t + 50400 = 0<br>
+          <span class="step-math">2940t = −33600 &nbsp;⟹&nbsp; t ≈ −11,4 °С</span><br>
+          <em>(При t &lt; 0 вода замёрзла — это согласованно.)</em>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <strong>Ответ:</strong> В калориметре установится температура <strong>t ≈ −11 °С</strong>; вся вода перейдёт в лёд.
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="font-size:16px;margin-bottom:6px;opacity:0.5;letter-spacing:8px">⚛️ 🌡️ ❄️ 💧 ♨️</div>
+    Физика (Соц-эк) &nbsp;·&nbsp; §82–83 &nbsp;·&nbsp; 10 класс &nbsp;·&nbsp; Учебные материалы
+  </footer>
+
+</div>
+</body>
+</html>
