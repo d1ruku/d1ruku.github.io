@@ -1,167 +1,209 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Органоиды клетки — §18–19</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --green-dark: #1a3a2a;
-    --green-mid: #2d6a4f;
-    --green-light: #52b788;
-    --green-pale: #d8f3dc;
-    --accent: #b7e4c7;
-    --text: #1b2e22;
-    --bg: #f0faf3;
-    --border: #74c69d;
-    --white: #ffffff;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Строение клетки — §18–19</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c9973a;
+      --blue: #2c4a7c;
+      --ink: #1a1a2e;
+      --paper: #faf8f3;
+      --line: #d4c9b0;
+      --red-margin: #e8a09a;
+      --muted: #7a7060;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Source Sans 3', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    padding: 2rem 1.5rem 4rem;
-    min-height: 100vh;
-  }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--green-dark);
-    text-align: center;
-    margin-bottom: 0.3rem;
-    letter-spacing: 0.01em;
-  }
+    body {
+      background: var(--paper);
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent 27px,
+        var(--line) 27px,
+        var(--line) 28px
+      );
+      font-family: 'Golos Text', sans-serif;
+      color: var(--ink);
+      padding: 48px 24px 64px;
+      min-height: 100vh;
+    }
 
-  .subtitle {
-    text-align: center;
-    color: var(--green-mid);
-    font-size: 0.95rem;
-    margin-bottom: 2rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+    .rings {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 8px;
+      animation: fadeDown 0.5s ease both;
+    }
+    .ring {
+      width: 22px; height: 22px;
+      border: 3px solid var(--muted);
+      border-radius: 50%;
+      background: var(--paper);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+    }
 
-  .table-wrap {
-    overflow-x: auto;
-    border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(44,106,79,0.13);
-  }
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+      animation: fadeDown 0.6s ease 0.1s both;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--blue);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .header .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .divider {
+      text-align: center;
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 8px;
+      margin: 10px 0 0;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--white);
-    min-width: 700px;
-  }
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      border-left: 3px solid var(--red-margin);
+      padding-left: 28px;
+      animation: fadeUp 0.7s ease 0.2s both;
+    }
 
-  thead tr {
-    background: var(--green-dark);
-    color: var(--white);
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-  thead th {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 1.1rem 1.2rem;
-    text-align: left;
-    letter-spacing: 0.04em;
-  }
+    thead tr { background: var(--blue); }
+    thead th {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      padding: 14px 16px;
+      text-align: left;
+      letter-spacing: 0.5px;
+      border-bottom: 3px solid var(--gold);
+    }
 
-  thead th:first-child { border-radius: 16px 0 0 0; }
-  thead th:last-child  { border-radius: 0 16px 0 0; }
+    /* section divider rows */
+    tbody tr.section-header td {
+      background: var(--blue);
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--gold);
+    }
 
-  tbody tr {
-    border-bottom: 1px solid var(--accent);
-    transition: background 0.18s;
-  }
+    tbody tr:not(.section-header) {
+      border-bottom: 1px solid var(--line);
+      transition: background 0.2s;
+    }
+    tbody tr:not(.section-header):hover {
+      background: rgba(201,151,58,0.07);
+    }
 
-  tbody tr:hover { background: #edf9f1; }
+    td {
+      padding: 16px 16px;
+      vertical-align: top;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
 
-  tbody tr.section-header td {
-    background: var(--green-mid);
-    color: var(--white);
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.7rem 1.2rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
+    td:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--blue);
+      min-width: 170px;
+      border-left: 4px solid var(--gold);
+      padding-left: 14px;
+    }
 
-  td {
-    padding: 0.9rem 1.2rem;
-    vertical-align: top;
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
+    td:nth-child(2) {
+      color: #3a3520;
+      max-width: 260px;
+    }
 
-  td:first-child {
-    font-weight: 700;
-    color: var(--green-dark);
-    min-width: 160px;
-    font-size: 0.95rem;
-  }
+    td:nth-child(3) ol {
+      padding-left: 18px;
+    }
+    td:nth-child(3) ol li {
+      margin-bottom: 4px;
+      color: #2a3520;
+    }
 
-  td:last-child {
-    min-width: 110px;
-    text-align: center;
-  }
+    td:last-child {
+      text-align: center;
+      vertical-align: middle;
+      min-width: 130px;
+    }
+    td:last-child svg {
+      display: block;
+      margin: 0 auto;
+    }
 
-  .icon {
-    font-size: 2.6rem;
-    line-height: 1;
-    display: block;
-    margin: 0 auto 4px;
-  }
-
-  .icon-label {
-    font-size: 0.72rem;
-    color: var(--green-mid);
-    font-weight: 600;
-    display: block;
-    text-align: center;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  ul li::before {
-    content: '▸ ';
-    color: var(--green-light);
-    font-weight: 700;
-  }
-
-  .tag {
-    display: inline-block;
-    background: var(--green-pale);
-    color: var(--green-dark);
-    border-radius: 6px;
-    padding: 1px 8px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    margin-top: 4px;
-  }
-</style>
+    .footer-divider {
+      text-align: center;
+      color: var(--gold);
+      font-size: 15px;
+      letter-spacing: 10px;
+      margin: 36px 0 12px;
+    }
+    .terms {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.9;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+    .terms strong { color: var(--blue); font-weight: 600; }
+  </style>
 </head>
 <body>
 
-<h1>Органоиды и части клетки</h1>
-<p class="subtitle">Биология 10 класс · §18 Вакуоли. Комплекс Гольджи. Лизосомы · §19 Митохондрии. Пластиды. Органоиды движения. Клеточные включения</p>
+<div class="rings">
+  <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  <div class="ring"></div><div class="ring"></div>
+</div>
 
-<div class="table-wrap">
+<div class="header">
+  <h1>Строение клетки</h1>
+  <p class="subtitle">Биология · 10 класс · §18–19</p>
+  <div class="divider">✦ ✦ ✦</div>
+</div>
+
+<div class="page">
 <table>
   <thead>
     <tr>
-      <th>Часть клетки / органоид</th>
+      <th>Часть клетки / Органоид</th>
       <th>Строение</th>
       <th>Функции</th>
       <th>Рисунок</th>
@@ -174,84 +216,108 @@
       <td colspan="4">§18 · Вакуоли · Комплекс Гольджи · Лизосомы</td>
     </tr>
 
+    <!-- АППАРАТ ГОЛЬДЖИ -->
     <tr>
       <td>Аппарат (комплекс) Гольджи</td>
+      <td>Органоид из плоских полых мембранных структур — <strong>цистерн</strong>, собранных в стопки по 4–6 штук. Напоминает стопку тарелок. Располагается вблизи ядра. Цистерны формируются из мембранных пузырьков ЭПС.</td>
+      <td><ol>
+        <li>Синтетическая (окончательное формирование структуры белков)</li>
+        <li>Запасающая</li>
+        <li>Строительная (сборка фрагментов биологических мембран)</li>
+        <li>Секреторная (упаковка белков в пузырьки, вывод гормонов)</li>
+        <li>Формирование лизосом</li>
+      </ol></td>
       <td>
-        Органоид из плоских полых мембранных структур — <strong>цистерн</strong>, собранных в стопки по 4–6 штук. Напоминает стопку тарелок. Располагается вблизи ядра.
-      </td>
-      <td>
-        <ul>
-          <li>Синтетическая (окончательное формирование структуры белков)</li>
-          <li>Запасающая</li>
-          <li>Строительная (сборка фрагментов биологических мембран)</li>
-          <li>Секреторная (упаковка белков в пузырьки, вывод гормонов)</li>
-          <li>Формирование лизосом</li>
-        </ul>
-      </td>
-      <td>
-        <span class="icon">🥞</span>
-        <span class="icon-label">стопка цистерн</span>
+        <svg width="110" height="80" viewBox="0 0 110 80">
+          <ellipse cx="55" cy="18" rx="42" ry="8" fill="#c9e0f5" stroke="#2c4a7c" stroke-width="1.5"/>
+          <ellipse cx="55" cy="30" rx="38" ry="8" fill="#a5c8ec" stroke="#2c4a7c" stroke-width="1.5"/>
+          <ellipse cx="55" cy="42" rx="33" ry="8" fill="#7fb0e3" stroke="#2c4a7c" stroke-width="1.5"/>
+          <ellipse cx="55" cy="54" rx="27" ry="8" fill="#5499d9" stroke="#2c4a7c" stroke-width="1.5"/>
+          <!-- пузырёк -->
+          <circle cx="94" cy="42" r="10" fill="#c9e0f5" stroke="#2c4a7c" stroke-width="1.5"/>
+          <line x1="83" y1="42" x2="85" y2="42" stroke="#2c4a7c" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <text x="55" y="73" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="8" fill="#7a7060">цистерны АГ</text>
+        </svg>
       </td>
     </tr>
 
+    <!-- ЛИЗОСОМЫ -->
     <tr>
-      <td>Лизосомы<br><span class="tag">первичные</span><br><span class="tag">вторичные</span></td>
-      <td>
-        Небольшие мембранные пузырьки (0,5–2 мкм). Содержат десятки–сотни ферментов. Синтезируются на рибосомах шероховатой ЭПС, упаковываются в пузырьки в аппарате Гольджи.
-        <br><br>
+      <td>Лизосомы<br><small style="font-weight:400;font-family:'Golos Text',sans-serif;color:#7a7060;">первичные / вторичные</small></td>
+      <td>Небольшие мембранные пузырьки (0,5–2 мкм). Содержат десятки–сотни ферментов, способных разрушать белки, жиры, полисахариды, нуклеиновые кислоты. Синтезируются на рибосомах шЭПС, упаковываются в аппарате Гольджи.<br><br>
         <strong>Первичные</strong> — только что отделились от АГ.<br>
-        <strong>Вторичные</strong> — слились с пищевой вакуолью.
-      </td>
+        <strong>Вторичные</strong> — слились с пищевой вакуолью.</td>
+      <td><ol>
+        <li>Внутриклеточное переваривание пищи</li>
+        <li>Разрушение белков, жиров, полисахаридов, нуклеиновых кислот</li>
+        <li>Уничтожение бактерий при фагоцитозе</li>
+        <li>Аутофагия (уничтожение изношенных органоидов)</li>
+        <li>Удаление непереваренных остатков путём экзоцитоза</li>
+      </ol></td>
       <td>
-        <ul>
-          <li>Внутриклеточное переваривание пищи</li>
-          <li>Разрушение белков, жиров, полисахаридов, нуклеиновых кислот</li>
-          <li>Уничтожение бактерий (фагоцитоз)</li>
-          <li>Аутофагия (уничтожение изношенных органоидов)</li>
-          <li>Удаление непереваренных остатков путём экзоцитоза</li>
-        </ul>
-      </td>
-      <td>
-        <span class="icon">🫧</span>
-        <span class="icon-label">пузырёк с ферментами</span>
+        <svg width="90" height="80" viewBox="0 0 90 80">
+          <circle cx="45" cy="36" r="28" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="2"/>
+          <circle cx="35" cy="28" r="5" fill="#2c4a7c" opacity="0.5"/>
+          <circle cx="52" cy="24" r="4" fill="#2c4a7c" opacity="0.5"/>
+          <circle cx="57" cy="41" r="5" fill="#2c4a7c" opacity="0.5"/>
+          <circle cx="38" cy="45" r="4" fill="#2c4a7c" opacity="0.5"/>
+          <circle cx="47" cy="33" r="3" fill="#c9973a" opacity="0.7"/>
+          <text x="45" y="72" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7.5" fill="#7a7060">● — ферменты</text>
+        </svg>
       </td>
     </tr>
 
+    <!-- ВАКУОЛИ -->
     <tr>
       <td>Вакуоли</td>
+      <td>Ограниченные мембраной полости с растворами веществ.<br><br>
+        <strong>Растительные</strong> — крупные, единичные, до 90% объёма клетки, отодвигают органоиды к периферии.<br>
+        <strong>Животные</strong> — мелкие, многочисленные: сократительные (у пресноводных простейших), пищеварительные.</td>
+      <td><ol>
+        <li>Тургорное давление (упругость клетки)</li>
+        <li>Хранение воды, питательных веществ, солей, пигментов (антоцианы)</li>
+        <li>Выделение избытка воды (сократительные)</li>
+        <li>Пищеварение (пищеварительные)</li>
+      </ol></td>
       <td>
-        Ограниченные мембраной полости с растворами веществ.<br><br>
-        <strong>Растительные</strong> — крупные, единичные, могут занимать до 90% объёма клетки (рис. 71).<br>
-        <strong>Животные</strong> — мелкие, многочисленные: сократительные (у простейших), пищеварительные.
-      </td>
-      <td>
-        <ul>
-          <li>Тургорное давление (упругость клетки)</li>
-          <li>Хранение воды, питательных веществ, солей, пигментов (антоцианы)</li>
-          <li>Выделение избытка воды (сократительные)</li>
-          <li>Пищеварение (пищеварительные)</li>
-        </ul>
-      </td>
-      <td>
-        <span class="icon">💧</span>
-        <span class="icon-label">полость с раствором</span>
+        <svg width="90" height="80" viewBox="0 0 90 80">
+          <rect x="4" y="4" width="82" height="72" rx="8" fill="#f0f4f0" stroke="#2c4a7c" stroke-width="2"/>
+          <!-- вакуоль -->
+          <ellipse cx="45" cy="46" rx="30" ry="24" fill="#d6eaf8" stroke="#2c4a7c" stroke-width="1.5"/>
+          <text x="45" y="49" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="8" fill="#2c4a7c">вакуоль</text>
+          <!-- ядро у края -->
+          <ellipse cx="17" cy="18" rx="10" ry="7" fill="#e8d5f0" stroke="#4a1a6b" stroke-width="1.2"/>
+          <text x="17" y="21" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="6" fill="#4a1a6b">ядро</text>
+        </svg>
       </td>
     </tr>
 
+    <!-- ЕДИНСТВО МЕМБРАННЫХ СТРУКТУР -->
     <tr>
-      <td>Единство мембранных структур</td>
+      <td>Единство мембранных структур клетки</td>
+      <td>ЭПС, аппарат Гольджи, лизосомы и вакуоли построены из фосфолипидных мембран и образуют единую взаимосвязанную систему.</td>
+      <td><ol>
+        <li>Элементы системы могут перестраиваться и переходить друг в друга</li>
+        <li>Используют универсальные свойства мембран</li>
+      </ol></td>
       <td>
-        ЭПС, аппарат Гольджи, лизосомы и вакуоли построены из <strong>фосфолипидных мембран</strong> и образуют единую взаимосвязанную систему.
-      </td>
-      <td>
-        <ul>
-          <li>Элементы системы могут перестраиваться и переходить друг в друга</li>
-          <li>Используют универсальные свойства мембран</li>
-        </ul>
-      </td>
-      <td>
-        <span class="icon">🔗</span>
-        <span class="icon-label">единая система</span>
+        <svg width="110" height="78" viewBox="0 0 110 78">
+          <!-- ЭПС полосы -->
+          <path d="M5,16 Q22,9 40,16 Q56,23 66,16" fill="none" stroke="#1a6b4a" stroke-width="7" stroke-linecap="round" opacity="0.5"/>
+          <path d="M5,16 Q22,9 40,16 Q56,23 66,16" fill="none" stroke="#d5f5e3" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- стрелка к АГ -->
+          <path d="M66,16 Q76,16 76,26" fill="none" stroke="#2c4a7c" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <!-- АГ цистерны -->
+          <ellipse cx="76" cy="34" rx="22" ry="6" fill="#a5c8ec" stroke="#2c4a7c" stroke-width="1.2"/>
+          <ellipse cx="76" cy="43" rx="19" ry="6" fill="#7fb0e3" stroke="#2c4a7c" stroke-width="1.2"/>
+          <!-- стрелка к лизосоме -->
+          <path d="M95,38 Q107,38 107,52" fill="none" stroke="#2c4a7c" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <!-- лизосома -->
+          <circle cx="96" cy="64" r="12" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="1.5"/>
+          <text x="96" y="67" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7" fill="#2c4a7c">лиз.</text>
+          <text x="30" y="32" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7" fill="#1a6b4a">ЭПС</text>
+          <text x="76" y="58" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7" fill="#2c4a7c">АГ</text>
+        </svg>
       </td>
     </tr>
 
@@ -260,90 +326,135 @@
       <td colspan="4">§19 · Митохондрии · Пластиды · Органоиды движения · Клеточные включения</td>
     </tr>
 
+    <!-- МИТОХОНДРИИ -->
     <tr>
       <td>Митохондрии</td>
+      <td>Округлые или вытянутые тельца (1–7 мкм). Две мембраны: наружная — гладкая, внутренняя образует выступы — <strong>кристы</strong>. Внутреннее пространство — <strong>матрикс</strong>. Содержат рибосомы прокариотного размера и кольцевую ДНК.</td>
+      <td><ol>
+        <li>Синтез АТФ — запасание энергии (клеточное дыхание)</li>
+        <li>Расщепление углеводов, липидов, аминокислот до CO₂ и H₂O</li>
+        <li>Синтез некоторых собственных белков</li>
+        <li>Полуавтономный органоид: делятся независимо</li>
+      </ol></td>
       <td>
-        Округлые или вытянутые тельца (1–7 мкм). Окружены <strong>двумя мембранами</strong>: наружная — гладкая, внутренняя образует выступы — <strong>кристы</strong>. Внутреннее пространство — <strong>матрикс</strong>. Содержат рибосомы прокариотного размера и кольцевую ДНК.
-      </td>
-      <td>
-        <ul>
-          <li>Синтез АТФ — запасание энергии (клеточное дыхание)</li>
-          <li>Расщепление углеводов, липидов, аминокислот до CO₂ и H₂O</li>
-          <li>Синтез некоторых собственных белков</li>
-        </ul>
-        <span class="tag">полуавтономный органоид</span>
-      </td>
-      <td>
-        <span class="icon">⚡</span>
-        <span class="icon-label">«энергетическая станция»</span>
+        <svg width="110" height="80" viewBox="0 0 110 80">
+          <!-- наружная мембрана -->
+          <ellipse cx="55" cy="40" rx="50" ry="28" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="2"/>
+          <!-- внутренняя мембрана -->
+          <ellipse cx="55" cy="40" rx="42" ry="20" fill="#c9e0f5" stroke="#2c4a7c" stroke-width="1.2"/>
+          <!-- кристы -->
+          <path d="M20,40 Q31,26 42,40" fill="none" stroke="#2c4a7c" stroke-width="2.5"/>
+          <path d="M42,40 Q53,26 64,40" fill="none" stroke="#2c4a7c" stroke-width="2.5"/>
+          <path d="M64,40 Q75,26 86,40" fill="none" stroke="#2c4a7c" stroke-width="2.5"/>
+          <text x="55" y="54" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="8" fill="#2c4a7c">матрикс</text>
+          <text x="55" y="73" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7.5" fill="#7a7060">∿ — кристы</text>
+        </svg>
       </td>
     </tr>
 
+    <!-- ПЛАСТИДЫ -->
     <tr>
-      <td>Пластиды<br><span class="tag">хлоропласты</span><br><span class="tag">хромопласты</span><br><span class="tag">лейкопласты</span></td>
-      <td>
-        Органоиды растительных клеток. Окружены двумя мембранами.
-        <br><br>
-        <strong>Хлоропласты:</strong> внутри — плоские цистерны (<strong>тилакоиды</strong>), сложенные в стопки — <strong>граны</strong>; жидкая среда вокруг — <strong>строма</strong>.<br>
+      <td>Пластиды<br><small style="font-weight:400;font-family:'Golos Text',sans-serif;color:#7a7060;">хлоропласты / хромопласты / лейкопласты</small></td>
+      <td>Органоиды растительных клеток. Две мембраны.<br><br>
+        <strong>Хлоропласты:</strong> плоские цистерны — <strong>тилакоиды</strong>, в стопках — <strong>граны</strong>; жидкая среда — <strong>строма</strong>.<br>
         <strong>Хромопласты:</strong> жёлтые, красные, фиолетовые пигменты (каротиноиды).<br>
-        <strong>Лейкопласты:</strong> бесцветные, в подземных органах.
-        <br><br>
-        Содержат собственную ДНК, РНК, рибосомы прокариотного размера.
-      </td>
+        <strong>Лейкопласты:</strong> бесцветные, в подземных органах.<br><br>
+        Содержат собственные ДНК, РНК, рибосомы прокариотного размера.</td>
+      <td><ol>
+        <li><strong>Хлоропласты:</strong> фотосинтез — световая фаза (тилакоиды), тёмная (строма); синтез АТФ, НАДФН, O₂</li>
+        <li><strong>Хромопласты:</strong> окраска цветков и плодов → привлечение опылителей</li>
+        <li><strong>Лейкопласты:</strong> запасание (крахмал и др.); могут превращаться в хлоропласты</li>
+        <li>Полуавтономный органоид: делятся независимо</li>
+      </ol></td>
       <td>
-        <ul>
-          <li><strong>Хлоропласты:</strong> фотосинтез (световая фаза — тилакоиды; тёмная фаза — строма); синтез ATФ, НАДФН, O₂</li>
-          <li><strong>Хромопласты:</strong> окраска цветков и плодов → привлечение опылителей</li>
-          <li><strong>Лейкопласты:</strong> запасание (крахмал и др.); могут превращаться в хлоропласты</li>
-        </ul>
-        <span class="tag">полуавтономный органоид</span>
-      </td>
-      <td>
-        <span class="icon">🍃</span>
-        <span class="icon-label">хлоропласт</span>
+        <svg width="110" height="80" viewBox="0 0 110 80">
+          <ellipse cx="55" cy="40" rx="48" ry="28" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="2"/>
+          <ellipse cx="55" cy="40" rx="40" ry="20" fill="#c9e0f5" stroke="#2c4a7c" stroke-width="1"/>
+          <!-- граны -->
+          <g>
+            <rect x="18" y="30" width="16" height="6" rx="3" fill="#2c4a7c"/>
+            <rect x="18" y="37" width="16" height="6" rx="3" fill="#5499d9"/>
+            <rect x="18" y="44" width="16" height="6" rx="3" fill="#2c4a7c"/>
+          </g>
+          <g>
+            <rect x="47" y="27" width="16" height="6" rx="3" fill="#2c4a7c"/>
+            <rect x="47" y="34" width="16" height="6" rx="3" fill="#5499d9"/>
+            <rect x="47" y="41" width="16" height="6" rx="3" fill="#2c4a7c"/>
+            <rect x="47" y="48" width="16" height="6" rx="3" fill="#5499d9"/>
+          </g>
+          <g>
+            <rect x="76" y="30" width="16" height="6" rx="3" fill="#2c4a7c"/>
+            <rect x="76" y="37" width="16" height="6" rx="3" fill="#5499d9"/>
+            <rect x="76" y="44" width="16" height="6" rx="3" fill="#2c4a7c"/>
+          </g>
+          <text x="55" y="74" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7.5" fill="#7a7060">▪ граны (тилакоиды)</text>
+        </svg>
       </td>
     </tr>
 
+    <!-- ОРГАНОИДЫ ДВИЖЕНИЯ -->
     <tr>
       <td>Органоиды движения:<br>реснички и жгутики</td>
+      <td>Основание — <strong>базальное тельце</strong> (из центриоли). От него отходят <strong>микротрубочки</strong> (9 пар по кругу + 2 в центре), покрытые мембраной.<br><br>
+        <strong>Жгутик</strong> (~200 нм): синусоидальное движение.<br>
+        <strong>Ресничка</strong> (до 10 нм): волнообразные изгибы.</td>
+      <td><ol>
+        <li>Движение клетки в среде (жгутики сперматозоидов, простейших)</li>
+        <li>Перемещение среды вдоль поверхности (реснички эпителия дыхательных путей)</li>
+      </ol></td>
       <td>
-        Основание — <strong>базальное тельце</strong>, формируемое центриолью. От него отходят <strong>микротрубочки</strong> (9 пар по кругу + 2 в центре), образующие тело жгутика/реснички, покрытое мембраной.<br><br>
-        <strong>Жгутик</strong> — длиннее (~200 нм), движется по синусоидальной траектории.<br>
-        <strong>Ресничка</strong> — короче (до 10 нм), изгибается волнообразно.
-      </td>
-      <td>
-        <ul>
-          <li>Движение клетки в среде (жгутик у сперматозоидов, простейших)</li>
-          <li>Перемещение среды вдоль поверхности клетки (реснички эпителия дыхательных путей)</li>
-        </ul>
-      </td>
-      <td>
-        <span class="icon">🌀</span>
-        <span class="icon-label">жгутик / ресничка</span>
+        <svg width="90" height="80" viewBox="0 0 90 80">
+          <!-- жгутик -->
+          <path d="M20,74 Q13,55 23,40 Q33,25 19,10" fill="none" stroke="#2c4a7c" stroke-width="3" stroke-linecap="round"/>
+          <rect x="13" y="67" width="14" height="9" rx="3" fill="#2c4a7c"/>
+          <!-- реснички -->
+          <line x1="55" y1="74" x2="51" y2="42" stroke="#c9973a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="65" y1="74" x2="68" y2="42" stroke="#c9973a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="75" y1="74" x2="72" y2="42" stroke="#c9973a" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="50" y="67" width="8" height="8" rx="2" fill="#2c4a7c"/>
+          <rect x="62" y="67" width="8" height="8" rx="2" fill="#2c4a7c"/>
+          <rect x="72" y="67" width="8" height="8" rx="2" fill="#2c4a7c"/>
+          <text x="19" y="8" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7.5" fill="#2c4a7c">жгутик</text>
+          <text x="65" y="37" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7.5" fill="#c9973a">реснички</text>
+        </svg>
       </td>
     </tr>
 
+    <!-- КЛЕТОЧНЫЕ ВКЛЮЧЕНИЯ -->
     <tr>
       <td>Клеточные включения</td>
+      <td><strong>Непостоянные</strong> структурные компоненты клетки. Не являются органоидами.<br><br>
+        Примеры: капли жира, зёрна белка, глыбки гликогена, крахмальные зёрна, кристаллы оксалата кальция.</td>
+      <td><ol>
+        <li>Запасание питательных веществ (жир, крахмал, гликоген, белок)</li>
+        <li>Накопление продуктов обмена</li>
+      </ol></td>
       <td>
-        <strong>Непостоянные</strong> структурные компоненты клетки. Не ограничены мембраной (или находятся в мелких вакуолях).<br><br>
-        Примеры: капли жира, зёрна белка, глыбки гликогена, крахмальные зёрна, кристаллы оксалата кальция.
-      </td>
-      <td>
-        <ul>
-          <li>Запасание питательных веществ (жир, крахмал, гликоген, белок)</li>
-          <li>Накопление продуктов обмена</li>
-        </ul>
-      </td>
-      <td>
-        <span class="icon">🫙</span>
-        <span class="icon-label">запасные вещества</span>
+        <svg width="110" height="80" viewBox="0 0 110 80">
+          <circle cx="18" cy="28" r="14" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="1.5"/>
+          <circle cx="36" cy="22" r="8" fill="#c9e0f5" stroke="#2c4a7c" stroke-width="1.2"/>
+          <rect x="50" y="15" width="18" height="18" rx="4" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="1.5"/>
+          <rect x="74" y="17" width="16" height="14" rx="3" fill="#f5ecd4" stroke="#c9973a" stroke-width="1.5"/>
+          <ellipse cx="28" cy="60" rx="17" ry="12" fill="#e8f0fa" stroke="#2c4a7c" stroke-width="1.5"/>
+          <ellipse cx="76" cy="58" rx="14" ry="11" fill="#f5ecd4" stroke="#c9973a" stroke-width="1.5"/>
+          <text x="18" y="50" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="6.5" fill="#2c4a7c">жир</text>
+          <text x="59" y="41" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="6.5" fill="#2c4a7c">белок</text>
+          <text x="82" y="39" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="6.5" fill="#c9973a">гликоген</text>
+          <text x="28" y="77" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="6.5" fill="#2c4a7c">крахмал</text>
+          <text x="76" y="74" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="6.5" fill="#c9973a">соли</text>
+        </svg>
       </td>
     </tr>
 
   </tbody>
 </table>
+
+<div class="footer-divider">✦ ✦ ✦</div>
+<div class="terms">
+  <strong>§18:</strong> вакуоли · тургорное давление · аппарат Гольджи (АГ) · цистерны · лизосомы первичные и вторичные · аутофагосомы · аутолизофагосомы · экзоцитоз · эндоцитоз · единство мембранных структур<br>
+  <strong>§19:</strong> митохондрии · кристы · матрикс · пластиды · хлоропласты · хромопласты · лейкопласты · тилакоиды · граны · строма · эндосимбиоз · органоиды движения · реснички · жгутики · базальное тельце · клеточные включения
 </div>
 
+</div>
 </body>
 </html>
