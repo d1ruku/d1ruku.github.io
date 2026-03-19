@@ -579,4 +579,123 @@
   <!-- SECTION 5: ЗАДАЧИ -->
   <div class="section-header">
     <div class="section-num">05</div>
-    <div
+    <div class="section-title">Разобранные задачи</div>
+  </div>
+
+  <!-- ЗАДАЧА 1 -->
+  <div class="task" style="animation-delay:0.05s">
+    <div class="task-header">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Элементы пирамиды — подсчёт вершин, граней, рёбер</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        Дана пирамида. Найдите количество: <strong>1) вершин</strong>&nbsp;&nbsp;<strong>2) граней</strong>&nbsp;&nbsp;<strong>3) рёбер</strong>.
+      </div>
+      <div style="font-size:13.5px; color:#333; line-height:1.7">
+        Используем формулы для <strong>n-угольной пирамиды</strong>. Если основание — <em>n</em>-угольник:<br>
+        • Вершин: <strong>n + 1</strong> (n вершин основания + 1 вершина пирамиды S)<br>
+        • Граней: <strong>n + 1</strong> (n боковых граней + 1 основание)<br>
+        • Рёбер: <strong>2n</strong> (n рёбер основания + n боковых рёбер)
+      </div>
+      <div class="answer-box">
+        <strong>Пример:</strong> четырёхугольная пирамида (n = 4): &nbsp; 5 вершин · 5 граней · 8 рёбер
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАДАЧА 2 -->
+  <div class="task" style="animation-delay:0.1s">
+    <div class="task-header">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Наименьшее количество граней пирамиды</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        Какое наименьшее количество граней может иметь пирамида?
+      </div>
+      <div style="font-size:13.5px; color:#333; line-height:1.7">
+        Основание пирамиды — минимум <strong>треугольник</strong> (n = 3).<br>
+        Тогда граней: 3 + 1 = <strong>4</strong>.<br>
+        Это <strong>тетраэдр</strong> — треугольная пирамида с 4 треугольными гранями.
+      </div>
+      <div class="answer-box">
+        <strong>Ответ:</strong> минимальное количество граней пирамиды — <strong>4</strong> (тетраэдр)
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАДАЧА 3 -->
+  <div class="task" style="animation-delay:0.15s">
+    <div class="task-header">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">Правильная треугольная пирамида SABC — построение элементов</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        Дана правильная треугольная пирамида <strong>SABC</strong>. Изобразите:<br>
+        <strong>1)</strong> Высоту пирамиды;&nbsp;&nbsp;
+        <strong>2)</strong> Угол наклона ребра SA к плоскости основания;&nbsp;&nbsp;
+        <strong>3)</strong> Линейный угол двугранного угла при ребре BC.
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-dot">1</div>
+          <div><strong>Высота SH</strong> — перпендикуляр из S на основание ABC. Точка H — центр правильного треугольника ABC (совпадает с пересечением медиан).</div>
+        </div>
+        <div class="step">
+          <div class="step-dot">2</div>
+          <div><strong>Угол наклона SA к основанию</strong> — угол ∠SAH, где H — проекция S на основание. Угол ∠SAH = arctan(SH / AH).</div>
+        </div>
+        <div class="step">
+          <div class="step-dot">3</div>
+          <div><strong>Линейный угол двугранного угла при BC</strong> — строим из точки на BC перпендикуляры к BC в плоскости ABC и в плоскости SBC. Угол между ними — искомый двугранный угол.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 6: ИТОГОВАЯ ТАБЛИЦА -->
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title">Сводная таблица: виды пирамид</div>
+  </div>
+
+  <table class="formula-table">
+    <thead>
+      <tr>
+        <th>Вид пирамиды</th>
+        <th>Признак</th>
+        <th>Особенности</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Произвольная</strong></td>
+        <td>Любой многоугольник в основании</td>
+        <td>Высота может быть вне пирамиды</td>
+      </tr>
+      <tr>
+        <td><strong>Правильная</strong></td>
+        <td>Основание — правильный многоугольник, высота опущена в центр</td>
+        <td>Все боковые рёбра и апофемы равны; боковые грани — равные равнобедренные △</td>
+      </tr>
+      <tr>
+        <td><strong>Тетраэдр</strong></td>
+        <td>Правильная треугольная пирамида с равными гранями</td>
+        <td>4 правильных треугольника; наименьшая пирамида</td>
+      </tr>
+      <tr>
+        <td><strong>Усечённая</strong></td>
+        <td>Отрезана плоскостью ∥ основанию</td>
+        <td>Два подобных основания; боковые грани — трапеции</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer>Геометрия · 10 класс &nbsp;·&nbsp; Конспект по презентации «Пирамида-10 А» &nbsp;·&nbsp; ✦ ✦ ✦</footer>
+</div>
+</body>
+</html>
