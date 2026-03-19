@@ -1,1 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Физика §84–85 | Первый закон термодинамики</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9973a;
+    --blue: #2c4a7c;
+    --ink: #1a1a2e;
+    --red-margin: #e05555;
+    --paper: #faf8f3;
+    --line: #d6cfc0;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e8e4dc;
+    font-family: 'Golos Text', sans-serif;
+    color: var(--ink);
+    padding: 40px 20px 60px;
+    min-height: 100vh;
+  }
+
+  .notebook {
+    max-width: 820px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 4px 6px 24px rgba(0,0,0,0.22), -2px 0 8px rgba(0,0,0,0.08);
+    position: relative;
+    padding: 48px 56px 64px 90px;
+    background-image:
+      repeating-linear-gradient(
+        transparent,
+        transparent 31px,
+        var(--line) 31px,
+        var(--line) 32px
+      );
+    animation: fadeDown 0.6s ease both;
+  }
+
+  /* red margin line */
+  .notebook::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 68px; bottom: 0;
+    width: 2px;
+    background: var(--red-margin);
+    opacity: 0.55;
+  }
+
+  /* rings */
+  .rings {
+    position: absolute;
+    left: -18px; top: 60px;
+    display: flex; flex-direction: column; gap: 52px;
+  }
+  .ring {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 4px solid #b0a898;
+    background: #d8d4cc;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  @keyframes fadeDown {
+    from { opacity:0; transform:translateY(-18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(14px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ---- HEADER ---- */
+  .subject-label {
+    font-family: 'Golos Text', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  h1.main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--blue);
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+
+  .paragraph-label {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---- DIVIDER ---- */
+  .divider {
+    text-align: center;
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 6px;
+    margin: 24px 0 20px;
+  }
+
+  /* ---- SECTION HEADING ---- */
+  h2.section {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--blue);
+    border-left: 4px solid var(--gold);
+    padding-left: 10px;
+    margin: 26px 0 12px;
+  }
+
+  h3.sub {
+    font-family: 'Golos Text', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--blue);
+    margin: 16px 0 6px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--gold);
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 2.28; /* match 32px lines */
+    margin-bottom: 0;
+  }
+
+  ul {
+    padding-left: 18px;
+    margin: 4px 0 8px;
+  }
+  li {
+    font-size: 14px;
+    line-height: 2.28;
+    margin-bottom: 0;
+  }
+
+  /* ---- ВАЖНО / ЗАПОМНИ card ---- */
+  .card {
+    border-top: 3px solid var(--gold);
+    background: rgba(201,151,58,0.07);
+    border-radius: 3px;
+    padding: 10px 14px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .card .card-label {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  /* ---- FORMULA box ---- */
+  .formula {
+    background: rgba(44,74,124,0.06);
+    border-left: 3px solid var(--blue);
+    border-radius: 3px;
+    padding: 8px 16px;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--blue);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---- PROCESS TABLE ---- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+  thead tr {
+    background: var(--blue);
+    color: #fff;
+  }
+  thead th {
+    padding: 8px 10px;
+    text-align: left;
+    font-family: 'Golos Text', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+  }
+  tbody tr:nth-child(even) { background: rgba(44,74,124,0.05); }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 600; color: var(--blue); }
+
+  /* ---- QUESTIONS section ---- */
+  .questions-block {
+    border-top: 3px solid var(--blue);
+    margin-top: 32px;
+    padding-top: 18px;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  .q-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .q-page-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 18px 0 8px;
+  }
+
+  .q-item {
+    margin-bottom: 18px;
+  }
+  .q-num {
+    font-weight: 700;
+    color: var(--blue);
+    font-size: 13.5px;
+  }
+  .q-text {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #2a2a40;
+    margin: 4px 0 6px;
+  }
+  .answer-box {
+    background: rgba(201,151,58,0.05);
+    border: 1px dashed var(--gold);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .answer-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="notebook">
+  <div class="rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="subject-label">Молекулярная физика · Тепловые явления</div>
+  <h1 class="main-title">Первый закон термодинамики</h1>
+  <div class="paragraph-label">§84 – §85 · Конспект</div>
+
+  <!-- ===== §84 ===== -->
+  <h2 class="section">§84. Первый закон термодинамики</h2>
+
+  <div class="card">
+    <div class="card-label">Закон сохранения энергии</div>
+    Энергия в природе не возникает из ничего и не исчезает: её количество неизменно, она лишь переходит из одной формы в другую.
+  </div>
+
+  <p>Первый закон термодинамики — частный случай закона сохранения энергии. Он показывает, от каких причин зависит изменение внутренней энергии тела.</p>
+
+  <h3 class="sub">Формулировка</h3>
+  <p>Изменение внутренней энергии системы при переходе из одного состояния в другое равно сумме работы внешних сил и количества теплоты, переданной системе:</p>
+  <div class="formula">ΔU = A + Q &nbsp;&nbsp;&nbsp;(13.11)</div>
+
+  <p>Если рассматривается работа <em>системы</em> над внешними телами (A′ = −A), формулу записывают иначе:</p>
+  <div class="formula">Q = ΔU + A′ &nbsp;&nbsp;&nbsp;(13.12)</div>
+  <p>Теплота, переданная системе, идёт на изменение её внутренней энергии <strong>и</strong> на совершение системой работы над внешними телами.</p>
+
+  <h3 class="sub">Изолированная система</h3>
+  <p>Если A = 0 и Q = 0, то ΔU = 0, значит U₁ = U₂. Внутренняя энергия изолированной системы сохраняется.</p>
+
+  <div class="card">
+    <div class="card-label">Следствие — вечный двигатель 1-го рода невозможен</div>
+    Если Q = 0, то A′ = −ΔU. Как только запас внутренней энергии исчерпан — двигатель останавливается.
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- ===== §85 ===== -->
+  <h2 class="section">§85. Применение первого закона к различным процессам</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Процесс</th>
+        <th>Условие</th>
+        <th>Формула (из 13.12)</th>
+        <th>Вывод</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Изохорный<br><small>(V = const)</small></td>
+        <td>A′ = 0<br>(работа = 0)</td>
+        <td>ΔU = Q &nbsp;(13.13)</td>
+        <td>Вся теплота идёт на изменение внутренней энергии</td>
+      </tr>
+      <tr>
+        <td>Изотермический<br><small>(T = const)</small></td>
+        <td>ΔU = 0<br>(U не меняется)</td>
+        <td>Q = A′ &nbsp;(13.14)</td>
+        <td>Вся теплота идёт на совершение работы</td>
+      </tr>
+      <tr>
+        <td>Изобарный<br><small>(p = const)</small></td>
+        <td>—</td>
+        <td>Q = ΔU + pΔV</td>
+        <td>Теплота → и на ΔU, и на работу против постоянного давления</td>
+      </tr>
+      <tr>
+        <td>Адиабатный<br><small>(без теплообмена)</small></td>
+        <td>Q = 0</td>
+        <td>A′ = −ΔU</td>
+        <td>Работа совершается за счёт убыли внутренней энергии; расширение → охлаждение, сжатие → нагрев</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <div class="card-label">Запомни — адиабатный процесс</div>
+    Процесс, происходящий <strong>без теплообмена</strong> с окружающей средой, называется <em>адиабатным</em>. Удельная теплоёмкость при адиабатном процессе равна нулю (Q = 0). Примеры: накачка велосипедной шины, дизельный двигатель, распространение звуковых волн.
+  </div>
+
+  <p>На графике p(V) адиабата располагается <em>круче</em> изотермы: при адиабатном расширении температура падает, поэтому давление убывает быстрее, чем при изотермическом расширении.</p>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- ===== QUESTIONS ===== -->
+  <div class="questions-block">
+    <div class="q-heading">Вопросы и ответы</div>
+
+    <!-- стр. 278 -->
+    <div class="q-page-label">Стр. 278 — вопросы 1, 2, 4</div>
+
+    <div class="q-item">
+      <div class="q-num">1.</div>
+      <div class="q-text">Как формулируется первый закон термодинамики?</div>
+      <div class="answer-box">
+        <div class="answer-label">Ответ</div>
+        Изменение внутренней энергии системы при переходе из одного состояния в другое равно сумме работы внешних сил над системой и количества теплоты, переданной системе: <strong>ΔU = A + Q</strong>. В другой записи: количество теплоты, полученное системой, расходуется на изменение её внутренней энергии и на работу системы над внешними телами: Q = ΔU + A′.
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">2.</div>
+      <div class="q-text">В каком случае изменение внутренней энергии отрицательно?</div>
+      <div class="answer-box">
+        <div class="answer-label">Ответ</div>
+        ΔU < 0, когда система отдаёт больше энергии, чем получает: при охлаждении (Q < 0) и/или когда система совершает работу (A′ > 0), превышающую полученную теплоту. Например, при адиабатном расширении: Q = 0, поэтому A′ = −ΔU, то есть ΔU < 0 — газ охлаждается.
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">4.</div>
+      <div class="q-text">Можно ли считать систему изолированной, если её температура остаётся постоянной?</div>
+      <div class="answer-box">
+        <div class="answer-label">Ответ</div>
+        Нет. Постоянство температуры означает лишь, что внутренняя энергия не изменяется (ΔU = 0, как при изотермическом процессе). Но система может при этом обмениваться теплотой с окружающей средой и совершать работу (Q = A′ ≠ 0). Изолированная система — та, где A = 0 <em>и</em> Q = 0 одновременно.
+      </div>
+    </div>
+
+    <!-- стр. 281 -->
+    <div class="q-page-label">Стр. 281 — вопросы 1, 2, 3</div>
+
+    <div class="q-item">
+      <div class="q-num">1.</div>
+      <div class="q-text">В каком случае работа газа больше: при изотермическом расширении от V₁ до V₂ или при изобарном расширении от V₁ до V₂?</div>
+      <div class="answer-box">
+        <div class="answer-label">Ответ</div>
+        При изобарном расширении. Работа газа равна площади фигуры под графиком p(V). При изобарном процессе давление остаётся постоянным (прямоугольная полоса), тогда как при изотермическом — давление убывает по гиперболе, и площадь под ней меньше. Следовательно, A′изобарный > A′изотермический.
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">2.</div>
+      <div class="q-text">Как можно изменить температуру газа?</div>
+      <div class="answer-box">
+        <div class="answer-label">Ответ</div>
+        Двумя способами (по первому закону термодинамики): 1) передать газу теплоту или отнять её (теплообмен); 2) совершить работу над газом или дать газу совершить работу (механическое воздействие — например, адиабатное сжатие/расширение). Температура — характеристика внутренней энергии, а она меняется под действием обоих факторов.
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">3.</div>
+      <div class="q-text">Какой из процессов является самым выгодным для получения максимальной механической работы при данном количестве затраченной теплоты?</div>
+      <div class="answer-box">
+        <div class="answer-label">Ответ</div>
+        Изотермический процесс. При T = const внутренняя энергия идеального газа не меняется (ΔU = 0), поэтому вся подведённая теплота целиком превращается в работу: Q = A′. В любом другом процессе часть теплоты расходуется на изменение внутренней энергии (нагрев газа), и работы получается меньше.
+      </div>
+    </div>
+
+  </div><!-- /questions-block -->
+
+</div><!-- /notebook -->
+</body>
+</html>
