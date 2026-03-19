@@ -1,1 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Геометрия — Пирамида. 10 класс</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --red: #b03030;
+    --red-light: #fde8e8;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 40px 20px 80px;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent, transparent 31px,
+      rgba(44,74,124,0.06) 31px,
+      rgba(44,74,124,0.06) 32px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 72px;
+    width: 2px; height: 100%;
+    background: rgba(176,48,48,0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--rule);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .notebook-rings { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; }
+  .ring {
+    width: 22px; height: 22px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(201,151,58,0.25), inset 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .ring::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .subtitle { color: #777; font-size: 13px; letter-spacing: 0.05em; }
+
+  .divider { text-align: center; margin: 8px 0 32px; color: var(--gold); font-size: 18px; letter-spacing: 6px; }
+
+  .sticker {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff9e6;
+    border: 1px solid rgba(201,151,58,0.35);
+    border-radius: 3px;
+    padding: 5px 12px;
+    font-size: 12px; color: #9a6e10; font-weight: 500;
+    letter-spacing: 0.05em;
+    box-shadow: 2px 3px 0 rgba(201,151,58,0.2);
+    transform: rotate(-1.2deg);
+    margin-top: 10px;
+  }
+
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 20px; margin-top: 44px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 900;
+    color: var(--gold); line-height: 1;
+    opacity: 0.5; flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--blue);
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 6px; flex: 1;
+  }
+
+  .def-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  @media (max-width: 640px) {
+    .def-grid { grid-template-columns: 1fr; }
+    body::after { display: none; }
+    body { padding: 20px 12px 60px; }
+  }
+
+  .def-card {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-top: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: 18px 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+  .def-card.blue  { border-top-color: var(--blue); }
+  .def-card.red   { border-top-color: var(--red); }
+  .def-card.green { border-top-color: var(--green); }
+
+  .def-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .def-body { font-size: 13px; color: #444; line-height: 1.55; }
+
+  .zapomni {
+    background: #fffbef;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #5a4010;
+    animation: fadeUp 0.4s ease both;
+  }
+  .zapomni strong { color: var(--ink); }
+  .zapomni-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
+  }
+
+  .vazhno {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px; margin: 16px 0;
+    font-size: 13.5px; color: #1a2f50;
+  }
+  .vazhno-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 4px;
+  }
+
+  /* Pyramid diagram */
+  .pyramid-diagram {
+    display: flex; justify-content: center;
+    margin: 24px 0;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* Formula table */
+  .formula-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 14px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .formula-table th {
+    background: var(--blue); color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; padding: 10px 16px;
+    text-align: left; font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .formula-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(44,74,124,0.1);
+    vertical-align: top; color: #333;
+  }
+  .formula-table tr:nth-child(even) td { background: rgba(220,232,247,0.3); }
+  .formula-table tr:hover td { background: rgba(201,151,58,0.07); }
+  .formula {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--blue);
+  }
+
+  /* Parts grid */
+  .parts-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 20px 0; }
+  @media (max-width: 540px) { .parts-grid { grid-template-columns: 1fr 1fr; } }
+
+  .part-card {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    padding: 14px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    animation: fadeUp 0.4s ease both;
+  }
+  .part-icon { font-size: 24px; margin-bottom: 6px; }
+  .part-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; font-weight: 700;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .part-desc { font-size: 12px; color: #777; }
+
+  /* Steps */
+  .steps { margin: 16px 0; }
+  .step {
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-bottom: 12px; font-size: 13.5px; color: #333;
+    animation: fadeUp 0.4s ease both;
+  }
+  .step-dot {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--blue); color: white;
+    font-size: 12px; font-weight: 700;
+    display: grid; place-items: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* Theorem block */
+  .theorem {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+  .theorem-header {
+    background: var(--blue); color: white;
+    padding: 11px 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .theorem-body { padding: 16px 20px; font-size: 14px; color: #333; line-height: 1.6; }
+  .theorem-formula {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--blue);
+    text-align: center;
+    margin: 12px 0;
+  }
+
+  /* Task blocks */
+  .task {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-radius: 4px; overflow: hidden;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+  .task-header {
+    background: var(--blue); color: white;
+    padding: 11px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .task-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 900;
+    color: var(--gold-light); flex-shrink: 0;
+  }
+  .task-title {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.85;
+  }
+  .task-body { padding: 18px 20px; }
+  .task-condition {
+    font-size: 14px; color: #333;
+    margin-bottom: 14px; line-height: 1.6;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+  .answer-box {
+    background: var(--green-light);
+    border: 1px solid rgba(42,107,58,0.2);
+    border-left: 4px solid var(--green);
+    border-radius: 0 4px 4px 0;
+    padding: 10px 16px; margin-top: 14px;
+    font-size: 14px; color: #1d4a28;
+  }
+  .answer-box strong { font-family: 'Playfair Display', serif; font-size: 16px; }
+
+  footer {
+    text-align: center;
+    margin-top: 40px; padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px; color: #aaa;
+    letter-spacing: 0.06em;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="notebook-rings">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    </div>
+    <div class="badge">Геометрия · 10 класс</div>
+    <h1>Пирамида</h1>
+    <p class="subtitle">n-угольная пирамида · грани и основание · боковая и полная поверхность · правильная и усечённая пирамида</p>
+    <div><span class="sticker">📐 конспект по презентации «Пирамида-10 А»</span></div>
+  </header>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 1: ОПРЕДЕЛЕНИЯ -->
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">Основные понятия и элементы пирамиды</div>
+  </div>
+
+  <div class="def-grid">
+    <div class="def-card blue" style="animation-delay:0.05s">
+      <div class="def-term">🔺 Пирамида</div>
+      <div class="def-body">Многогранник, у которого одна грань (<strong>основание</strong>) — произвольный многоугольник, а все остальные грани (<strong>боковые</strong>) — треугольники, имеющие общую вершину.</div>
+    </div>
+    <div class="def-card" style="animation-delay:0.1s">
+      <div class="def-term">📍 Вершина</div>
+      <div class="def-body">Точка, в которой сходятся все боковые грани пирамиды. Обозначается <strong>S</strong>.</div>
+    </div>
+    <div class="def-card red" style="animation-delay:0.15s">
+      <div class="def-term">📏 Высота пирамиды</div>
+      <div class="def-body">Перпендикуляр, опущенный из вершины пирамиды на плоскость основания. <em>Может находиться за пределами пирамиды</em> (в тупоугольных пирамидах).</div>
+    </div>
+    <div class="def-card green" style="animation-delay:0.2s">
+      <div class="def-term">🔷 n-угольная пирамида</div>
+      <div class="def-body">Пирамида, в основании которой лежит <strong>n-угольник</strong>. Имеет <strong>n+1</strong> вершин, <strong>2n</strong> рёбер, <strong>n+1</strong> граней.</div>
+    </div>
+  </div>
+
+  <!-- Элементы -->
+  <div class="parts-grid">
+    <div class="part-card" style="animation-delay:0.05s">
+      <div class="part-icon">🔵</div>
+      <div class="part-name">Основание</div>
+      <div class="part-desc">Многоугольник в основе пирамиды</div>
+    </div>
+    <div class="part-card" style="animation-delay:0.1s">
+      <div class="part-icon">🔺</div>
+      <div class="part-name">Боковые грани</div>
+      <div class="part-desc">Треугольники со общей вершиной S</div>
+    </div>
+    <div class="part-card" style="animation-delay:0.15s">
+      <div class="part-icon">📐</div>
+      <div class="part-name">Боковые рёбра</div>
+      <div class="part-desc">Рёбра, выходящие из вершины S</div>
+    </div>
+    <div class="part-card" style="animation-delay:0.2s">
+      <div class="part-icon">➖</div>
+      <div class="part-name">Рёбра основания</div>
+      <div class="part-desc">Стороны многоугольника-основания</div>
+    </div>
+    <div class="part-card" style="animation-delay:0.25s">
+      <div class="part-icon">⬇️</div>
+      <div class="part-name">Высота (h)</div>
+      <div class="part-desc">⊥ из вершины на плоскость основания</div>
+    </div>
+    <div class="part-card" style="animation-delay:0.3s">
+      <div class="part-icon">📊</div>
+      <div class="part-name">Апофема (a)</div>
+      <div class="part-desc">Высота боковой грани из вершины S</div>
+    </div>
+  </div>
+
+  <div class="zapomni">
+    <div class="zapomni-label">⭐ Формула элементов n-угольной пирамиды</div>
+    Вершин: <strong>n + 1</strong> &nbsp;·&nbsp; Граней: <strong>n + 1</strong> &nbsp;·&nbsp; Рёбер: <strong>2n</strong>
+    <br><em>Например, у четырёхугольной пирамиды: 5 вершин, 5 граней, 8 рёбер.</em>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 2: ПРАВИЛЬНАЯ ПИРАМИДА -->
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title">Правильная пирамида</div>
+  </div>
+
+  <div class="def-grid">
+    <div class="def-card blue" style="animation-delay:0.05s; grid-column: 1 / -1">
+      <div class="def-term">⭐ Определение правильной пирамиды</div>
+      <div class="def-body">Пирамида называется <strong>правильной</strong>, если её основание — <strong>правильный многоугольник</strong>, а основание высоты пирамиды является <strong>центром</strong> этого многоугольника.</div>
+    </div>
+  </div>
+
+  <div class="vazhno">
+    <div class="vazhno-label">📌 Свойства правильной пирамиды</div>
+    <strong>1.</strong> Все боковые рёбра правильной пирамиды <strong>равны</strong>.<br>
+    <strong>2.</strong> Все боковые грани — <strong>равные равнобедренные треугольники</strong>.<br>
+    <strong>3.</strong> Все апофемы правильной пирамиды <strong>равны</strong>.<br>
+    <strong>4.</strong> Апофема является <strong>медианой и биссектрисой</strong> боковой грани.
+  </div>
+
+  <div class="zapomni">
+    <div class="zapomni-label">⭐ Апофема правильной пирамиды</div>
+    <strong>Апофема</strong> — высота боковой грани правильной пирамиды, проведённая из вершины пирамиды. Обозначается <strong>a</strong> (или <em>l</em>). Является медианой и биссектрисой треугольной боковой грани. Все апофемы правильной пирамиды равны.
+  </div>
+
+  <p style="margin: 16px 0; font-size: 13.5px; color:#555;"><strong>Как построить правильную пирамиду:</strong></p>
+  <div class="steps">
+    <div class="step" style="animation-delay:0.05s">
+      <div class="step-dot">1</div>
+      <div>Строим изображение правильного многоугольника — <strong>основания</strong>.</div>
+    </div>
+    <div class="step" style="animation-delay:0.1s">
+      <div class="step-dot">2</div>
+      <div>Отмечаем <strong>центр</strong> этого многоугольника.</div>
+    </div>
+    <div class="step" style="animation-delay:0.15s">
+      <div class="step-dot">3</div>
+      <div>Из центра строим <strong>высоту пирамиды</strong> (перпендикуляр к основанию).</div>
+    </div>
+    <div class="step" style="animation-delay:0.2s">
+      <div class="step-dot">4</div>
+      <div>Соединяем <strong>вершину высоты</strong> со всеми вершинами основания — получаем боковые рёбра.</div>
+    </div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 3: СЕЧЕНИЯ -->
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title">Сечения пирамиды</div>
+  </div>
+
+  <div class="def-grid">
+    <div class="def-card" style="animation-delay:0.05s">
+      <div class="def-term">✂️ Диагональное сечение</div>
+      <div class="def-body">Сечение, проходящее через <strong>два несоседних боковых ребра</strong> пирамиды. Является треугольником или многоугольником.</div>
+    </div>
+    <div class="def-card blue" style="animation-delay:0.1s">
+      <div class="def-term">📐 Сечение ∥ основанию</div>
+      <div class="def-body">В результате получается многоугольник, <strong>подобный основанию</strong>. Если основание — правильный n-угольник, то сечение тоже правильный n-угольник.</div>
+    </div>
+  </div>
+
+  <div class="vazhno">
+    <div class="vazhno-label">📌 Усечённая пирамида</div>
+    Часть пирамиды, полученная при пересечении плоскостью, <strong>параллельной основанию</strong> — многогранник, называемый <strong>усечённой пирамидой</strong>.<br><br>
+    • Основания усечённой пирамиды — <strong>подобные многоугольники</strong>.<br>
+    • Боковые грани усечённой пирамиды — <strong>трапеции</strong>.<br>
+    • <strong>Высота</strong> усечённой пирамиды — расстояние между плоскостями оснований.
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 4: ФОРМУЛЫ -->
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title">Формулы площадей поверхности</div>
+  </div>
+
+  <div class="theorem">
+    <div class="theorem-header">📐 Теорема о боковой поверхности правильной пирамиды</div>
+    <div class="theorem-body">
+      Площадь боковой поверхности правильной пирамиды равна <strong>половине произведения периметра основания на апофему</strong>:
+      <div class="theorem-formula">S<sub>бок</sub> = ½ · P · a</div>
+      где <strong>P</strong> — периметр основания, <strong>a</strong> — апофема пирамиды.<br><br>
+      <strong>Доказательство:</strong> площадь одной боковой треугольной грани = ½ · b · a, где b — сторона основания. Сумма всех n граней = ½ · a · (b₁ + b₂ + … + bₙ) = ½ · a · P. ∎
+    </div>
+  </div>
+
+  <table class="formula-table">
+    <thead>
+      <tr>
+        <th>Величина</th>
+        <th>Формула</th>
+        <th>Обозначения</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Боковая поверхность правильной пирамиды</td>
+        <td><span class="formula">S<sub>бок</sub> = ½ · P · a</span></td>
+        <td>P — периметр основания, a — апофема</td>
+      </tr>
+      <tr>
+        <td>Полная поверхность пирамиды</td>
+        <td><span class="formula">S<sub>полн</sub> = S<sub>бок</sub> + S<sub>осн</sub></span></td>
+        <td>S<sub>осн</sub> — площадь основания</td>
+      </tr>
+      <tr>
+        <td>Полная поверхность усечённой пирамиды</td>
+        <td><span class="formula">S<sub>полн</sub> = S<sub>бок</sub> + S₁ + S₂</span></td>
+        <td>S₁, S₂ — площади двух оснований</td>
+      </tr>
+      <tr>
+        <td>Количество вершин n-угольной пирамиды</td>
+        <td><span class="formula">V = n + 1</span></td>
+        <td>n — число сторон основания</td>
+      </tr>
+      <tr>
+        <td>Количество рёбер n-угольной пирамиды</td>
+        <td><span class="formula">R = 2n</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Количество граней n-угольной пирамиды</td>
+        <td><span class="formula">G = n + 1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="zapomni">
+    <div class="zapomni-label">⭐ Запомни — тетраэдр</div>
+    Правильную <strong>треугольную пирамиду</strong>, у которой <strong>все грани равны</strong> (4 равносторонних треугольника), называют <strong>правильным тетраэдром</strong>. Это наименьшее возможное число граней пирамиды — <strong>4</strong>.
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- SECTION 5: ЗАДАЧИ -->
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div
