@@ -1,1 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 95 · Задания 11–16 · Логарифмическая функция</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --red: #b03030;
+    --red-light: #fde8e8;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 40px 20px 80px;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(44,74,124,0.06) 31px, rgba(44,74,124,0.06) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed; top: 0; left: 72px;
+    width: 2px; height: 100%;
+    background: rgba(176,48,48,0.15);
+    pointer-events: none; z-index: 0;
+  }
+  .wrapper { max-width: 940px; margin: 0 auto; position: relative; z-index: 1; }
 
+  /* HEADER */
+  header {
+    text-align: center; margin-bottom: 48px; padding-bottom: 32px;
+    border-bottom: 2px solid var(--rule);
+    animation: fadeDown 0.6s ease both;
+  }
+  .notebook-rings { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; }
+  .ring {
+    width: 22px; height: 22px; border: 3px solid var(--gold); border-radius: 50%;
+    background: white; box-shadow: 0 2px 6px rgba(201,151,58,0.25), inset 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .ring::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%); width: 8px; height: 8px;
+    border-radius: 50%; background: var(--gold-light);
+  }
+  .badge {
+    display: inline-block; background: var(--blue); color: white;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 4px 14px; border-radius: 2px; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 36px);
+    font-weight: 900; color: var(--blue); line-height: 1.2; margin-bottom: 8px;
+  }
+  .subtitle { color: #777; font-size: 13px; letter-spacing: 0.05em; }
+  .divider { text-align: center; margin: 8px 0 32px; color: var(--gold); font-size: 18px; letter-spacing: 6px; }
+
+  /* TASK CARD */
+  .task {
+    background: white; border: 1px solid rgba(44,74,124,0.13); border-radius: 4px;
+    overflow: hidden; margin-bottom: 24px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+  .task-header {
+    background: var(--gold); color: white; padding: 11px 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .task-header.blue { background: var(--blue); }
+  .task-num { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; }
+  .task-title { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.92; }
+  .task-body { padding: 20px 24px; }
+  .task-condition {
+    font-size: 14px; color: #333; margin-bottom: 16px; line-height: 1.7;
+    padding-bottom: 14px; border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+
+  /* SUBTASK GRID */
+  .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) {
+    .sub-grid { grid-template-columns: 1fr; }
+    body::after { display: none; }
+    body { padding: 20px 12px 60px; }
+  }
+  .sub-item {
+    background: rgba(44,74,124,0.03); border: 1px solid rgba(44,74,124,0.1);
+    border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0;
+    padding: 12px 14px;
+  }
+  .sub-item.blue-border { border-left-color: var(--blue); }
+  .sub-item.green-border { border-left-color: var(--green); }
+  .sub-item.red-border { border-left-color: var(--red); }
+  .sub-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+  }
+  .sub-label.blue { color: var(--blue); }
+  .sub-label.green { color: var(--green); }
+  .sub-label.red { color: var(--red); }
+  .sub-condition { font-size: 13.5px; color: #333; margin-bottom: 10px; font-style: italic; }
+  .sol-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #888; margin: 8px 0 4px;
+  }
+  .sol-body { font-size: 13.5px; color: #222; line-height: 1.65; }
+  .answer {
+    display: inline-block; margin-top: 8px;
+    background: var(--green-light); border: 1px solid rgba(42,107,58,0.2);
+    border-left: 3px solid var(--green); border-radius: 0 3px 3px 0;
+    padding: 5px 12px; font-size: 13.5px; color: #1d4a28; font-weight: 600;
+  }
+  .answer.blue-ans {
+    background: var(--blue-light); border-color: rgba(44,74,124,0.2);
+    border-left-color: var(--blue); color: #1a2f50;
+  }
+  .answer.red-ans {
+    background: var(--red-light); border-color: rgba(176,48,48,0.2);
+    border-left-color: var(--red); color: #6b1a1a;
+  }
+
+  /* GRAPH SECTION */
+  .graph-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 14px;
+  }
+  @media (max-width: 600px) { .graph-wrap { grid-template-columns: 1fr; } }
+  .graph-card {
+    background: rgba(44,74,124,0.03); border: 1px solid rgba(44,74,124,0.12);
+    border-top: 3px solid var(--blue); border-radius: 4px; padding: 16px;
+    text-align: center;
+  }
+  .graph-card.gold-top { border-top-color: var(--gold); }
+  .graph-title {
+    font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700;
+    color: var(--blue); margin-bottom: 12px; letter-spacing: 0.03em;
+  }
+  .graph-props { text-align: left; margin-top: 12px; font-size: 12.5px; color: #444; line-height: 1.8; }
+  .prop-row { display: flex; gap: 6px; align-items: flex-start; }
+  .prop-key { color: #888; min-width: 80px; flex-shrink: 0; }
+
+  /* TABLE */
+  .chem-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; }
+  .chem-table th {
+    background: var(--blue); color: white;
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    padding: 9px 14px; text-align: left; font-size: 13px;
+  }
+  .chem-table td {
+    padding: 8px 14px; border-bottom: 1px solid rgba(44,74,124,0.1);
+    vertical-align: top; color: #333;
+  }
+  .chem-table tr:nth-child(even) td { background: rgba(220,232,247,0.25); }
+
+  .section-header {
+    display: flex; align-items: center; gap: 14px; margin: 40px 0 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .section-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--gold); opacity: 0.5; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--blue); border-bottom: 2px solid var(--rule); padding-bottom: 6px; flex: 1; }
+
+  .note {
+    background: #fffbef; border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0;
+    padding: 10px 16px; margin: 12px 0; font-size: 13px; color: #5a4010; line-height: 1.6;
+  }
+  .note-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+
+  footer {
+    text-align: center; margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--rule); font-size: 12px; color: #aaa; letter-spacing: 0.06em;
+  }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(14px);  } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- HEADER -->
+<header>
+  <div class="notebook-rings">
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  </div>
+  <div class="badge">Алгебра · 11 класс · Урок 95</div>
+  <h1>Задания 11–16<br>Логарифмическая функция</h1>
+  <p class="subtitle">Свойства · Область определения · Сравнение · Графики</p>
+</header>
+
+<div class="divider">✦ ✦ ✦</div>
+
+<!-- ЗАДАНИЕ 11 -->
+<div class="section-header">
+  <div class="section-num">11</div>
+  <div class="section-title">Возрастающие и убывающие функции</div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-num">Задание 11</div>
+    <div class="task-title">Определить монотонность функции y = log<sub>a</sub>x</div>
+  </div>
+  <div class="task-body">
+    <div class="task-condition">
+      Какие из указанных функций являются возрастающими, а какие убывающими:<br>
+      а)&nbsp;y = log<sub>3/11</sub>x ;&nbsp;&nbsp; б)&nbsp;y = log<sub>7</sub>x ;&nbsp;&nbsp; в)&nbsp;y = log<sub>6,7</sub>x ;&nbsp;&nbsp; г)&nbsp;y = log<sub>0,03</sub>x
+    </div>
+    <div class="note">
+      <div class="note-label">📌 Правило</div>
+      Если основание a &gt; 1 → функция <strong>возрастающая</strong>.<br>
+      Если 0 &lt; a &lt; 1 → функция <strong>убывающая</strong>.
+    </div>
+    <div class="sub-grid">
+      <div class="sub-item red-border">
+        <div class="sub-label red">а) log<sub>3/11</sub>x</div>
+        <div class="sol-body">Основание: 3/11 ≈ 0,27 → 0 &lt; a &lt; 1</div>
+        <div class="answer red-ans">↘ Убывающая</div>
+      </div>
+      <div class="sub-item blue-border">
+        <div class="sub-label blue">б) log<sub>7</sub>x</div>
+        <div class="sol-body">Основание: 7 → a &gt; 1</div>
+        <div class="answer blue-ans">↗ Возрастающая</div>
+      </div>
+      <div class="sub-item blue-border">
+        <div class="sub-label blue">в) log<sub>6,7</sub>x</div>
+        <div class="sol-body">Основание: 6,7 → a &gt; 1</div>
+        <div class="answer blue-ans">↗ Возрастающая</div>
+      </div>
+      <div class="sub-item red-border">
+        <div class="sub-label red">г) log<sub>0,03</sub>x</div>
+        <div class="sol-body">Основание: 0,03 → 0 &lt; a &lt; 1</div>
+        <div class="answer red-ans">↘ Убывающая</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:14px;">
+      <div class="note-label">✅ Ответ</div>
+      <strong>Возрастающие:</strong> б), в) &nbsp;|&nbsp; <strong>Убывающие:</strong> а), г)
+    </div>
+  </div>
+</div>
+
+<!-- ЗАДАНИЕ 12 -->
+<div class="section-header">
+  <div class="section-num">12</div>
+  <div class="section-title">Принадлежность точки графику</div>
+</div>
+
+<div class="task">
+  <div class="task-header blue">
+    <div class="task-num">Задание 12</div>
+    <div class="task-title">Принадлежит ли точка графику y = log<sub>3</sub>x ?</div>
+  </div>
+  <div class="task-body">
+    <div class="task-condition">
+      Точка принадлежит графику y = log<sub>3</sub>x, если при подстановке x-координаты получается y-координата.<br>
+      Проверяем: 3<sup>y</sup> = x.
+    </div>
+    <div class="note">
+      <div class="note-label">📌 Метод</div>
+      Подставляем x в формулу y = log<sub>3</sub>x. Если результат совпадает с y-координатой точки → точка принадлежит графику.
+    </div>
+    <div class="sub-grid">
+      <div class="sub-item red-border">
+        <div class="sub-label red">а) A(81; 3)</div>
+        <div class="sol-body">y = log<sub>3</sub>81 = log<sub>3</sub>3<sup>4</sup> = <strong>4</strong> ≠ 3</div>
+        <div class="answer red-ans">✗ Не принадлежит</div>
+      </div>
+      <div class="sub-item green-border">
+        <div class="sub-label green">б) B(1/81; −4)</div>
+        <div class="sol-body">y = log<sub>3</sub>(1/81) = log<sub>3</sub>3<sup>−4</sup> = <strong>−4</strong> ✓</div>
+        <div class="answer">✓ Принадлежит</div>
+      </div>
+      <div class="sub-item green-border">
+        <div class="sub-label green">в) C(9√3; 2,5)</div>
+        <div class="sol-body">9√3 = 3² · 3<sup>1/2</sup> = 3<sup>2,5</sup><br>y = log<sub>3</sub>3<sup>2,5</sup> = <strong>2,5</strong> ✓</div>
+        <div class="answer">✓ Принадлежит</div>
+      </div>
+      <div class="sub-item red-border">
+        <div class="sub-label red">г) D(√3/27; 2,5)</div>
+        <div class="sol-body">√3/27 = 3<sup>1/2</sup>/3<sup>3</sup> = 3<sup>−5/2</sup><br>y = log<sub>3</sub>3<sup>−2,5</sup> = <strong>−2,5</strong> ≠ 2,5</div>
+        <div class="answer red-ans">✗ Не принадлежит</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:14px;">
+      <div class="note-label">✅ Ответ</div>
+      Графику принадлежат точки <strong>Б</strong> и <strong>В</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- ЗАДАНИЕ 13 -->
+<div class="section-header">
+  <div class="section-num">13</div>
+  <div class="section-title">Нахождение основания и проверка точки</div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-num">Задание 13</div>
+    <div class="task-title">График y = log<sub>a</sub>x проходит через (49; 4). Проверить точки.</div>
+  </div>
+  <div class="task-body">
+    <div class="task-condition">
+      Дано: граф y = log<sub>a</sub>x проходит через (49; 4).<br>
+      Найти основание a, затем проверить, проходит ли график через точки A и B.
+    </div>
+    <div class="sub-item" style="margin-bottom:14px; border-left-color: var(--blue);">
+      <div class="sub-label blue">Нахождение основания a</div>
+      <div class="sol-body">
+        log<sub>a</sub>49 = 4 &nbsp;⟹&nbsp; a<sup>4</sup> = 49<br>
+        a<sup>4</sup> = 49 = 7² &nbsp;⟹&nbsp; a² = 7 &nbsp;⟹&nbsp; a = <strong>√7</strong><br>
+        (a &gt; 0, a ≠ 1; √7 ≈ 2,646 — подходит)
+      </div>
+      <div class="answer blue-ans">Основание: a = √7</div>
+    </div>
+    <div class="sub-grid">
+      <div class="sub-item red-border">
+        <div class="sub-label red">а) A(343; −6)</div>
+        <div class="sol-body">
+          343 = 7³ = (√7)<sup>6</sup><br>
+          log<sub>√7</sub>(√7)<sup>6</sup> = <strong>6</strong> ≠ −6
+        </div>
+        <div class="answer red-ans">✗ Не проходит</div>
+      </div>
+      <div class="sub-item green-border">
+        <div class="sub-label green">б) B(49√7; 5)</div>
+        <div class="sol-body">
+          49√7 = 7² · 7<sup>1/2</sup> = 7<sup>5/2</sup> = (√7)<sup>5</sup><br>
+          log<sub>√7</sub>(√7)<sup>5</sup> = <strong>5</strong> ✓
+        </div>
+        <div class="answer">✓ Проходит</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:14px;">
+      <div class="note-label">✅ Ответ</div>
+      Основание a = √7. Через точку <strong>B(49√7; 5)</strong> — проходит. Через A(343; −6) — не проходит.
+    </div>
+  </div>
+</div>
+
+<!-- ЗАДАНИЕ 14 -->
+<div class="section-header">
+  <div class="section-num">14</div>
+  <div class="section-title">Сравнение значений логарифмов</div>
+</div>
+
+<div class="task">
+  <div class="task-header blue">
+    <div class="task-num">Задание 14</div>
+    <div class="task-title">Сравнить значения выражений</div>
+  </div>
+  <div class="task-body">
+    <div class="note">
+      <div class="note-label">📌 Правила сравнения</div>
+      При a &gt; 1: функция возрастает → больший аргумент = больший логарифм.<br>
+      При 0 &lt; a &lt; 1: функция убывает → больший аргумент = меньший логарифм.<br>
+      log<sub>a</sub>1 = 0 для любого a. Если x &gt; 1 и a &gt; 1 → log &gt; 0. Если 0 &lt; x &lt; 1 и a &gt; 1 → log &lt; 0.
+    </div>
+    <div class="sub-grid">
+      <div class="sub-item blue-border">
+        <div class="sub-label blue">а) log<sub>4</sub>6,01 и log<sub>4</sub>6,001</div>
+        <div class="sol-body">Осн. a = 4 &gt; 1 → функция возрастает.<br>6,01 &gt; 6,001 → log<sub>4</sub>6,01 <strong>&gt;</strong> log<sub>4</sub>6,001</div>
+        <div class="answer blue-ans">log₄6,01 &gt; log₄6,001</div>
+      </div>
+      <div class="sub-item red-border">
+        <div class="sub-label red">б) log<sub>1/8</sub>0,37 и log<sub>1/8</sub>0,24</div>
+        <div class="sol-body">Осн. a = 1/8 &lt; 1 → функция убывает.<br>0,37 &gt; 0,24 → log<sub>1/8</sub>0,37 <strong>&lt;</strong> log<sub>1/8</sub>0,24</div>
+        <div class="answer red-ans">log₍₁/₈₎0,37 &lt; log₍₁/₈₎0,24</div>
+      </div>
+      <div class="sub-item red-border">
+        <div class="sub-label red">в) log<sub>0,1</sub>2,7 и log<sub>0,1</sub>2,8</div>
+        <div class="sol-body">Осн. a = 0,1 &lt; 1 → функция убывает.<br>2,7 &lt; 2,8 → log<sub>0,1</sub>2,7 <strong>&gt;</strong> log<sub>0,1</sub>2,8</div>
+        <div class="answer red-ans">log₀,₁2,7 &gt; log₀,₁2,8</div>
+      </div>
+      <div class="sub-item green-border">
+        <div class="sub-label green">г) log<sub>5</sub>49 и 0</div>
+        <div class="sol-body">Осн. 5 &gt; 1; аргумент 49 &gt; 1<br>→ логарифм <strong>положителен</strong></div>
+        <div class="answer">log₅49 &gt; 0</div>
+      </div>
+      <div class="sub-item green-border">
+        <div class="sub-label green">д) log<sub>0,09</sub>27 и 0</div>
+        <div class="sol-body">Осн. 0,09 &lt; 1; аргумент 27 &gt; 1<br>→ логарифм <strong>отрицателен</strong></div>
+        <div class="answer red-ans" style="background:var(--red-light);border-left-color:var(--red);color:#6b1a1a;">log₀,₀₉27 &lt; 0</div>
+      </div>
+      <div class="sub-item blue-border">
+        <div class="sub-label blue">е) lg 9 и 0</div>
+        <div class="sol-body">lg = log<sub>10</sub>; осн. 10 &gt; 1; аргумент 9 &gt; 1<br>→ логарифм <strong>положителен</strong></div>
+        <div class="answer blue-ans">lg 9 &gt; 0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ЗАДАНИЕ 15 -->
+<div class="section-header">
+  <div class="section-num">15</div>
+  <div class="section-title">Область определения функции</div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-num">Задание 15</div>
+    <div class="task-title">Найти область определения</div>
+  </div>
+  <div class="task-body">
+    <div class="note">
+      <div class="note-label">📌 Условия ОДЗ для логарифма</div>
+      Для log<sub>a</sub>f(x): нужно f(x) &gt; 0.<br>
+      Для log<sub>g(x)</sub>f(x): нужно f(x) &gt; 0 <strong>И</strong> g(x) &gt; 0 <strong>И</strong> g(x) ≠ 1.
+    </div>
+    <div class="sub-grid">
+      <div class="sub-item blue-border">
+        <div class="sub-label blue">а) y = log<sub>11</sub>(7 − 9x)</div>
+        <div class="sol-body">
+          Условие: 7 − 9x &gt; 0<br>
+          −9x &gt; −7<br>
+          x &lt; 7/9
+        </div>
+        <div class="answer blue-ans">D(y) = (−∞; 7/9)</div>
+      </div>
+      <div class="sub-item">
+        <div class="sub-label">б) y = log<sub>0,3</sub>((3x−1)/(6−x))</div>
+        <div class="sol-body">
+          Условие: (3x−1)/(6−x) &gt; 0<br>
+          Нули: x = 1/3 и x = 6<br>
+          Метод интервалов: оба знаменатель и числитель одного знака<br>
+          &nbsp;&nbsp;x &lt; 1/3: (−)(+)/(+) → отриц. ✗<br>
+          &nbsp;&nbsp;1/3 &lt; x &lt; 6: (+)/(+) → полож. ✓<br>
+          &nbsp;&nbsp;x &gt; 6: (+)/(−) → отриц. ✗
+        </div>
+        <div class="answer">D(y) = (1/3; 6)</div>
+      </div>
+      <div class="sub-item green-border">
+        <div class="sub-label green">в) y = log<sub>7</sub>(3 + 5x − 2x²)</div>
+        <div class="sol-body">
+          Условие: 3 + 5x − 2x² &gt; 0<br>
+          2x² − 5x − 3 &lt; 0<br>
+          D = 25 + 24 = 49; корни: x = (5±7)/4<br>
+          x₁ = −1/2, x₂ = 3<br>
+          Парабола ветвями вверх → между корнями
+        </div>
+        <div class="answer">D(y) = (−1/2; 3)</div>
+      </div>
+      <div class="sub-item red-border">
+        <div class="sub-label red">г) y = log<sub>x−2</sub>(x² − 5)</div>
+        <div class="sol-body">
+          Условие 1: x − 2 &gt; 0 → x &gt; 2<br>
+          Условие 2: x − 2 ≠ 1 → x ≠ 3<br>
+          Условие 3: x² − 5 &gt; 0 → x &lt; −√5 или x &gt; √5<br>
+          Пересечение: x &gt; 2 и x &gt; √5 ≈ 2,24 и x ≠ 3<br>
+          → x &gt; √5 и x ≠ 3
+        </div>
+        <div class="answer red-ans">D(y) = (√5; 3) ∪ (3; +∞)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ЗАДАНИЕ 16 -->
+<div class="section-header">
+  <div class="section-num">16</div>
+  <div class="section-title">Построение графиков</div>
+</div>
+
+<div class="task">
+  <div class="task-header blue">
+    <div class="task-num">Задание 16</div>
+    <div class="task-title">Построить графики y = log<sub>4</sub>x и y = log<sub>0,1</sub>x</div>
+  </div>
+  <div class="task-body">
+    <div class="note">
+      <div class="note-label">📌 Ключевые точки для построения</div>
+      Все логарифмические функции проходят через точку (1; 0). Выбираем несколько точек, вычисляем y.
+    </div>
+
+    <!-- Таблицы значений -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+      <div>
+        <div style="font-family:'Playfair Display',serif; font-weight:700; color:var(--blue); font-size:14px; margin-bottom:8px;">Таблица: y = log<sub>4</sub>x</div>
+        <table class="chem-table">
+          <thead><tr><th>x</th><th>y = log₄x</th></tr></thead>
+          <tbody>
+            <tr><td>1/16</td><td>−2</td></tr>
+            <tr><td>1/4</td><td>−1</td></tr>
+            <tr><td>1</td><td>0</td></tr>
+            <tr><td>4</td><td>1</td></tr>
+            <tr><td>16</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif; font-weight:700; color:var(--blue); font-size:14px; margin-bottom:8px;">Таблица: y = log<sub>0,1</sub>x</div>
+        <table class="chem-table">
+          <thead><tr><th>x</th><th>y = log₀,₁x</th></tr></thead>
+          <tbody>
+            <tr><td>100</td><td>−2</td></tr>
+            <tr><td>10</td><td>−1</td></tr>
+            <tr><td>1</td><td>0</td></tr>
+            <tr><td>0,1</td><td>1</td></tr>
+            <tr><td>0,01</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Графики SVG -->
+    <div class="graph-wrap">
+      <!-- График log₄x -->
+      <div class="graph-card">
+        <div class="graph-title">y = log<sub>4</sub>x &nbsp;(основание a = 4 &gt; 1)</div>
+        <svg width="100%" viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+          <!-- Сетка -->
+          <g stroke="rgba(44,74,124,0.08)" stroke-width="0.5">
+            <line x1="20" y1="20" x2="20" y2="200"/>
+            <line x1="60" y1="20" x2="60" y2="200"/>
+            <line x1="100" y1="20" x2="100" y2="200"/>
+            <line x1="140" y1="20" x2="140" y2="200"/>
+            <line x1="180" y1="20" x2="180" y2="200"/>
+            <line x1="220" y1="20" x2="220" y2="200"/>
+            <line x1="10" y1="50" x2="250" y2="50"/>
+            <line x1="10" y1="90" x2="250" y2="90"/>
+            <line x1="10" y1="130" x2="250" y2="130"/>
+            <line x1="10" y1="170" x2="250" y2="170"/>
+          </g>
+          <!-- Оси -->
+          <line x1="10" y1="110" x2="250" y2="110" stroke="rgba(44,74,124,0.5)" stroke-width="1"/>
+          <line x1="30" y1="10" x2="30" y2="210" stroke="rgba(44,74,124,0.5)" stroke-width="1"/>
+          <!-- Стрелки осей -->
+          <polygon points="250,110 243,107 243,113" fill="rgba(44,74,124,0.5)"/>
+          <polygon points="30,10 27,17 33,17" fill="rgba(44,74,124,0.5)"/>
+          <!-- Подписи осей -->
+          <text x="252" y="114" font-size="11" fill="rgba(44,74,124,0.7)" font-family="'Golos Text',sans-serif">x</text>
+          <text x="33" y="14" font-size="11" fill="rgba(44,74,124,0.7)" font-family="'Golos Text',sans-serif">y</text>
+          <!-- Метки оси x: 1 в точке x=30+40=70 (масштаб 40px = 1 ед. не подходит, пересчитаем) -->
+          <!-- Масштаб: x=30 → x_math=0; шаг 40px = 1 ед -->
+          <!-- x_math=1 → px=70; x_math=2 → px=110; x_math=4 → px=190 -->
+          <!-- НО: область x>0, натуральный логарифм растёт медленно, берём лог-шкалу -->
+          <!-- px = 30 + 80*log4(x), т.е. x=1/16→px=30-160=-130(выход), лучше: -->
+          <!-- px = 30 + 55*(log4(x)+2), диапазон log4(x) от -2 до 2 → px 30..250 -->
+          <!-- y_px = 110 - 40*y_math, диапазон y от -2 до 2 → px 30..190 -->
+          <!-- Точки: (1/16,-2),(1/4,-1),(1,0),(4,1),(16,2) -->
+          <!-- px: x=1/16→log4=−2→30+55*0=30; x=1/4→−1→30+55*1=85; x=1→0→30+55*2=140; x=4→1→30+55*3=195; x=16→2→30+55*4=250 -->
+          <!-- ypx: y=-2→110+80=190; y=-1→110+40=150; y=0→110; y=1→70; y=2→30 -->
+          <!-- Метки оси x (логарифм-шкала) -->
+          <text x="27" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">0</text>
+          <text x="83" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">¼</text>
+          <text x="138" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">1</text>
+          <text x="193" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">4</text>
+          <text x="248" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">16</text>
+          <!-- Метки оси y -->
+          <text x="22" y="194" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">−2</text>
+          <text x="22" y="154" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">−1</text>
+          <text x="22" y="74" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">1</text>
+          <text x="22" y="34" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">2</text>
+          <!-- Кривая y = log4(x): плавная через 5 точек -->
+          <!-- (30,190),(85,150),(140,110),(195,70),(250,30) -->
+          <path d="M30,190 C40,178 60,162 85,150 C110,138 125,122 140,110 C155,98 172,82 195,70 C218,58 235,42 250,30"
+                fill="none" stroke="#2c4a7c" stroke-width="2" stroke-linecap="round"/>
+          <!-- Точки -->
+          <circle cx="140" cy="110" r="4" fill="#c9973a" stroke="white" stroke-width="1.5"/>
+          <circle cx="85" cy="150" r="3" fill="#2c4a7c" stroke="white" stroke-width="1.5"/>
+          <circle cx="195" cy="70" r="3" fill="#2c4a7c" stroke="white" stroke-width="1.5"/>
+          <circle cx="250" cy="30" r="3" fill="#2c4a7c" stroke="white" stroke-width="1.5"/>
+          <!-- Асимптота x=0 -->
+          <line x1="30" y1="15" x2="30" y2="200" stroke="#c9973a" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <text x="36" y="25" font-size="9" fill="#c9973a" font-family="'Golos Text',sans-serif">x=0</text>
+        </svg>
+        <div class="graph-props">
+          <div class="prop-row"><span class="prop-key">Осн.:</span> a = 4 &gt; 1</div>
+          <div class="prop-row"><span class="prop-key">Монот.:</span> возрастает на (0; +∞)</div>
+          <div class="prop-row"><span class="prop-key">ОДЗ:</span> x &gt; 0</div>
+          <div class="prop-row"><span class="prop-key">Асимп.:</span> x = 0 (вертикальная)</div>
+          <div class="prop-row"><span class="prop-key">Через:</span> (1; 0), (4; 1), (1/4; −1)</div>
+        </div>
+      </div>
+      <!-- График log₀,₁x -->
+      <div class="graph-card gold-top">
+        <div class="graph-title">y = log<sub>0,1</sub>x &nbsp;(основание 0 &lt; a &lt; 1)</div>
+        <svg width="100%" viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="rgba(44,74,124,0.08)" stroke-width="0.5">
+            <line x1="20" y1="20" x2="20" y2="200"/>
+            <line x1="60" y1="20" x2="60" y2="200"/>
+            <line x1="100" y1="20" x2="100" y2="200"/>
+            <line x1="140" y1="20" x2="140" y2="200"/>
+            <line x1="180" y1="20" x2="180" y2="200"/>
+            <line x1="220" y1="20" x2="220" y2="200"/>
+            <line x1="10" y1="50" x2="250" y2="50"/>
+            <line x1="10" y1="90" x2="250" y2="90"/>
+            <line x1="10" y1="130" x2="250" y2="130"/>
+            <line x1="10" y1="170" x2="250" y2="170"/>
+          </g>
+          <line x1="10" y1="110" x2="250" y2="110" stroke="rgba(44,74,124,0.5)" stroke-width="1"/>
+          <line x1="30" y1="10" x2="30" y2="210" stroke="rgba(44,74,124,0.5)" stroke-width="1"/>
+          <polygon points="250,110 243,107 243,113" fill="rgba(44,74,124,0.5)"/>
+          <polygon points="30,10 27,17 33,17" fill="rgba(44,74,124,0.5)"/>
+          <text x="252" y="114" font-size="11" fill="rgba(44,74,124,0.7)" font-family="'Golos Text',sans-serif">x</text>
+          <text x="33" y="14" font-size="11" fill="rgba(44,74,124,0.7)" font-family="'Golos Text',sans-serif">y</text>
+          <!-- log0,1: основание <1, функция убывает -->
+          <!-- Точки: x=0.01→y=2; x=0.1→y=1; x=1→y=0; x=10→y=-1; x=100→y=-2 -->
+          <!-- Шкала аналогична: px = 30 + 55*(log10(x)+2), y_px = 110 - 40*y -->
+          <!-- log10(0.01)=-2 → px=30; log10(0.1)=-1 → px=85; log10(1)=0 → px=140 -->
+          <!-- log10(10)=1 → px=195; log10(100)=2 → px=250 -->
+          <!-- y=2 → y_px=30; y=1 → y_px=70; y=0 → y_px=110; y=-1 → 150; y=-2 → 190 -->
+          <text x="27" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">0</text>
+          <text x="83" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">0,1</text>
+          <text x="138" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">1</text>
+          <text x="193" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">10</text>
+          <text x="248" y="123" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="middle" font-family="'Golos Text',sans-serif">100</text>
+          <text x="22" y="34" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">2</text>
+          <text x="22" y="74" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">1</text>
+          <text x="22" y="154" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">−1</text>
+          <text x="22" y="194" font-size="10" fill="rgba(44,74,124,0.6)" text-anchor="end" font-family="'Golos Text',sans-serif">−2</text>
+          <!-- Кривая y = log0,1(x): убывающая -->
+          <!-- (30,30),(85,70),(140,110),(195,150),(250,190) -->
+          <path d="M30,30 C40,42 60,58 85,70 C110,82 125,98 140,110 C155,122 172,138 195,150 C218,162 235,178 250,190"
+                fill="none" stroke="#c9973a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="140" cy="110" r="4" fill="#2c4a7c" stroke="white" stroke-width="1.5"/>
+          <circle cx="85" cy="70" r="3" fill="#c9973a" stroke="white" stroke-width="1.5"/>
+          <circle cx="195" cy="150" r="3" fill="#c9973a" stroke="white" stroke-width="1.5"/>
+          <circle cx="250" cy="190" r="3" fill="#c9973a" stroke="white" stroke-width="1.5"/>
+          <line x1="30" y1="15" x2="30" y2="200" stroke="#c9973a" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <text x="36" y="25" font-size="9" fill="#c9973a" font-family="'Golos Text',sans-serif">x=0</text>
+        </svg>
+        <div class="graph-props">
+          <div class="prop-row"><span class="prop-key">Осн.:</span> a = 0,1 &lt; 1</div>
+          <div class="prop-row"><span class="prop-key">Монот.:</span> убывает на (0; +∞)</div>
+          <div class="prop-row"><span class="prop-key">ОДЗ:</span> x &gt; 0</div>
+          <div class="prop-row"><span class="prop-key">Асимп.:</span> x = 0 (вертикальная)</div>
+          <div class="prop-row"><span class="prop-key">Через:</span> (1; 0), (0,1; 1), (10; −1)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px;">
+      <div class="note-label">✦ Сравнение двух графиков</div>
+      Оба графика проходят через точку <strong>(1; 0)</strong> и имеют вертикальную асимптоту x = 0.<br>
+      y = log<sub>4</sub>x — <strong>возрастает</strong> (ветвь вправо-вверх).<br>
+      y = log<sub>0,1</sub>x — <strong>убывает</strong> (ветвь вправо-вниз). Это зеркальное отражение возрастающей функции относительно оси x.
+    </div>
+  </div>
+</div>
+
+<div class="divider">✦ ✦ ✦</div>
+
+<footer>
+  Алгебра · Урок 95 · Логарифмическая функция · Задания 11–16
+</footer>
+
+</div>
+</body>
+</html>
