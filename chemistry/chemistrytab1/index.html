@@ -1,1 +1,776 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Химия · §7–9 · Конспект</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --cream: #f2ede2;
+    --gold: #c9973a;
+    --gold-light: #e8c97a;
+    --blue: #2c4a7c;
+    --blue-light: #dce8f7;
+    --red: #b03030;
+    --red-light: #fde8e8;
+    --green: #2a6b3a;
+    --green-light: #e4f3e8;
+    --rule: rgba(201,151,58,0.3);
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 40px 20px 80px;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(44,74,124,0.06) 31px, rgba(44,74,124,0.06) 32px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 72px;
+    width: 2px; height: 100%;
+    background: rgba(176,48,48,0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--rule);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .notebook-rings {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 20px;
+  }
+  .ring {
+    width: 22px; height: 22px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(201,151,58,0.25), inset 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .ring::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold-light);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 38px);
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .subtitle { color: #777; font-size: 13px; letter-spacing: 0.05em; }
+
+  .divider {
+    text-align: center;
+    margin: 8px 0 32px;
+    color: var(--gold);
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    margin-top: 48px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 6px;
+    flex: 1;
+  }
+
+  /* THEORY GRID */
+  .theory-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 640px) {
+    .theory-grid { grid-template-columns: 1fr; }
+    body::after { display: none; }
+    body { padding: 20px 12px 60px; }
+  }
+
+  .def-card {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-top: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: 18px 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+  .def-card.blue  { border-top-color: var(--blue); }
+  .def-card.red   { border-top-color: var(--red); }
+  .def-card.green { border-top-color: var(--green); }
+  .def-card.full  { grid-column: 1 / -1; }
+
+  .def-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .def-body { font-size: 13px; color: #444; line-height: 1.55; }
+
+  /* CALLOUTS */
+  .zapomni {
+    background: #fffbef;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #5a4010;
+  }
+  .zapomni-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
+  }
+  .vazhno {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #1a2f50;
+  }
+  .vazhno-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 4px;
+  }
+  .danger {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #6b1a1a;
+  }
+  .danger-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 4px;
+  }
+
+  /* TABLE */
+  .chem-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13.5px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .chem-table th {
+    background: var(--blue);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .chem-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(44,74,124,0.1);
+    vertical-align: top;
+    color: #333;
+  }
+  .chem-table tr:nth-child(even) td { background: rgba(220,232,247,0.3); }
+  .chem-table tr:hover td { background: rgba(201,151,58,0.07); }
+
+  /* FORMULA */
+  .formula {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue);
+    background: rgba(44,74,124,0.06);
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 3px 0;
+  }
+
+  /* REACTION BOX */
+  .reaction-box {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.15);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 20px;
+    margin: 14px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--blue);
+    font-weight: 700;
+    line-height: 2;
+  }
+  .reaction-box .label {
+    font-family: 'Golos Text', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* TASK */
+  .task {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+  .task-header {
+    background: var(--gold);
+    color: white;
+    padding: 11px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .task-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.9);
+  }
+  .task-title {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    opacity: 0.9;
+  }
+  .task-body { padding: 18px 20px; }
+  .task-condition {
+    font-size: 14px; color: #333;
+    margin-bottom: 14px; line-height: 1.6;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+  .solution-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .solution-step {
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-bottom: 10px; font-size: 13.5px; color: #333;
+  }
+  .step-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: white; font-size: 11px; font-weight: 700;
+    display: grid; place-items: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .answer-box {
+    background: var(--green-light);
+    border: 1px solid rgba(42,107,58,0.2);
+    border-left: 4px solid var(--green);
+    border-radius: 0 4px 4px 0;
+    padding: 10px 16px; margin-top: 14px;
+    font-size: 14px; color: #1d4a28;
+  }
+  .answer-box strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+  }
+
+  /* SCHEME DIAGRAM */
+  .scheme {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.13);
+    border-top: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  }
+  .scheme-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; font-weight: 700;
+    color: var(--blue); margin-bottom: 16px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .scheme-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+  }
+  .scheme-box {
+    background: var(--blue);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 3px;
+    font-size: 13px; font-weight: 600;
+    min-width: 100px;
+  }
+  .scheme-box.center {
+    background: var(--gold);
+    font-size: 15px; font-weight: 700;
+    padding: 12px 18px; min-width: 130px;
+  }
+  .scheme-arrow {
+    font-size: 18px; color: var(--gold); font-weight: 700;
+    margin: 0 2px;
+  }
+
+  /* FRACTIONS TABLE */
+  .fractions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  @media (max-width: 640px) {
+    .fractions { grid-template-columns: 1fr; }
+  }
+  .frac-card {
+    background: white;
+    border: 1px solid rgba(44,74,124,0.12);
+    border-top: 3px solid var(--blue);
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+  }
+  .frac-card.gold-top { border-top-color: var(--gold); }
+  .frac-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; color: var(--blue);
+    font-size: 14px; margin-bottom: 4px;
+  }
+  .frac-temp { color: var(--gold); font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .frac-use { color: #555; }
+
+  /* STICKER */
+  .sticker {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff9e6;
+    border: 1px solid rgba(201,151,58,0.35);
+    border-radius: 3px;
+    padding: 5px 12px; font-size: 12px;
+    color: #9a6e10; font-weight: 500;
+    letter-spacing: 0.05em;
+    box-shadow: 2px 3px 0 rgba(201,151,58,0.2);
+    transform: rotate(-1deg);
+    margin-top: 10px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 40px; padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px; color: #aaa;
+    letter-spacing: 0.06em;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="notebook-rings">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    </div>
+    <div class="badge">Химия · 10 класс · Органическая химия</div>
+    <h1>§7–9 Конспект.<br>Арены. Природный газ. Нефть.</h1>
+    <p class="subtitle">Ароматические углеводороды · Природный газ · Нефть и её переработка</p>
+    <div><span class="sticker">📌 Параграфы 7, 8, 9 + Упр. 2(в) стр. 47</span></div>
+  </header>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- §7 -->
+  <div class="section-header">
+    <div class="section-num">§7</div>
+    <div class="section-title">Ароматические углеводороды (Арены). Бензол.</div>
+  </div>
+
+  <div class="theory-grid">
+    <div class="def-card blue">
+      <div class="def-term">🔷 Ароматические углеводороды (арены)</div>
+      <div class="def-body">Углеводороды, в молекулах которых содержится <strong>бензольное кольцо</strong>. Общая формула: <strong>C<sub>n</sub>H<sub>2n−6</sub></strong>. Имеют характерный запах.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">⬡ Бензол C₆H₆</div>
+      <div class="def-body">Первый представитель аренов. Бесцветная жидкость со специфическим запахом. Нерастворим в воде, лучше воды. Хороший органический растворитель. <strong>Очень ядовит!</strong></div>
+    </div>
+    <div class="def-card green">
+      <div class="def-term">🔬 Строение бензола (Кекуле)</div>
+      <div class="def-body">Шесть атомов C образуют <strong>замкнутый цикл</strong>. Все C–C связи <strong>одинаковы</strong> — полуторные (промежуточные между одинарными и двойными). Обозначается шестиугольником с кружком внутри.</div>
+    </div>
+    <div class="def-card red">
+      <div class="def-term">⚠️ Фенил C₆H₅–</div>
+      <div class="def-body">Одновалентный радикал бензола. Образуется при реакции замещения (например, бромирование бензола даёт бромбензол C₆H₅Br).</div>
+    </div>
+  </div>
+
+  <div class="zapomni">
+    <div class="zapomni-label">⭐ Гомологический ряд аренов</div>
+    C₆H₆ (бензол) → C₆H₅–CH₃ (толуол / метилбензол) → C₆H₅–C₂H₅ (этилбензол) → …
+    Общая формула: <strong>C<sub>n</sub>H<sub>2n–6</sub></strong>, где n ≥ 6
+  </div>
+
+  <div class="vazhno">
+    <div class="vazhno-label">📌 Химические свойства бензола</div>
+    Для бензола характерны <strong>реакции замещения</strong> (а не присоединения, как у алкенов).
+  </div>
+
+  <div class="reaction-box">
+    <span class="label">🧪 Реакция бромирования (замещение)</span>
+    C₆H₆ + Br₂ → <span style="color:var(--gold)">кат.</span> → C₆H₅Br + HBr<br>
+    <span style="font-size:13px;font-family:'Golos Text',sans-serif;font-weight:400;color:#555">(образуется бромбензол или фенилбромид)</span>
+  </div>
+
+  <div class="reaction-box">
+    <span class="label">🧪 Реакция нитрования</span>
+    C₆H₆ + HNO₃ → <span style="color:var(--gold)">кат. (H₂SO₄)</span> → C₆H₅–NO₂ + H₂O<br>
+    <span style="font-size:13px;font-family:'Golos Text',sans-serif;font-weight:400;color:#555">(образуется нитробензол — первый шаг к получению анилина)</span>
+  </div>
+
+  <div class="reaction-box">
+    <span class="label">🔥 Горение бензола</span>
+    2C₆H₆ + 15O₂ → 12CO₂ + 6H₂O<br>
+    <span style="font-size:13px;font-family:'Golos Text',sans-serif;font-weight:400;color:#555">(горит коптящим пламенем из-за высокой доли углерода)</span>
+  </div>
+
+  <div class="danger">
+    <div class="danger-label">☣️ Применение бензола</div>
+    Сырьё для синтеза: красители, ядохимикаты, пластмассы, моющие средства, лекарства, ацетон, анилин, добавка к топливу. <strong>Бензол очень ядовит — использование ограничено!</strong>
+  </div>
+
+  <div class="vazhno">
+    <div class="vazhno-label">📌 Экстракция</div>
+    Извлечение вещества из раствора с помощью второго растворителя, не смешивающегося с первым, называют <strong>экстракцией</strong>. Бензол — хороший экстрагент.
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- §8 -->
+  <div class="section-header">
+    <div class="section-num">§8</div>
+    <div class="section-title">Природный газ</div>
+  </div>
+
+  <div class="theory-grid">
+    <div class="def-card blue">
+      <div class="def-term">🌿 Состав природного газа</div>
+      <div class="def-body">Смесь <strong>предельных углеводородов</strong> и неорганических газов. Преобладает <strong>метан CH₄ (88–95%)</strong>. Образовался из органических остатков без доступа воздуха.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">🔥 Попутный нефтяной газ</div>
+      <div class="def-body">Содержит больше этана, пропана, бутана, пентана. Делится на фракции: <strong>газовый бензин</strong> (C₅–C₆), <strong>пропан-бутановая фракция</strong> (сжиженный газ), <strong>сухой газ</strong> (≈ природный газ).</div>
+    </div>
+  </div>
+
+  <table class="chem-table">
+    <thead>
+      <tr>
+        <th>Компонент</th>
+        <th>Формула</th>
+        <th>Объёмная доля (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Метан</td><td><span class="formula">CH₄</span></td><td>88–95</td></tr>
+      <tr><td>Этан</td><td><span class="formula">C₂H₆</span></td><td>3–8</td></tr>
+      <tr><td>Пропан</td><td><span class="formula">C₃H₈</span></td><td>0,7–2,0</td></tr>
+      <tr><td>Бутан</td><td><span class="formula">C₄H₁₀</span></td><td>0,2–0,7</td></tr>
+      <tr><td>Пентан</td><td><span class="formula">C₅H₁₂</span></td><td>0,03–0,5</td></tr>
+      <tr><td>Углекислый газ</td><td><span class="formula">CO₂</span></td><td>0,6–2,0</td></tr>
+      <tr><td>Азот</td><td><span class="formula">N₂</span></td><td>0,3–3,0</td></tr>
+      <tr><td>Гелий</td><td><span class="formula">He</span></td><td>0,01–0,5</td></tr>
+    </tbody>
+  </table>
+
+  <div class="zapomni">
+    <div class="zapomni-label">⭐ Преимущества природного газа как топлива</div>
+    1) Дешевизна — самый экономичный вид топлива<br>
+    2) Высокая теплотворная способность<br>
+    3) Лёгкость транспортировки (по газопроводам)<br>
+    4) Экологичность — минимальные вредные выбросы при сгорании
+  </div>
+
+  <div class="reaction-box">
+    <span class="label">🔥 Горение метана</span>
+    CH₄ + 2O₂ → CO₂ + 2H₂O<br>
+    <span style="font-size:13px;font-family:'Golos Text',sans-serif;font-weight:400;color:#555">(горит бесцветным пламенем)</span>
+  </div>
+
+  <div class="vazhno">
+    <div class="vazhno-label">📌 Химическая переработка природного газа</div>
+    <strong>Конверсия</strong> — взаимодействие метана с перегретым водяным паром:<br>
+    CH₄ + H₂O → CO + 3H₂ &nbsp;(<strong>синтез-газ</strong>)<br><br>
+    <strong>Пиролиз</strong> — нагревание без доступа воздуха → углерод (сажа), водород, ацетилен.
+  </div>
+
+  <div class="scheme">
+    <div class="scheme-title">Области промышленного использования природного газа</div>
+    <div class="scheme-grid">
+      <div class="scheme-box">Топливо</div>
+      <div class="scheme-arrow">→</div>
+      <div class="scheme-box center">ПРИРОДНЫЙ ГАЗ</div>
+      <div class="scheme-arrow">→</div>
+      <div class="scheme-box">Водород</div>
+    </div>
+    <div style="margin-top:8px;" class="scheme-grid">
+      <div class="scheme-box">Сажа</div>
+      <div class="scheme-arrow">↑</div>
+      <div class="scheme-box">Ацетилен</div>
+      <div class="scheme-arrow">↑</div>
+      <div class="scheme-box">Галогенпроизводные</div>
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:#777;">↓ Кислородсодержащие органические вещества (метанол CH₃OH и др.)</div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- §9 -->
+  <div class="section-header">
+    <div class="section-num">§9</div>
+    <div class="section-title">Нефть и способы её переработки</div>
+  </div>
+
+  <div class="theory-grid">
+    <div class="def-card blue">
+      <div class="def-term">🛢️ Нефть</div>
+      <div class="def-body">Маслянистая жидкость от светло-коричневого до тёмно-бурого цвета со специфическим запахом. Природная смесь углеводородов (C₆–C₅₀), главным образом алканов линейного и разветвлённого строения. Нерастворима в воде.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">⛽ Ректификация (перегонка)</div>
+      <div class="def-body">Разделение жидких смесей на <strong>фракции</strong> — компоненты с близкими температурами кипения. Проводится в <strong>ректификационных колоннах</strong>. Физический процесс — химических реакций нет.</div>
+    </div>
+    <div class="def-card red">
+      <div class="def-term">⚗️ Крекинг</div>
+      <div class="def-body">Термическое расщепление углеводородов с получением продуктов с <strong>меньшей молярной массой</strong>. Впервые промышленный крекинг — В. Г. Шухов, 1891 г. Бензин крекинга — невысокого качества.</div>
+    </div>
+    <div class="def-card green">
+      <div class="def-term">🔄 Риформинг</div>
+      <div class="def-body">Переработка нефтепродуктов с целью <strong>повышения качества бензина</strong> и получения ароматических углеводородов. Два типа реакций: изомеризация предельных углеводородов и их дегидрирование.</div>
+    </div>
+  </div>
+
+  <div class="zapomni">
+    <div class="zapomni-label">⭐ Октановое число</div>
+    Количественный показатель <strong>детонационной устойчивости</strong> бензина. Эталоны шкалы:<br>
+    • <strong>н-гептан C₇H₁₆</strong> → октановое число = <strong>0</strong><br>
+    • <strong>изооктан (2,2,4-триметилпентан) C₈H₁₈</strong> → октановое число = <strong>100</strong><br>
+    Бензин АИ-95 имеет детонационную устойчивость как смесь 95% изооктана и 5% н-гептана.
+  </div>
+
+  <div style="margin: 20px 0;">
+    <div class="vazhno-label" style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:var(--blue);margin-bottom:12px;text-transform:uppercase;">📌 Фракции нефти при ректификации</div>
+    <div class="fractions">
+      <div class="frac-card gold-top">
+        <div class="frac-name">Пары бензина</div>
+        <div class="frac-temp">40–200 °C</div>
+        <div class="frac-use">Топливо для двигателей внутреннего сгорания</div>
+      </div>
+      <div class="frac-card">
+        <div class="frac-name">Лигроин</div>
+        <div class="frac-temp">150–250 °C</div>
+        <div class="frac-use">Горючее для сельхозтехники, сырьё для дальнейшей переработки</div>
+      </div>
+      <div class="frac-card">
+        <div class="frac-name">Керосин</div>
+        <div class="frac-temp">180–300 °C</div>
+        <div class="frac-use">Топливо для реактивных самолётов</div>
+      </div>
+      <div class="frac-card">
+        <div class="frac-name">Газойль</div>
+        <div class="frac-temp">250–350 °C</div>
+        <div class="frac-use">Дизельное топливо</div>
+      </div>
+      <div class="frac-card">
+        <div class="frac-name">Мазут</div>
+        <div class="frac-temp">остаток</div>
+        <div class="frac-use">Котельное топливо, битум, гудрон, смазочные масла</div>
+      </div>
+      <div class="frac-card gold-top">
+        <div class="frac-name">Газы</div>
+        <div class="frac-temp">до 40 °C</div>
+        <div class="frac-use">Топливо, сырьё для химической промышленности</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reaction-box">
+    <span class="label">⚗️ Крекинг — пример реакции</span>
+    C₁₆H₃₄ → C₈H₁₈ + C₈H₁₆<br>
+    <span style="font-size:13px;font-family:'Golos Text',sans-serif;font-weight:400;color:#555">гексадекан → октан + октен</span>
+  </div>
+
+  <div class="reaction-box">
+    <span class="label">🔄 Риформинг — дегидрирование (пример)</span>
+    CH₃–(CH₂)₄–CH₃ → <span style="color:var(--gold)">кат., t</span> → C₆H₆ + 4H₂<br>
+    <span style="font-size:13px;font-family:'Golos Text',sans-serif;font-weight:400;color:#555">н-гексан → бензол + водород</span>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- УПРАЖНЕНИЕ -->
+  <div class="section-header">
+    <div class="section-num">✏️</div>
+    <div class="section-title">Упражнение 2(в) — стр. 47</div>
+  </div>
+
+  <div class="task">
+    <div class="task-header">
+      <div class="task-num">Задание 2(в)</div>
+      <div class="task-title">Уравнения реакций цепочки превращений</div>
+    </div>
+    <div class="task-body">
+      <div class="task-condition">
+        Напишите уравнения реакций, с помощью которых можно осуществить следующие превращения:<br><br>
+        <strong>в) CH₄ → CO → C<sub>n</sub>H<sub>2n+2</sub></strong>
+      </div>
+
+      <div class="solution-label">✏️ Решение — Шаг 1: CH₄ → CO</div>
+      <div class="solution-step">
+        <div class="step-dot">1</div>
+        <div>
+          Первое превращение — <strong>конверсия метана</strong> (взаимодействие с перегретым водяным паром):<br>
+          <span style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--blue);">
+            CH₄ + H₂O &nbsp;→<span style="font-size:12px;color:var(--gold);">кат., t</span>→&nbsp; CO + 3H₂
+          </span><br>
+          <span style="font-size:13px;color:#666;">Продукт — синтез-газ (CO + H₂ в соотношении 1:3)</span>
+        </div>
+      </div>
+
+      <div class="solution-label">✏️ Решение — Шаг 2: CO → C<sub>n</sub>H<sub>2n+2</sub></div>
+      <div class="solution-step">
+        <div class="step-dot">2</div>
+        <div>
+          Второе превращение — <strong>синтез алканов из синтез-газа</strong> (реакция Фишера–Тропша, промышленное получение синтетического бензина):<br>
+          <span style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--blue);">
+            nCO + (2n+1)H₂ &nbsp;→<span style="font-size:12px;color:var(--gold);">кат.</span>→&nbsp; C<sub>n</sub>H<sub>2n+2</sub> + nH₂O
+          </span><br>
+          <span style="font-size:13px;color:#666;">Образуются предельные углеводороды — алканы (синтетический бензин)</span>
+        </div>
+      </div>
+
+      <div class="solution-label">📋 Итоговая схема</div>
+      <div class="solution-step">
+        <div class="step-dot">→</div>
+        <div style="width:100%;">
+          <div style="background:rgba(44,74,124,0.05);border-radius:4px;padding:12px 16px;font-family:'Playfair Display',serif;font-size:14px;color:var(--blue);font-weight:700;line-height:2.2;">
+            CH₄ + H₂O &nbsp;<span style="font-size:11px;color:var(--gold);font-family:'Golos Text',sans-serif;font-weight:600;">кат., t</span>&nbsp; → CO + 3H₂<br>
+            nCO + (2n+1)H₂ &nbsp;<span style="font-size:11px;color:var(--gold);font-family:'Golos Text',sans-serif;font-weight:600;">кат.</span>&nbsp; → C<sub>n</sub>H<sub>2n+2</sub> + nH₂O
+          </div>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <strong>Вывод:</strong> Цепочка CH₄ → CO → C<sub>n</sub>H<sub>2n+2</sub> осуществляется через <strong>конверсию метана</strong> (получение синтез-газа CO + H₂) и последующий <strong>синтез Фишера–Тропша</strong> (получение алканов из синтез-газа). Это промышленный способ получения синтетического топлива.
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <footer>
+    Химия · 10 класс · §7 Арены · §8 Природный газ · §9 Нефть
+  </footer>
+
+</div>
+</body>
+</html>
